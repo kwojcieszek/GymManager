@@ -1,5 +1,5 @@
 # GymManager
-Aplikacja WPF do zarządzania siłownią, rejestr członków, wejść,szafek, sprzedaż karnetów. Obsługa kart RFID w różnich standardach. Moduł bezpośredniego pobierania zdjęć członków z urządzenia, generowania i drukowania dokumentów członkowskich.
+Aplikacja WPF do zarządzania siłownią, rejestr członków, wejść, szafek, sprzedaż karnetów. Obsługa kart RFID w różnich standardach. Moduł bezpośredniego pobierania zdjęć członków z urządzenia, generowania i drukowania dokumentów członkowskich.
 Współpracuje z bazmi MSSQL,SqLite,PostgreSQL,MySql.
 
 Chcesz używać, wdrożyć w pełni aplikację lub dostosować do własnych potrzeb ? Skontaktuję się zemną. 
