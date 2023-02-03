@@ -1,0 +1,34 @@
+﻿#Memory
+add-migration "2022-02-10" -Context MemoryContext -OutputDir Migrations\Memory
+
+remove-migration -Context MemoryContext
+
+drop-database -contex MemoryContext
+
+#SqlServer
+add-migration "2022-02-10" -Context SqlServerContext -OutputDir Migrations\SqlServer
+
+remove-migration -Context SqlServerContext
+
+drop-database -contex SqlServerContext
+
+#Sqlite
+add-migration "2022-02-10" -Context SqliteContext -OutputDir Migrations\Sqlite
+
+remove-migration -Context SqliteContext
+
+drop-database -contex SqliteContext
+
+#PostgreSql
+add-migration "2022-02-10" -Context PostgreSqlContext -OutputDir Migrations\PostgreSql
+
+remove-migration -Context PostgreSqlContext
+
+drop-database -contex PostgreSqlContext
+
+#MySql
+add-migration "2022-02-11" -Context MySqlContext -OutputDir Migrations\MySql
+
+remove-migration -Context MySqlContext
+
+drop-database -contex MySqlContext

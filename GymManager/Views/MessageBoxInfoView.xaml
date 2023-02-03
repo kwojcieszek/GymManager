@@ -1,0 +1,42 @@
+﻿<mah:MetroWindow x:Class="GymManager.Views.MessageBoxInfoView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 xmlns:mw="clr-namespace:GymManager.ViewModels"
+                 mc:Ignorable="d"
+                 Title="INFORMACJA" Height="400" Width="1000" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"
+                 ShowInTaskbar="False" ShowMinButton="False" ShowCloseButton="False"
+                 FocusManager.FocusedElement="{Binding ElementName=ButtonClose}">
+    <Window.DataContext>
+        <mw:MessageBoxInfoViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="49*" />
+            <ColumnDefinition Width="659*" />
+            <ColumnDefinition Width="42*" />
+        </Grid.ColumnDefinitions>
+        <Label Name="TextMessage" Content="{Binding Message}" Foreground="DarkRed" FontSize="24"
+               HorizontalAlignment="Center" Margin="150,0,0,0" VerticalAlignment="Center" Grid.Column="1" />
+        <Image Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="150" Width="150"
+               Margin="18,95,0,0" Source="{iconPacks:VaadinIconsImage Kind=InfoCircleOutline, Brush=Green}"
+               Grid.ColumnSpan="2" mah:VisibilityHelper.IsHidden="{Binding IsWarrning}" />
+        <Image Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="150" Width="150"
+               Margin="18,95,0,0" Source="{iconPacks:VaadinIconsImage Kind=Warning, Brush=Red}" Grid.ColumnSpan="2"
+               mah:VisibilityHelper.IsVisible="{Binding IsWarrning}" />
+        <Button Name="ButtonClose" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20"
+                Height="30" Width="120"
+                Focusable="True" Command="{Binding CloseCommand}" IsCancel="True" Grid.Column="1">
+            <WrapPanel>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left">ZAMKNIJ</TextBlock>
+                <Rectangle Width="10" />
+                <Image HorizontalAlignment="Right" Height="20" Width="25" Stretch="Fill"
+                       Source="{iconPacks:PicolIconsImage Kind=Accept, Brush=Green}" />
+            </WrapPanel>
+        </Button>
+    </Grid>
+</mah:MetroWindow>

@@ -1,0 +1,323 @@
+﻿<mah:MetroWindow x:Class="GymManager.Views.MangerView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:local="clr-namespace:GymManager.Views"
+                 xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 xmlns:mw="clr-namespace:GymManager.ViewModels"
+                 mc:Ignorable="d"
+                 Title="{Binding Title}" Height="1071" Width="2006" WindowState="Maximized"
+                 WindowStartupLocation="CenterScreen" MinWidth="1250" MinHeight="600">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=ContentRenderedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=WindowClosedCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=WindowClosingCommand}"
+                                   PassEventArgsToCommand="True" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Activated">
+            <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=GotFocusCommand}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Deactivated">
+            <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=LostFocusCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Window.DataContext>
+        <mw:MangerViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Menu>
+            <MenuItem Header="PROGRAM">
+                <MenuItem.Icon>
+                    <Image Height="16" Width="16" Source="{Binding Source=/Images/Gym.png}" />
+                </MenuItem.Icon>
+                <MenuItem Header="USTAWIENIA PROGRAMU" Command="{Binding SettingsCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16" Source="{iconPacks:CodiconsImage Kind=Settings, Brush=Gray}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="USTAWIENIA BAZY DANYCH" Command="{Binding DatabasesSettingsCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16" Source="{iconPacks:CodiconsImage Kind=Database, Brush=Gray}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="ZAMKNIJ PROGRAM" Command="{Binding WindowClosedCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16" Source="{iconPacks:CooliconsImage Kind=Exit, Brush=Gray}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="SZYBKIE DZIAŁANIA">
+                <MenuItem.Icon>
+                    <Image Height="16" Width="16" Source="{iconPacks:SimpleIconsImage Kind=AzureFunctions, Brush=Gray}" />
+                </MenuItem.Icon>
+                <MenuItem Header="WYSZUKAJ CZŁONKA" Command="{Binding SearchMemberViewCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16"
+                               Source="{iconPacks:MaterialImage Kind=FileFind, Brush=DarkGoldenrod}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="DODAJ CZŁONKA" Command="{Binding AddMembersViewCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16"
+                               Source="{iconPacks:MaterialImage Kind=AccountGroup, Brush=DarkGoldenrod}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="DODAJ KARNET DLA CZŁONKA" Command="{Binding AddPassesMembersCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16"
+                               Source="{iconPacks:ForkAwesomeImage Kind=Ticket, Brush=DarkGreen}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="DODAJ UŻYTKOWNIKA" Command="{Binding AddUsersViewCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16" Source="{iconPacks:ForkAwesomeImage Kind=User, Brush=DarkGreen}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="DODAJ KARNET" Command="{Binding AddPassesCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16"
+                               Source="{iconPacks:MaterialImage Kind=CreditCardMultiple, Brush=DarkBlue}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="DODAJ KLUCZ" Command="{Binding AddCabinetKeysCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16" Source="{iconPacks:UniconsImage Kind=KeySkeleton, Brush=Silver}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="ZAMKNIJ WSZYSTKIE WEJŚCIA CZŁONKÓW" Command="{Binding ClosePersonInGymCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16"
+                               Source="{iconPacks:FontAwesomeImage Kind=UsersSlashSolid, Brush=Gray}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="DODAJ WEJŚCIE/WYJŚCIE BEZ IDENTYFIKATORA"
+                          Command="{Binding AddEntryWithoutIdentifierCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16" Source="{iconPacks:MaterialImage Kind=CardOffOutline, Brush=Red}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="POMOC">
+                <MenuItem.Icon>
+                    <Image Height="16" Width="16"
+                           Source="{iconPacks:MaterialDesignImage Kind=HelpOutline, Brush=Green}" />
+                </MenuItem.Icon>
+                <MenuItem Header="POMOC PROGRAMU">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16" Source="{iconPacks:SimpleIconsImage Kind=Wikipedia, Brush=Green}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="TeamViewer" Command="{Binding TeamViewerCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16"
+                               Source="{iconPacks:SimpleIconsImage Kind=TeamViewer, Brush=DarkBlue}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="INFORMACJE O LICENCJI">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16" Source="{iconPacks:MaterialImage Kind=License, Brush=Gray}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="O PROGRAMIE" Command="{Binding AboutCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16" Width="16"
+                               Source="{iconPacks:CooliconsImage Kind=InfoCircleOutline, Brush=Gray}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <WrapPanel Grid.Column="3" Margin="0,0,0,0" Height="50" Width="auto" HorizontalAlignment="Right">
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Width="auto" Height="auto"
+                           FontSize="20">
+                    <Run Text="{Binding Path=FullName,Mode=OneWay}" />
+                </TextBlock>
+                <Button x:Name="test1" Background="White" Height="50" Width="50" BorderThickness="0" FontSize="14"
+                        Command="{Binding LogoutCommand}">
+                    <Image HorizontalAlignment="Right" Width="30" Height="30"
+                           Source="{iconPacks:MaterialImage Kind=LockOpen, Brush=DarkGreen}" />
+                </Button>
+            </WrapPanel>
+        </Grid>
+
+        <StackPanel>
+            <Expander Name="ExpanderRecords" HorizontalAlignment="Left" Height="auto" FontSize="14" Header="KARTOTEKI"
+                      Margin="0,30,0,0" VerticalAlignment="Top" Width="130"
+                      BorderThickness="0" IsExpanded="{Binding ExpanderRecordsIsExpanded}">
+                <StackPanel>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Command="{Binding MembersViewCommand}">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:MaterialImage Kind=AccountGroup, Brush=DarkGoldenrod}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="CZŁONKOWIE" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Focusable="False"
+                            Command="{Binding PassesMembersCommand}">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:ForkAwesomeImage Kind=Ticket, Brush=DarkGreen}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="KARNETY CZŁONKÓW" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Command="{Binding CabinetKeysCommand}">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:UniconsImage Kind=KeySkeleton, Brush=Silver}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="KLUCZE DO SZAFEK" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Command="{Binding PassesCommand}">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:MaterialImage Kind=CreditCardMultiple, Brush=DarkBlue}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="KARNETY" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Command="{Binding UsersViewCommand}">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:UniconsImage Kind=UsersAlt, Brush=DarkRed}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="UŻYTKOWNICY" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Expander>
+            <Expander Name="ExpanderRegisters" HorizontalAlignment="Left" Height="auto" FontSize="16" Header="REJESTRY"
+                      Margin="0,2,0,0" VerticalAlignment="Top" Width="130"
+                      BorderThickness="0" IsExpanded="{Binding ExpanderRegistersIsExpanded}">
+                <StackPanel>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Focusable="False"
+                            Command="{Binding PersonInGymCommand}">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:MaterialImage Kind=HomeImportOutline, Brush=DarkGreen}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="OSOBY W OBIEKCIE" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Focusable="False">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:UniconsImage Kind=Envelopes, Brush=DarkBlue}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="WIADOMOŚCI" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Focusable="False"
+                            Command="{Binding EntriesRegistryCommand}">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:MaterialImage Kind=ArchiveClockOutline, Brush=DarkCyan}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="REJESTR WEJŚĆ" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Focusable="False"
+                            Command="{Binding DataTrackingsCommand}">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:VaadinIconsImage Kind=Records, Brush=DarkRed}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="REJESTR OPERACJI" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Expander>
+            <Expander Name="ExpanderOthers" HorizontalAlignment="Left" Height="auto" FontSize="18" Header="INNE"
+                      Margin="0,2,0,0" VerticalAlignment="Top" Width="130"
+                      BorderThickness="0" IsExpanded="{Binding ExpanderOthersIsExpanded}">
+                <StackPanel>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Command="{Binding TeamViewerCommand}"
+                            Visibility="Visible">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:MaterialImage Kind=Teamviewer, Brush=DarkBlue}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="POMOC ZDALNA" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12"
+                            Command="{Binding ChangePasswordCommand}" Visibility="Visible">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:ModernImage Kind=InterfacePassword, Brush=DarkRed}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="ZMIANA HASŁA" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Command="{Binding SettingsCommand}">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:CodiconsImage Kind=Settings, Brush=DarkGreen}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="USTAWIENIA" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+
+        <StatusBar Margin="0,0,0,0" VerticalAlignment="Bottom" Height="30">
+            <WrapPanel>
+                <Image Height="20" Width="20" Margin="0,0,5,0"
+                       Source="{iconPacks:UniconsImage Kind=InfoCircle, Brush=DarkGreen}" />
+                <TextBlock FontSize="20" VerticalAlignment="Bottom" Text="STATUS SYSTEMU: " />
+                <TextBlock FontSize="20" VerticalAlignment="Bottom" Text="{Binding SystemStatusName}" />
+                <Rectangle Width="2" Height="auto" Margin="10,2,10,2" Fill="DeepSkyBlue" />
+                <Image Height="20" Width="20" Margin="0,0,5,0"
+                       Source="{iconPacks:UniconsImage Kind=UserCheck, Brush=Blue}" />
+                <TextBlock FontSize="20" Margin="0,0,0,0" VerticalAlignment="Bottom" Text="ZALOGOWANY: " />
+                <TextBlock FontSize="20" Margin="0,0,0,0" VerticalAlignment="Bottom"
+                           Text="{Binding DataTimeLogin, StringFormat='{}{0:dd-MM-yyyy HH:mm}'}" />
+                <Rectangle Width="2" Height="auto" Margin="10,2,10,2" Fill="DeepSkyBlue" />
+                <Image Height="20" Width="20" Margin="0,0,5,0"
+                       Source="{iconPacks:UniconsImage Kind=Database, Brush=Orange}" />
+                <TextBlock FontSize="20" Margin="0,0,0,0" VerticalAlignment="Bottom" Text="BAZA DANYCH: " />
+                <TextBlock FontSize="20" Margin="0,0,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                           Text="{Binding DatabaseName}" />
+            </WrapPanel>
+        </StatusBar>
+        <local:EntryPanelView Margin="135,25,0,30" Width="auto" Height="auto" />
+    </Grid>
+</mah:MetroWindow>

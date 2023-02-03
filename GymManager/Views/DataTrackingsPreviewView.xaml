@@ -1,0 +1,134 @@
+﻿<mah:MetroWindow x:Class="GymManager.Views.DataTrackingsPreviewView"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                 xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 xmlns:mw="clr-namespace:GymManager.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                 xmlns:converters="clr-namespace:GymManager.Common.Converters"
+                 mc:Ignorable="d"
+                 Title="PODGLĄD OPERACJI" Height="635" Width="860" ResizeMode="NoResize"
+                 WindowStartupLocation="CenterOwner" WindowState="Normal" ShowInTaskbar="False" ShowMinButton="False"
+                 ShowCloseButton="False"
+                 FocusManager.FocusedElement="{Binding ElementName=ButtonClose}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="ContentRendered">
+            <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=ContentRenderedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <converters:BoolToVisibilityNegativeConverter x:Key="BoolToVisibilityNegativeConverter" />
+    </Window.Resources>
+    <Window.DataContext>
+        <mw:DataTrackingsPreviewViewModel />
+    </Window.DataContext>
+    <Grid>
+        <StackPanel>
+            <Grid Margin="10,10,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="140" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" Text="DATA ZMIANY" Margin="0,10,0,0" FontSize="16"
+                           TextAlignment="Right" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="0" Grid.Row="1" Text="OPERACJA" Margin="0,10,0,0" FontSize="16"
+                           TextAlignment="Right" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="4" Grid.Row="1" Text="ZASÓB" Margin="0,10,0,0" FontSize="16"
+                           TextAlignment="Right" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="4" Grid.Row="0" Text="MODYFIKOWANO PRZEZ" Margin="0,10,0,0" FontSize="16"
+                           TextAlignment="Right" VerticalAlignment="Center" />
+
+                <TextBox Grid.Column="2" Grid.Row="0"
+                         Text="{Binding DataTracking.DateAdded,StringFormat=HH:mm dd-MM-yyyy}" Width="190"
+                         IsReadOnly="True" Margin="0,10,0,0" FontSize="14" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" />
+                <TextBox Grid.Column="2" Grid.Row="1" Text="{Binding DataTracking.DataTrackingOperation.Name}"
+                         Width="190" IsReadOnly="True" Margin="0,10,0,0" FontSize="14" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" />
+                <TextBox Grid.Column="6" Grid.Row="1" Text="{Binding DataTracking.TableName}" Width="190"
+                         IsReadOnly="True" Margin="0,10,0,0" FontSize="14" HorizontalAlignment="Left"
+                         VerticalAlignment="Center" />
+                <TextBox Grid.Column="6" Grid.Row="0" Width="190" IsReadOnly="True" Margin="0,10,0,0" FontSize="14"
+                         HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <MultiBinding StringFormat="{}{0} {1}">
+                        <Binding Path="DataTracking.AddedByUser.FirstName" />
+                        <Binding Path="DataTracking.AddedByUser.LastName" />
+                    </MultiBinding>
+                </TextBox>
+            </Grid>
+        </StackPanel>
+        <DataGrid x:Name="DataGridDataTrackings"
+                  Visibility="{Binding Path=IsViewNewData,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"
+                  Margin="5,110,30,5"
+                  Width="600"
+                  Height="Auto"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserReorderColumns="True"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="True"
+                  EnableColumnVirtualization="True"
+                  EnableRowVirtualization="True"
+                  CanUserSortColumns="True"
+                  IsReadOnly="True"
+                  RenderOptions.ClearTypeHint="Enabled"
+                  GridLinesVisibility="Horizontal"
+                  SelectionUnit="FullRow"
+                  TextOptions.TextFormattingMode="Display"
+                  ItemsSource="{Binding DataTrackingDefinitions}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=ColumnName}" Header="POLE" />
+                <DataGridTextColumn Binding="{Binding Path=OldData}" Header="STARA WARTOŚĆ" />
+                <DataGridTextColumn Binding="{Binding Path=NewData}" Header="NOWA WARTOŚĆ" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="DataGridDataTrackings2"
+                  Visibility="{Binding Path=IsViewNewData,Converter={StaticResource BoolToVisibilityNegativeConverter},Mode=OneWay}"
+                  Margin="5,110,30,5"
+                  Width="600"
+                  Height="Auto"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserReorderColumns="True"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="True"
+                  EnableColumnVirtualization="True"
+                  EnableRowVirtualization="True"
+                  CanUserSortColumns="True"
+                  IsReadOnly="True"
+                  RenderOptions.ClearTypeHint="Enabled"
+                  GridLinesVisibility="Horizontal"
+                  SelectionUnit="FullRow"
+                  TextOptions.TextFormattingMode="Display"
+                  ItemsSource="{Binding DataTrackingDefinitions}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=ColumnName}" Header="POLE" />
+                <DataGridTextColumn Binding="{Binding Path=OldData}" Header="STARA WARTOŚĆ" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,20,20">
+            <Button Name="ButtonClose" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10,0,0,0"
+                    Height="30" Width="120"
+                    Focusable="True" Command="{Binding CloseCommand}" IsCancel="True">
+                <WrapPanel>
+                    <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left">ZAMKNIJ</TextBlock>
+                    <Rectangle Width="10" />
+                    <Image HorizontalAlignment="Right" Height="20" Width="20" Stretch="Fill"
+                           Source="{iconPacks:MaterialImage Kind=CloseBoxOutline, Brush=Green}" />
+                </WrapPanel>
+            </Button>
+        </WrapPanel>
+    </Grid>
+</mah:MetroWindow>
