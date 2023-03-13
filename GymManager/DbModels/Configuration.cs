@@ -1,5 +1,6 @@
-﻿namespace GymManager.DbModels;
-
-internal sealed class Configuration : DbMigrationsConfiguration<GymManagerContext>
+﻿namespace GymManager.DbModels
 {
+    internal sealed class Configuration : DbMigrationsConfiguration<GymManagerContext>
+    {
+    }
 }

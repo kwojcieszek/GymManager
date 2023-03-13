@@ -1,12 +1,13 @@
-﻿namespace GymManager.Common;
-
-public static class IdentifierServiceBuilder
+﻿namespace GymManager.Common
 {
-    public static IdentifierService CreateFromRFIDSerialPort(SerialPortSettings serialPortSettings,
-        RfidReaderConverterType rfidReaderConverterType, bool suffixCrlf, int maxLenghtData, Endianness endianness)
+    public static class IdentifierServiceBuilder
     {
-        var dev = new IdentifierDeviceSerialPort(serialPortSettings.PortName, serialPortSettings.BaudRate,
-            new RfidReaderConverter(rfidReaderConverterType, endianness), suffixCrlf, maxLenghtData);
-        return new IdentifierService(dev);
+        public static IdentifierService CreateFromRFIDSerialPort(SerialPortSettings serialPortSettings,
+            RfidReaderConverterType rfidReaderConverterType, bool suffixCrlf, int maxLenghtData, Endianness endianness)
+        {
+            var dev = new IdentifierDeviceSerialPort(serialPortSettings.PortName, serialPortSettings.BaudRate,
+                new RfidReaderConverter(rfidReaderConverterType, endianness), suffixCrlf, maxLenghtData);
+            return new IdentifierService(dev);
+        }
     }
 }

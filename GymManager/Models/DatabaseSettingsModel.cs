@@ -1,18 +1,19 @@
 ﻿using GymManager.Common;
 
-namespace GymManager.Models;
-
-public class DatabaseSettingsModel
+namespace GymManager.Models
 {
-    public DatabasesSettings DatabaseSettings => Settings.App.Databases;
-
-    public void Restore()
+    public class DatabaseSettingsModel
     {
-        Settings.Read();
-    }
+        public DatabasesSettings DatabaseSettings => Settings.App.Databases;
 
-    public void Save()
-    {
-        Settings.Write();
+        public void Restore()
+        {
+            Settings.Read();
+        }
+
+        public void Save()
+        {
+            Settings.Write();
+        }
     }
 }

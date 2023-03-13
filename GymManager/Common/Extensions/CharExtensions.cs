@@ -1,9 +1,10 @@
-﻿namespace GymManager.Common.Extensions;
-
-public static class CharExtensions
+﻿namespace GymManager.Common.Extensions
 {
-    public static int ToInt(this char c)
+    public static class CharExtensions
     {
-        return c - '0';
+        public static int ToInt(this char c)
+        {
+            return c - '0';
+        }
     }
 }

@@ -8,95 +8,104 @@ using GymManager.Models;
 using GymManager.Views;
 using Ookii.Dialogs.Wpf;
 
-namespace GymManager.ViewModels;
-
-public class DatabasesSettingsViewModel : INotifyPropertyChanged
+namespace GymManager.ViewModels
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public ICommand ApplyCommand =>
-        _applyCommand ??= new RelayCommand(
-            x =>
-            {
-                if (SqlServer)
-                    _model.DatabaseSettings.DatabaseType = DatabaseTypes.SqlServer;
-                else if (Sqlite)
-                    _model.DatabaseSettings.DatabaseType = DatabaseTypes.Sqlite;
-                else if (PostgreSql)
-                    _model.DatabaseSettings.DatabaseType = DatabaseTypes.PostgreSql;
-                else if (MySql)
-                    _model.DatabaseSettings.DatabaseType = DatabaseTypes.MySql;
-
-                try
-                {
-                    DbModels.Engines.Migrations.Migration(Settings.App.Databases.DatabaseType);
-                }
-                catch (Exception exp)
-                {
-                    MessageView.MessageBoxInfoView(Window, exp.Message, true);
-
-                    return;
-                }
-
-                SettingsConfiguration.Set();
-
-                _model.Save();
-
-                Window.DialogResult = true;
-            });
-
-    public ICommand CancelCommand =>
-        _cancelCommand ??= new RelayCommand(
-            x =>
-            {
-                _model.Restore();
-
-                SettingsConfiguration.Set();
-
-                Window.DialogResult = false;
-            });
-
-    public DatabasesSettings DatabasesSettings => _model.DatabaseSettings;
-    public bool MySql { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.MySql;
-
-    public Window Owner
+    public class DatabasesSettingsViewModel : INotifyPropertyChanged
     {
-        set => Window.Owner = value;
-        get => Window.Owner;
-    }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private readonly DatabaseSettingsModel _model = new();
+        private ICommand _sqliteDirectoryCommand;
 
-    public bool PostgreSql { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.PostgreSql;
-    public bool Sqlite { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.Sqlite;
-
-    public ICommand SqliteDirectoryCommand =>
-        _sqliteDirectoryCommand ??= new RelayCommand(
-            x =>
-            {
-                var dialog = new VistaFolderBrowserDialog
+        public ICommand ApplyCommand =>
+            _applyCommand ??= new RelayCommand(
+                x =>
                 {
-                    ShowNewFolderButton = true,
-                    SelectedPath = DatabasesSettings.Sqlite.Directory
-                };
+                    if (SqlServer)
+                    {
+                        _model.DatabaseSettings.DatabaseType = DatabaseTypes.SqlServer;
+                    }
+                    else if (Sqlite)
+                    {
+                        _model.DatabaseSettings.DatabaseType = DatabaseTypes.Sqlite;
+                    }
+                    else if (PostgreSql)
+                    {
+                        _model.DatabaseSettings.DatabaseType = DatabaseTypes.PostgreSql;
+                    }
+                    else if (MySql)
+                    {
+                        _model.DatabaseSettings.DatabaseType = DatabaseTypes.MySql;
+                    }
 
-                if (dialog.ShowDialog(Window).GetValueOrDefault())
+                    try
+                    {
+                        DbModels.Engines.Migrations.Migration(Settings.App.Databases.DatabaseType);
+                    }
+                    catch (Exception exp)
+                    {
+                        MessageView.MessageBoxInfoView(Window, exp.Message, true);
+
+                        return;
+                    }
+
+                    SettingsConfiguration.Set();
+
+                    _model.Save();
+
+                    Window.DialogResult = true;
+                });
+
+        public ICommand CancelCommand =>
+            _cancelCommand ??= new RelayCommand(
+                x =>
                 {
-                    DatabasesSettings.Sqlite.Directory = dialog.SelectedPath;
+                    _model.Restore();
 
-                    OnPropertyChange(nameof(DatabasesSettings));
-                }
+                    SettingsConfiguration.Set();
 
-                ;
-            });
+                    Window.DialogResult = false;
+                });
 
-    public bool SqlServer { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.SqlServer;
-    public Window Window => Helper.GetWindow(this);
-    private ICommand _applyCommand;
-    private ICommand _cancelCommand;
-    private readonly DatabaseSettingsModel _model = new();
-    private ICommand _sqliteDirectoryCommand;
+        public DatabasesSettings DatabasesSettings => _model.DatabaseSettings;
+        public bool MySql { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.MySql;
 
-    private void OnPropertyChange([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public Window Owner
+        {
+            set => Window.Owner = value;
+            get => Window.Owner;
+        }
+
+        public bool PostgreSql { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.PostgreSql;
+        public bool Sqlite { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.Sqlite;
+
+        public ICommand SqliteDirectoryCommand =>
+            _sqliteDirectoryCommand ??= new RelayCommand(
+                x =>
+                {
+                    var dialog = new VistaFolderBrowserDialog
+                    {
+                        ShowNewFolderButton = true,
+                        SelectedPath = DatabasesSettings.Sqlite.Directory
+                    };
+
+                    if (dialog.ShowDialog(Window).GetValueOrDefault())
+                    {
+                        DatabasesSettings.Sqlite.Directory = dialog.SelectedPath;
+
+                        OnPropertyChange(nameof(DatabasesSettings));
+                    }
+
+                    ;
+                });
+
+        public bool SqlServer { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.SqlServer;
+        public Window Window => Helper.GetWindow(this);
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

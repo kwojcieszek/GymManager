@@ -1,15 +1,16 @@
 ﻿using GymManager.Common;
 
-namespace GymManager.DbModels.Engines;
-
-public class SqlServerContext : GymManagerContext
+namespace GymManager.DbModels.Engines
 {
-    public SqlServerContext() : base(DatabaseTypes.SqlServer)
+    public class SqlServerContext : GymManagerContext
     {
-    }
+        public override void Migrate()
+        {
+            base.Migrate();
+        }
 
-    public override void Migrate()
-    {
-        base.Migrate();
+        public SqlServerContext() : base(DatabaseTypes.SqlServer)
+        {
+        }
     }
 }

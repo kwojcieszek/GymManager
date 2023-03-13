@@ -1,11 +1,12 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace GymManager.Views;
-
-public partial class SearchDataView : MetroWindow
+namespace GymManager.Views
 {
-    public SearchDataView()
+    public partial class SearchDataView : MetroWindow
     {
-        InitializeComponent();
+        public SearchDataView()
+        {
+            InitializeComponent();
+        }
     }
 }

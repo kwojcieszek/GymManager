@@ -1,16 +1,17 @@
 ﻿using System.Windows.Controls;
 using MahApps.Metro.Controls;
 
-namespace GymManager.Views;
-
-public partial class PassEditView : MetroWindow
+namespace GymManager.Views
 {
-    public PassEditView()
+    public partial class PassEditView : MetroWindow
     {
-        InitializeComponent();
-    }
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
 
-    private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
+        public PassEditView()
+        {
+            InitializeComponent();
+        }
     }
 }

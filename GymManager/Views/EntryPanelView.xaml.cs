@@ -1,11 +1,12 @@
 ﻿using System.Windows.Controls;
 
-namespace GymManager.Views;
-
-public partial class EntryPanelView : UserControl
+namespace GymManager.Views
 {
-    public EntryPanelView()
+    public partial class EntryPanelView : UserControl
     {
-        InitializeComponent();
+        public EntryPanelView()
+        {
+            InitializeComponent();
+        }
     }
 }

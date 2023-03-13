@@ -9,138 +9,166 @@ using GymManager.DbModels;
 using GymManager.Models;
 using GymManager.Views;
 
-namespace GymManager.ViewModels;
-
-public class UserEditViewModel : INotifyPropertyChanged
+namespace GymManager.ViewModels
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    public class UserEditViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public bool _passwordChanged;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly UserEditModel _model = new();
+        private string _password1;
+        private string _password2;
 
-    public ICommand ApplyCommand =>
-        _applyCommand ??= new RelayCommand(
-            x =>
-            {
-                if (CheckUser(_model.User))
-                    try
-                    {
-                        if (_passwordChanged)
-                            User.Password = Cryptography.MD5Hash(_password1);
-
-                        _model.SaveChanges();
-
-                        Window.DialogResult = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
-                    }
-            });
-
-    public ICommand CancelCommand =>
-        _cancelCommand ??= new RelayCommand(
-            x => { Window.DialogResult = false; });
-
-    public ICommand ContentRenderedCommand =>
-        _contentRenderedCommand ??= new RelayCommand(
-            x =>
-            {
-                if (_model.User == null)
+        public ICommand ApplyCommand =>
+            _applyCommand ??= new RelayCommand(
+                x =>
                 {
-                    Title = "DODAWANIE UŻYTKOWNIKA";
+                    if (CheckUser(_model.User))
+                    {
+                        try
+                        {
+                            if (_passwordChanged)
+                            {
+                                User.Password = Cryptography.MD5Hash(_password1);
+                            }
 
-                    _model.SetNewObject();
-                }
-                else
+                            _model.SaveChanges();
+
+                            Window.DialogResult = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
+                        }
+                    }
+                });
+
+        public ICommand CancelCommand =>
+            _cancelCommand ??= new RelayCommand(
+                x => { Window.DialogResult = false; });
+
+        public ICommand ContentRenderedCommand =>
+            _contentRenderedCommand ??= new RelayCommand(
+                x =>
                 {
-                    Title = $"EDYCJA UŻYTKOWNIKA [{_model.User.FirstName} {_model.User.LastName}]";
-                }
+                    if (_model.User == null)
+                    {
+                        Title = "DODAWANIE UŻYTKOWNIKA";
 
-                OnPropertyChange(nameof(User));
-                OnPropertyChange(nameof(PermissionsListUser));
-                OnPropertyChange(nameof(Password1));
-                OnPropertyChange(nameof(Password2));
-                OnPropertyChange(nameof(Title));
-            });
+                        _model.SetNewObject();
+                    }
+                    else
+                    {
+                        Title = $"EDYCJA UŻYTKOWNIKA [{_model.User.FirstName} {_model.User.LastName}]";
+                    }
 
-    public Window Owner
-    {
-        set => Window.Owner = value;
-        get => Window.Owner;
-    }
+                    OnPropertyChange(nameof(User));
+                    OnPropertyChange(nameof(PermissionsListUser));
+                    OnPropertyChange(nameof(Password1));
+                    OnPropertyChange(nameof(Password2));
+                    OnPropertyChange(nameof(Title));
+                });
 
-    public string Password1
-    {
-        get => _password1 ??= _model.User?.Password;
-        set
+        public Window Owner
         {
-            _password1 = value;
-            _passwordChanged = true;
+            set => Window.Owner = value;
+            get => Window.Owner;
         }
-    }
 
-    public string Password2
-    {
-        get => _password2 ??= _model.User?.Password;
-        set
+        public string Password1
         {
-            _password2 = value;
-            _passwordChanged = true;
+            get => _password1 ??= _model.User?.Password;
+            set
+            {
+                _password1 = value;
+                _passwordChanged = true;
+            }
         }
-    }
 
-    public List<PermissionListUser> PermissionsListUser => _model.PermissionsListUser;
-    public string Title { get; set; }
+        public string Password2
+        {
+            get => _password2 ??= _model.User?.Password;
+            set
+            {
+                _password2 = value;
+                _passwordChanged = true;
+            }
+        }
 
-    public User User => _model.User;
+        public List<PermissionListUser> PermissionsListUser => _model.PermissionsListUser;
+        public string Title { get; set; }
 
-    public Window Window => Helper.GetWindow(this);
-    public bool _passwordChanged;
-    private ICommand _applyCommand;
-    private ICommand _cancelCommand;
-    private ICommand _contentRenderedCommand;
-    private readonly UserEditModel _model = new();
-    private string _password1;
-    private string _password2;
+        public User User => _model.User;
 
-    public void SetEditObject(int userID)
-    {
-        _model.SetEditObject(userID);
-    }
+        public Window Window => Helper.GetWindow(this);
 
-    private bool CheckUser(User user)
-    {
-        string filed = null;
-        string message = null;
+        public void SetEditObject(int userID)
+        {
+            _model.SetEditObject(userID);
+        }
 
-        if (user == null)
+        private bool CheckUser(User user)
+        {
+            string filed = null;
+            string message = null;
+
+            if (user == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(user.UserName))
+            {
+                filed = "LOGIN";
+            }
+            else if (string.IsNullOrEmpty(user.FirstName))
+            {
+                filed = "IMIE";
+            }
+            else if (string.IsNullOrEmpty(user.LastName))
+            {
+                filed = "NAZWISKO";
+            }
+            else if (string.IsNullOrEmpty(user.Email))
+            {
+                filed = "EMAIL";
+            }
+            else if (string.IsNullOrEmpty(user.Phone))
+            {
+                filed = "TELEFON";
+            }
+            else if (string.IsNullOrEmpty(_password1) || string.IsNullOrEmpty(_password2))
+            {
+                filed = "HASŁO";
+            }
+            else if (_password1 != _password2)
+            {
+                message = "POLA HASŁA NIE POSIADJĄ TEGO SAMEGO HASŁA";
+            }
+            else if (_password1.Length < _model.PasswordMinLenght)
+            {
+                message = $"ZBYT KRÓTKIE HASŁO\nMINIMALNA DŁUGOŚĆ HASŁA WYNOSI {_model.PasswordMinLenght} ZNAKÓW";
+            }
+            else if (!string.IsNullOrEmpty(user.Email) && !EmailValidator.EmailIsValid(user.Email))
+            {
+                message = $"EMAIL '{user.Email}' MA NIEPRAWIDŁOWY FORMAT";
+            }
+            else
+            {
+                return true;
+            }
+
+            MessageBoxDb.FieldMustBeCompleted(Window, filed, message);
+
             return false;
-        if (string.IsNullOrEmpty(user.UserName))
-            filed = "LOGIN";
-        else if (string.IsNullOrEmpty(user.FirstName))
-            filed = "IMIE";
-        else if (string.IsNullOrEmpty(user.LastName))
-            filed = "NAZWISKO";
-        else if (string.IsNullOrEmpty(user.Email))
-            filed = "EMAIL";
-        else if (string.IsNullOrEmpty(user.Phone))
-            filed = "TELEFON";
-        else if (string.IsNullOrEmpty(_password1) || string.IsNullOrEmpty(_password2))
-            filed = "HASŁO";
-        else if (_password1 != _password2)
-            message = "POLA HASŁA NIE POSIADJĄ TEGO SAMEGO HASŁA";
-        else if (_password1.Length < _model.PasswordMinLenght)
-            message = $"ZBYT KRÓTKIE HASŁO\nMINIMALNA DŁUGOŚĆ HASŁA WYNOSI {_model.PasswordMinLenght} ZNAKÓW";
-        else if (!string.IsNullOrEmpty(user.Email) && !EmailValidator.EmailIsValid(user.Email))
-            message = $"EMAIL '{user.Email}' MA NIEPRAWIDŁOWY FORMAT";
-        else
-            return true;
+        }
 
-        MessageBoxDb.FieldMustBeCompleted(Window, filed, message);
-
-        return false;
-    }
-
-    private void OnPropertyChange([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

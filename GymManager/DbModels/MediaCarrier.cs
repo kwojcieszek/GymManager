@@ -3,24 +3,25 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymManager.DbModels;
-
-[Index(nameof(Name), IsUnique = true)]
-public class MediaCarrier
+namespace GymManager.DbModels
 {
-    [DefaultValue("true")]
-    public bool IsAcive { get; set; }
-
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int MediaCarrierID { get; set; }
-
-    [Required]
-    [StringLength(50)]
-    public string Name { get; set; }
-
-    public MediaCarrier Copy()
+    [Index(nameof(Name), IsUnique = true)]
+    public class MediaCarrier
     {
-        return (MediaCarrier)MemberwiseClone();
+        [DefaultValue("true")]
+        public bool IsAcive { get; set; }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int MediaCarrierID { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string Name { get; set; }
+
+        public MediaCarrier Copy()
+        {
+            return (MediaCarrier)MemberwiseClone();
+        }
     }
 }

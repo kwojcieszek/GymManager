@@ -35,7 +35,26 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0">
+
             <WrapPanel Width="Auto">
+                <Button Name="ButtonPreview" Margin="1,0,1,0" HorizontalAlignment="Left" Background="White" Height="50"
+                        Width="190" BorderThickness="0" FontSize="14"
+                        Command="{Binding PreviewCommand}">
+                    <WrapPanel>
+                        <TextBlock VerticalAlignment="Center">PODGLĄD CZŁONKA</TextBlock>
+                        <Image Stretch="Fill" Margin="10,0,0,0" Height="30" Width="30"
+                               Source="{iconPacks:CodiconsImage Kind=Preview, Brush=Green}" />
+                    </WrapPanel>
+                </Button>
+                <Button Name="ButtonEdit" Margin="1,0,1,0" HorizontalAlignment="Left" Background="White" Height="50"
+                        Width="190" BorderThickness="0" FontSize="14"
+                        Command="{Binding EditCommand}">
+                    <WrapPanel>
+                        <TextBlock VerticalAlignment="Center">EDYTUJ CZŁONKA</TextBlock>
+                        <Image Stretch="Fill" Margin="10,0,0,0" Height="30" Width="30"
+                               Source="{iconPacks:CodiconsImage Kind=Edit, Brush=DarkBlue}" />
+                    </WrapPanel>
+                </Button>
                 <TextBlock FontSize="16" Margin="5,5,5,5" VerticalAlignment="Center">SZUKAJ</TextBlock>
                 <TextBox Name="TextSearch" VerticalAlignment="Center" Width="250" Margin="5,5,5,5"
                          mah:TextBoxHelper.Watermark="WPROWADŻ SZUKANY TEKST"

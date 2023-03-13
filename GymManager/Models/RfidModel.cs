@@ -1,32 +1,33 @@
 ﻿using System;
 using GymManager.Common;
 
-namespace GymManager.Models;
-
-public class RfidModel
+namespace GymManager.Models
 {
-    public event EventHandler EventNewIdentifier;
-
-    public string Identifier { get; set; }
-    private readonly EventHandler<EventArgsIdentifier> _eventArgsIdentifier;
-    private readonly IdentifierService _identifierService;
-
-    public RfidModel()
+    public class RfidModel
     {
-        _eventArgsIdentifier = (o, e) =>
+        public event EventHandler EventNewIdentifier;
+        private readonly EventHandler<EventArgsIdentifier> _eventArgsIdentifier;
+        private readonly IdentifierService _identifierService;
+
+        public string Identifier { get; set; }
+
+        public void CloseIdentifierService()
         {
-            Identifier = e.Identifier;
+            _identifierService.EventPop();
+        }
 
-            EventNewIdentifier?.Invoke(this, e);
-        };
+        public RfidModel()
+        {
+            _eventArgsIdentifier = (o, e) =>
+            {
+                Identifier = e.Identifier;
 
-        _identifierService = new IdentifierServiceInstances().GetIdentifierService("main");
+                EventNewIdentifier?.Invoke(this, e);
+            };
 
-        _identifierService.EventPush(_eventArgsIdentifier);
-    }
+            _identifierService = new IdentifierServiceInstances().GetIdentifierService("main");
 
-    public void CloseIdentifierService()
-    {
-        _identifierService.EventPop();
+            _identifierService.EventPush(_eventArgsIdentifier);
+        }
     }
 }

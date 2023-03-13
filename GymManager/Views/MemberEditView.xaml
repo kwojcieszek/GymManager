@@ -326,7 +326,7 @@
                      mah:HeaderedControlHelper.HeaderFontSize="20">
                 <DataGrid x:Name="DataGridEntriesRegistry"
                           Margin="5,10,5,5"
-                          Height="440"
+                          Height="500"
                           dataGridExtensions:Tools.ApplyInitialSorting="True"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"

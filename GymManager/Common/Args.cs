@@ -1,18 +1,19 @@
 ﻿using CommandLineParser.Arguments;
 
-namespace GymManager.Common;
-
-public class Args
+namespace GymManager.Common
 {
-    public ValueArgument<string> Provider = new('p', "provider", "Database Provider");
-    private readonly CommandLineParser.CommandLineParser _parser = new();
-
-    public Args(string[] args)
+    public class Args
     {
-        _parser.ParseCommandLine(args);
+        public ValueArgument<string> Provider = new('p', "provider", "Database Provider");
+        private readonly CommandLineParser.CommandLineParser _parser = new();
 
-        var argProvider = new ValueArgument<string>('p', "provider", "Database Provider");
+        public Args(string[] args)
+        {
+            _parser.ParseCommandLine(args);
 
-        _parser.Arguments.Add(argProvider);
+            var argProvider = new ValueArgument<string>('p', "provider", "Database Provider");
+
+            _parser.Arguments.Add(argProvider);
+        }
     }
 }

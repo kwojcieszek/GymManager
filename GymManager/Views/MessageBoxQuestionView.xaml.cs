@@ -1,11 +1,12 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace GymManager.Views;
-
-public partial class MessageBoxQuestionView : MetroWindow
+namespace GymManager.Views
 {
-    public MessageBoxQuestionView()
+    public partial class MessageBoxQuestionView : MetroWindow
     {
-        InitializeComponent();
+        public MessageBoxQuestionView()
+        {
+            InitializeComponent();
+        }
     }
 }

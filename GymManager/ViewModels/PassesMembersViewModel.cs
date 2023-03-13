@@ -10,208 +10,221 @@ using GymManager.DbModels;
 using GymManager.Models;
 using GymManager.Views;
 
-namespace GymManager.ViewModels;
-
-public class PassesMembersViewModel : INotifyPropertyChanged
+namespace GymManager.ViewModels
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public ICommand AddCommand =>
-        _addCommand ??= new RelayCommand(
-            x =>
-            {
-                if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddPassesRegistry))
-                    return;
-
-                if (Add())
-                {
-                    _model.GetPassRegistry(DateFrom, DateTo);
-                    OnPropertyChange(nameof(PassesRegistry));
-                }
-            });
-
-    public ICommand CloseCommand =>
-        _closeCommand ??= new RelayCommand(
-            x => { Window.DialogResult = false; });
-
-    public DateTime DateFrom
+    public class PassesMembersViewModel : INotifyPropertyChanged
     {
-        get => _dateFrom;
-        set
-        {
-            _dateFrom = value;
-            _model.GetPassRegistry(_dateFrom, _dateTo);
-            OnPropertyChange(nameof(PassesRegistry));
-        }
-    }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _addCommand;
+        private ICommand _closeCommand;
+        private DateTime _dateFrom = DateTime.Now.Date;
+        private DateTime _dateTo = DateTime.Now.Date;
+        private ICommand _deleteCommand;
+        private ICommand _editCommand;
+        private readonly PassesMembersModel _model = new();
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
+        private ICommand _searchTextCommand;
 
-    public DateTime DateTo
-    {
-        get => _dateTo;
-        set
-        {
-            _dateTo = value;
-            _model.GetPassRegistry(_dateFrom, _dateTo);
-            OnPropertyChange(nameof(PassesRegistry));
-        }
-    }
-
-    public ICommand DeleteCommand =>
-        _deleteCommand ??= new RelayCommand(
-            x =>
-            {
-                if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeletePassesRegistry))
-                    return;
-
-                if (Delete())
+        public ICommand AddCommand =>
+            _addCommand ??= new RelayCommand(
+                x =>
                 {
-                    _model.GetPassRegistry(DateFrom, DateTo);
-                    OnPropertyChange(nameof(PassesRegistry));
-                }
-            });
+                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddPassesRegistry))
+                    {
+                        return;
+                    }
 
-    public ICommand EditCommand =>
-        _editCommand ??= new RelayCommand(
-            x =>
+                    if (Add())
+                    {
+                        _model.GetPassRegistry(DateFrom, DateTo);
+                        OnPropertyChange(nameof(PassesRegistry));
+                    }
+                });
+
+        public ICommand CloseCommand =>
+            _closeCommand ??= new RelayCommand(
+                x => { Window.DialogResult = false; });
+
+        public DateTime DateFrom
+        {
+            get => _dateFrom;
+            set
             {
-                if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditPassesRegistry))
-                    return;
-
-                if (Edit())
-                {
-                    _model.GetPassRegistry(DateFrom, DateTo);
-                    OnPropertyChange(nameof(PassesRegistry));
-                }
-            });
-
-    public List<PassRegistry> PassesRegistry =>
-        _model.PassRegistry
-            .Like(_searchText, "PassRegistryID", "Pass.Name", "Member.FirstName", "Member.LastName", "Member.Id",
-                "AddedByUser.FirstName", "AddedByUser.LastName",
-                "ModifiedByUser.FirstName", "ModifiedByUser.LastName")
-            .ToList();
-
-    public ICommand RefreshCommand =>
-        _refreshCommand ??= new RelayCommand(
-            x =>
-            {
-                _model.GetPassRegistry(DateFrom, DateTo);
+                _dateFrom = value;
+                _model.GetPassRegistry(_dateFrom, _dateTo);
                 OnPropertyChange(nameof(PassesRegistry));
-            });
-
-    public string SearchText
-    {
-        set
-        {
-            _searchText = value;
-
-            OnPropertyChange(nameof(PassesRegistry));
+            }
         }
-    }
 
-    public ICommand SearchTextCommand =>
-        _searchTextCommand ??= new RelayCommand(
-            x => { OnPropertyChange(nameof(PassesRegistry)); });
-
-    public PassRegistry SelectedItem { get; set; }
-
-    public Window Window => Helper.GetWindow(this);
-    private ICommand _addCommand;
-    private ICommand _closeCommand;
-    private DateTime _dateFrom = DateTime.Now.Date;
-    private DateTime _dateTo = DateTime.Now.Date;
-    private ICommand _deleteCommand;
-    private ICommand _editCommand;
-    private readonly PassesMembersModel _model = new();
-    private ICommand _refreshCommand;
-    private string _searchText = string.Empty;
-    private ICommand _searchTextCommand;
-
-    public PassesMembersViewModel()
-    {
-        _model.GetPassRegistry(DateFrom, DateTo);
-    }
-
-    public bool Add(Window window = null)
-    {
-        window ??= Window;
-
-        try
+        public DateTime DateTo
         {
-            var passEditView = new PassesMembersEditView();
-            var model = passEditView.DataContext as PassesMembersEditViewModel;
-            model.Owner = window;
-            var result = passEditView.ShowDialog().Value;
+            get => _dateTo;
+            set
+            {
+                _dateTo = value;
+                _model.GetPassRegistry(_dateFrom, _dateTo);
+                OnPropertyChange(nameof(PassesRegistry));
+            }
+        }
 
-            if (result && model.PassRegistry.Pass.AskAddEntry.HasValue && model.PassRegistry.Pass.AskAddEntry.Value)
-                if (MessageView.MessageBoxQuestionView(window,
-                        $"CZY CHCESZ DODAĆ WEJŚCIE DLA CZŁONKA\n{model.PassRegistry.Member.FirstName} {model.PassRegistry.Member.LastName} [{model.PassRegistry.Member.Id}]?"))
+        public ICommand DeleteCommand =>
+            _deleteCommand ??= new RelayCommand(
+                x =>
                 {
-                    var entryService = EntryService.GetInstance();
+                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeletePassesRegistry))
+                    {
+                        return;
+                    }
 
-                    entryService.Entry(model.PassRegistry.Member);
-                }
+                    if (Delete())
+                    {
+                        _model.GetPassRegistry(DateFrom, DateTo);
+                        OnPropertyChange(nameof(PassesRegistry));
+                    }
+                });
 
-            return result;
-        }
-        catch (Exception ex)
+        public ICommand EditCommand =>
+            _editCommand ??= new RelayCommand(
+                x =>
+                {
+                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditPassesRegistry))
+                    {
+                        return;
+                    }
+
+                    if (Edit())
+                    {
+                        _model.GetPassRegistry(DateFrom, DateTo);
+                        OnPropertyChange(nameof(PassesRegistry));
+                    }
+                });
+
+        public List<PassRegistry> PassesRegistry =>
+            _model.PassRegistry
+                .Like(_searchText, "PassRegistryID", "Pass.Name", "Member.FirstName", "Member.LastName", "Member.Id",
+                    "AddedByUser.FirstName", "AddedByUser.LastName",
+                    "ModifiedByUser.FirstName", "ModifiedByUser.LastName")
+                .ToList();
+
+        public ICommand RefreshCommand =>
+            _refreshCommand ??= new RelayCommand(
+                x =>
+                {
+                    _model.GetPassRegistry(DateFrom, DateTo);
+                    OnPropertyChange(nameof(PassesRegistry));
+                });
+
+        public string SearchText
         {
-            MessageView.MessageBoxInfoView(window, ex.Message, true);
+            set
+            {
+                _searchText = value;
 
-            return false;
+                OnPropertyChange(nameof(PassesRegistry));
+            }
         }
-    }
 
-    private bool Delete()
-    {
-        if (SelectedItem == null)
-            return false;
+        public ICommand SearchTextCommand =>
+            _searchTextCommand ??= new RelayCommand(
+                x => { OnPropertyChange(nameof(PassesRegistry)); });
 
-        var message =
-            $"CZY NA PEWNO USUNĄĆ WPIS KARNETU\nID {SelectedItem.PassID} DLA {SelectedItem.Member.FirstName} {SelectedItem.Member.LastName} ?";
+        public PassRegistry SelectedItem { get; set; }
 
-        if (MessageView.MessageBoxQuestionView(Window, message))
+        public Window Window => Helper.GetWindow(this);
+
+        public bool Add(Window window = null)
         {
+            window ??= Window;
+
             try
             {
-                _model.Delete(SelectedItem);
+                var passEditView = new PassesMembersEditView();
+                var model = passEditView.DataContext as PassesMembersEditViewModel;
+                model.Owner = window;
+                var result = passEditView.ShowDialog().Value;
+
+                if (result && model.PassRegistry.Pass.AskAddEntry.HasValue && model.PassRegistry.Pass.AskAddEntry.Value)
+                {
+                    if (MessageView.MessageBoxQuestionView(window,
+                            $"CZY CHCESZ DODAĆ WEJŚCIE DLA CZŁONKA\n{model.PassRegistry.Member.FirstName} {model.PassRegistry.Member.LastName} [{model.PassRegistry.Member.Id}]?"))
+                    {
+                        var entryService = EntryService.GetInstance();
+
+                        entryService.Entry(model.PassRegistry.Member);
+                    }
+                }
+
+                return result;
             }
             catch (Exception ex)
             {
-                MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
+                MessageView.MessageBoxInfoView(window, ex.Message, true);
 
                 return false;
             }
-
-            return true;
         }
 
-        return false;
-    }
-
-    private bool Edit()
-    {
-        if (SelectedItem == null)
-            return false;
-
-        try
+        private bool Delete()
         {
-            var passEditView = new PassesMembersEditView();
-            var model = passEditView.DataContext as PassesMembersEditViewModel;
-            model.Owner = Window;
-            model.SetEditObject(SelectedItem.PassRegistryID);
-            return passEditView.ShowDialog().Value;
-        }
-        catch (Exception ex)
-        {
-            MessageView.MessageBoxInfoView(Window, ex.Message, true);
+            if (SelectedItem == null)
+            {
+                return false;
+            }
+
+            var message =
+                $"CZY NA PEWNO USUNĄĆ WPIS KARNETU\nID {SelectedItem.PassID} DLA {SelectedItem.Member.FirstName} {SelectedItem.Member.LastName} ?";
+
+            if (MessageView.MessageBoxQuestionView(Window, message))
+            {
+                try
+                {
+                    _model.Delete(SelectedItem);
+                }
+                catch (Exception ex)
+                {
+                    MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
+
+                    return false;
+                }
+
+                return true;
+            }
 
             return false;
         }
-    }
 
-    private void OnPropertyChange([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private bool Edit()
+        {
+            if (SelectedItem == null)
+            {
+                return false;
+            }
+
+            try
+            {
+                var passEditView = new PassesMembersEditView();
+                var model = passEditView.DataContext as PassesMembersEditViewModel;
+                model.Owner = Window;
+                model.SetEditObject(SelectedItem.PassRegistryID);
+                return passEditView.ShowDialog().Value;
+            }
+            catch (Exception ex)
+            {
+                MessageView.MessageBoxInfoView(Window, ex.Message, true);
+
+                return false;
+            }
+        }
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public PassesMembersViewModel()
+        {
+            _model.GetPassRegistry(DateFrom, DateTo);
+        }
     }
 }

@@ -2,37 +2,44 @@
 using System.IO;
 using System.Reflection;
 
-namespace GymManager.Common;
-
-public static class Path
+namespace GymManager.Common
 {
-    public static string ApplicationData =>
-        $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\GymManager";
-
-    public static string ApplicationDirectory =>
-        System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-    public static string ApplicationTempData =>
-        $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\GymManager\\Temp";
-
-    static Path()
+    public static class Path
     {
-        if (!Directory.Exists(ApplicationDirectory))
-            Directory.CreateDirectory(ApplicationDirectory);
+        public static string ApplicationData =>
+            $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\GymManager";
 
-        if (!Directory.Exists(ApplicationTempData))
-            Directory.CreateDirectory(ApplicationTempData);
-    }
+        public static string ApplicationDirectory =>
+            System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-    public static void ClearTemporaryFiles()
-    {
-        foreach (var file in Directory.GetFiles(ApplicationTempData))
-            try
+        public static string ApplicationTempData =>
+            $"{Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\\GymManager\\Temp";
+
+        public static void ClearTemporaryFiles()
+        {
+            foreach (var file in Directory.GetFiles(ApplicationTempData))
             {
-                File.Delete(file);
+                try
+                {
+                    File.Delete(file);
+                }
+                catch
+                {
+                }
             }
-            catch
+        }
+
+        static Path()
+        {
+            if (!Directory.Exists(ApplicationDirectory))
             {
+                Directory.CreateDirectory(ApplicationDirectory);
             }
+
+            if (!Directory.Exists(ApplicationTempData))
+            {
+                Directory.CreateDirectory(ApplicationTempData);
+            }
+        }
     }
 }

@@ -7,50 +7,53 @@ using GymManager.Common;
 using GymManager.DbModels;
 using GymManager.Models;
 
-namespace GymManager.ViewModels;
-
-public class DataTrackingsPreviewViewModel : INotifyPropertyChanged
+namespace GymManager.ViewModels
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public ICommand CloseCommand =>
-        _closeCommand ??= new RelayCommand(
-            x => { Window.DialogResult = true; });
-
-    public ICommand ContentRenderedCommand =>
-        _contentRenderedCommand ??= new RelayCommand(
-            x =>
-            {
-                if (_model.DataTracking?.DataTrackingOperation.DataTrackingOperationID == 3)
-                    IsViewNewData = false;
-
-                OnPropertyChange(nameof(IsViewNewData));
-                OnPropertyChange(nameof(DataTracking));
-                OnPropertyChange(nameof(DataTrackingDefinitions));
-            });
-
-    public DataTracking DataTracking
+    public class DataTrackingsPreviewViewModel : INotifyPropertyChanged
     {
-        get => _model.DataTracking;
-        set => _model.DataTracking = value;
-    }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _closeCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly DataTrackingsPreviewModel _model = new();
 
-    public List<DataTrackingDefinition> DataTrackingDefinitions => _model.DataTrackingDefinitions;
-    public bool IsViewNewData { get; set; } = true;
+        public ICommand CloseCommand =>
+            _closeCommand ??= new RelayCommand(
+                x => { Window.DialogResult = true; });
 
-    public Window Owner
-    {
-        set => Window.Owner = value;
-        get => Window.Owner;
-    }
+        public ICommand ContentRenderedCommand =>
+            _contentRenderedCommand ??= new RelayCommand(
+                x =>
+                {
+                    if (_model.DataTracking?.DataTrackingOperation.DataTrackingOperationID == 3)
+                    {
+                        IsViewNewData = false;
+                    }
 
-    public Window Window => Helper.GetWindow(this);
-    private ICommand _closeCommand;
-    private ICommand _contentRenderedCommand;
-    private readonly DataTrackingsPreviewModel _model = new();
+                    OnPropertyChange(nameof(IsViewNewData));
+                    OnPropertyChange(nameof(DataTracking));
+                    OnPropertyChange(nameof(DataTrackingDefinitions));
+                });
 
-    private void OnPropertyChange([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public DataTracking DataTracking
+        {
+            get => _model.DataTracking;
+            set => _model.DataTracking = value;
+        }
+
+        public List<DataTrackingDefinition> DataTrackingDefinitions => _model.DataTrackingDefinitions;
+        public bool IsViewNewData { get; set; } = true;
+
+        public Window Owner
+        {
+            set => Window.Owner = value;
+            get => Window.Owner;
+        }
+
+        public Window Window => Helper.GetWindow(this);
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

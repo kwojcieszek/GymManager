@@ -1,11 +1,15 @@
-﻿namespace GymManager.Models;
-
-public static class ModelHelper
+﻿namespace GymManager.Models
 {
-    public static bool OnlyActives(bool value, bool onlyActives)
+    public static class ModelHelper
     {
-        if (!onlyActives)
-            return true;
-        return value;
+        public static bool OnlyActives(bool value, bool onlyActives)
+        {
+            if (!onlyActives)
+            {
+                return true;
+            }
+
+            return value;
+        }
     }
 }

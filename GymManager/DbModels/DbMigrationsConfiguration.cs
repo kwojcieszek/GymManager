@@ -1,5 +1,6 @@
-﻿namespace GymManager.DbModels;
-
-internal class DbMigrationsConfiguration<T>
+﻿namespace GymManager.DbModels
 {
+    internal class DbMigrationsConfiguration<T>
+    {
+    }
 }

@@ -1,14 +1,15 @@
 ﻿using NLog;
 using NLog.LayoutRenderers;
 
-namespace GymManager.Common;
-
-public static class Logger
+namespace GymManager.Common
 {
-    public static NLog.Logger Log => LogManager.GetCurrentClassLogger();
-
-    static Logger()
+    public static class Logger
     {
-        LayoutRenderer.Register("startupdir", logEvent => Path.ApplicationData);
+        public static NLog.Logger Log => LogManager.GetCurrentClassLogger();
+
+        static Logger()
+        {
+            LayoutRenderer.Register("startupdir", logEvent => Path.ApplicationData);
+        }
     }
 }

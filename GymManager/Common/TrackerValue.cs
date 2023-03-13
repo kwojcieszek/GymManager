@@ -1,8 +1,9 @@
-﻿namespace GymManager.Common;
-
-public class TrackerValue
+﻿namespace GymManager.Common
 {
-    public string ColumnName { get; set; }
-    public string NewValue { get; set; }
-    public string OldValue { get; set; }
+    public class TrackerValue
+    {
+        public string ColumnName { get; set; }
+        public string NewValue { get; set; }
+        public string OldValue { get; set; }
+    }
 }

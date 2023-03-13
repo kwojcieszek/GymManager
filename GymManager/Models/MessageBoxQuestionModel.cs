@@ -1,6 +1,7 @@
-﻿namespace GymManager.Models;
-
-public class MessageBoxQuestionModel
+﻿namespace GymManager.Models
 {
-    public string Message { get; set; }
+    public class MessageBoxQuestionModel
+    {
+        public string Message { get; set; }
+    }
 }

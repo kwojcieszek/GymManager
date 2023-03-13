@@ -2,17 +2,18 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace GymManager.Common.Converters;
-
-public class StringToBooleanNegativeConverter : IValueConverter
+namespace GymManager.Common.Converters
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public class StringToBooleanNegativeConverter : IValueConverter
     {
-        return value is string && string.IsNullOrEmpty((string)value);
-    }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is string && string.IsNullOrEmpty((string)value);
+        }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return value is bool ? !(bool)value : null;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is bool ? !(bool)value : null;
+        }
     }
 }

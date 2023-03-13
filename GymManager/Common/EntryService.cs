@@ -1,51 +1,51 @@
 ﻿using System;
 using GymManager.DbModels;
 
-namespace GymManager.Common;
-
-public class EntryService
+namespace GymManager.Common
 {
-    public event EventHandler<EventArgsResult> EventResult;
-    public event EventHandler<EventArgsStatus> EventStateChanged;
-
-    public static IdentifierDevices DefaultIdentifierDevices { get; set; }
-
-    private static EntryService instance;
-    private readonly EventHandler<EventArgsIdentifier> _eventArgsIdentifier;
-    private readonly IdentifierService _identifierService;
-
-    private EntryService()
+    public class EntryService
     {
-        _eventArgsIdentifier = EventRfid;
+        public event EventHandler<EventArgsResult> EventResult;
+        public event EventHandler<EventArgsStatus> EventStateChanged;
+        private static EntryService instance;
+        private readonly EventHandler<EventArgsIdentifier> _eventArgsIdentifier;
+        private readonly IdentifierService _identifierService;
 
-        if (DefaultIdentifierDevices == IdentifierDevices.RFIDSerialPort)
+        public static IdentifierDevices DefaultIdentifierDevices { get; set; }
+
+        public void Entry(Member member, bool access = false)
         {
-            _identifierService = new IdentifierServiceInstances().GetIdentifierService("main");
+            var ids = new IdentifiersService();
+            var result = ids.Identifier(member.MemberID, access: access);
 
-            _identifierService.EventPush(_eventArgsIdentifier);
-
-            _identifierService.StateChanged += (o, e) => EventStateChanged?.Invoke(o, e);
+            EventResult?.Invoke(this, new EventArgsResult(result));
         }
-    }
 
-    public void Entry(Member member, bool access = false)
-    {
-        var ids = new IdentifiersService();
-        var result = ids.Identifier(member.MemberID, access: access);
+        public static EntryService GetInstance()
+        {
+            return instance ??= new EntryService();
+        }
 
-        EventResult?.Invoke(this, new EventArgsResult(result));
-    }
+        private void EventRfid(object sender, EventArgsIdentifier e)
+        {
+            var ids = new IdentifiersService();
+            var result = ids.Identifier(e.Identifier);
 
-    public static EntryService GetInstance()
-    {
-        return instance ??= new EntryService();
-    }
+            EventResult?.Invoke(this, new EventArgsResult(result));
+        }
 
-    private void EventRfid(object sender, EventArgsIdentifier e)
-    {
-        var ids = new IdentifiersService();
-        var result = ids.Identifier(e.Identifier);
+        private EntryService()
+        {
+            _eventArgsIdentifier = EventRfid;
 
-        EventResult?.Invoke(this, new EventArgsResult(result));
+            if (DefaultIdentifierDevices == IdentifierDevices.RFIDSerialPort)
+            {
+                _identifierService = new IdentifierServiceInstances().GetIdentifierService("main");
+
+                _identifierService.EventPush(_eventArgsIdentifier);
+
+                _identifierService.StateChanged += (o, e) => EventStateChanged?.Invoke(o, e);
+            }
+        }
     }
 }

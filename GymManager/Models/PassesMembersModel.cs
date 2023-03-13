@@ -5,63 +5,68 @@ using GymManager.Common.Extensions;
 using GymManager.DbModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymManager.Models;
-
-public class PassesMembersModel
+namespace GymManager.Models
 {
-    public List<PassRegistry> PassRegistry
+    public class PassesMembersModel
     {
-        get
+        private List<PassRegistry> _passRegistry;
+
+        public List<PassRegistry> PassRegistry
         {
-            if (_passRegistry == null)
-                GetPassRegistry();
+            get
+            {
+                if (_passRegistry == null)
+                {
+                    GetPassRegistry();
+                }
 
-            return _passRegistry.ToList();
-        }
-    }
-
-    private List<PassRegistry> _passRegistry;
-
-    public void Delete(PassRegistry pass)
-    {
-        if (pass == null)
-            throw new Exception("Element do usunięcia jest pusty.");
-
-        var db = new GymManagerContext();
-
-        db.PassesRegistry.Remove(pass);
-
-        db.SaveChanges<PassRegistry>();
-    }
-
-    public List<PassRegistry> GetPassRegistry(DateTime? dateFrom = null, DateTime? dateTo = null)
-    {
-        if (dateFrom == null || dateTo == null)
-        {
-            _passRegistry = new GymManagerContext()
-                .PassesRegistry
-                .Include(m => m.Member)
-                .Include(p => p.Pass)
-                .Include(a => a.AddedByUser)
-                .Include(m => m.ModifiedByUser)
-                .ToList();
-        }
-        else
-        {
-            dateFrom = dateFrom.Value.AbsoluteStart();
-            dateTo = dateTo.Value.AbsoluteEnd();
-
-            _passRegistry = new GymManagerContext()
-                .PassesRegistry
-                .Where(pr => pr.DateAdded >= dateFrom && pr.DateAdded <= dateTo)
-                .Include(m => m.Member)
-                .Include(p => p.Pass)
-                .Include(a => a.AddedByUser)
-                .Include(m => m.ModifiedByUser)
-                .OrderByDescending(o => o.PassRegistryID)
-                .ToList();
+                return _passRegistry.ToList();
+            }
         }
 
-        return _passRegistry;
+        public void Delete(PassRegistry pass)
+        {
+            if (pass == null)
+            {
+                throw new Exception("Element do usunięcia jest pusty.");
+            }
+
+            var db = new GymManagerContext();
+
+            db.PassesRegistry.Remove(pass);
+
+            db.SaveChanges<PassRegistry>();
+        }
+
+        public List<PassRegistry> GetPassRegistry(DateTime? dateFrom = null, DateTime? dateTo = null)
+        {
+            if (dateFrom == null || dateTo == null)
+            {
+                _passRegistry = new GymManagerContext()
+                    .PassesRegistry
+                    .Include(m => m.Member)
+                    .Include(p => p.Pass)
+                    .Include(a => a.AddedByUser)
+                    .Include(m => m.ModifiedByUser)
+                    .ToList();
+            }
+            else
+            {
+                dateFrom = dateFrom.Value.AbsoluteStart();
+                dateTo = dateTo.Value.AbsoluteEnd();
+
+                _passRegistry = new GymManagerContext()
+                    .PassesRegistry
+                    .Where(pr => pr.DateAdded >= dateFrom && pr.DateAdded <= dateTo)
+                    .Include(m => m.Member)
+                    .Include(p => p.Pass)
+                    .Include(a => a.AddedByUser)
+                    .Include(m => m.ModifiedByUser)
+                    .OrderByDescending(o => o.PassRegistryID)
+                    .ToList();
+            }
+
+            return _passRegistry;
+        }
     }
 }

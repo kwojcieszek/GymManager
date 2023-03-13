@@ -5,43 +5,44 @@ using System.Windows.Input;
 using GymManager.Common;
 using GymManager.Models;
 
-namespace GymManager.ViewModels;
-
-public class MessageBoxInfoViewModel : INotifyPropertyChanged
+namespace GymManager.ViewModels
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public ICommand CloseCommand =>
-        _closeCommand ??= new RelayCommand(
-            x => { Window?.Close(); });
-
-    public bool IsWarrning
+    public class MessageBoxInfoViewModel : INotifyPropertyChanged
     {
-        get => _isWarrning;
-        set
+        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _closeCommand;
+        private bool _isWarrning;
+        private readonly MessageBoxInfoModel _model = new();
+
+        public ICommand CloseCommand =>
+            _closeCommand ??= new RelayCommand(
+                x => { Window?.Close(); });
+
+        public bool IsWarrning
         {
-            _isWarrning = value;
-            OnPropertyChange();
+            get => _isWarrning;
+            set
+            {
+                _isWarrning = value;
+                OnPropertyChange();
+            }
         }
-    }
 
-    public string Message
-    {
-        get => _model.Message;
-        set
+        public string Message
         {
-            _model.Message = value;
-            OnPropertyChange();
+            get => _model.Message;
+            set
+            {
+                _model.Message = value;
+                OnPropertyChange();
+            }
         }
-    }
 
-    public Window Window => Helper.GetWindow(this);
-    private ICommand _closeCommand;
-    private bool _isWarrning;
-    private readonly MessageBoxInfoModel _model = new();
+        public Window Window => Helper.GetWindow(this);
 
-    private void OnPropertyChange([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

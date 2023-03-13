@@ -1,13 +1,17 @@
 ﻿using GymManager.Common;
 
-namespace GymManager.Models;
-
-public class LoginModel
+namespace GymManager.Models
 {
-    public bool Login(string userName, string password)
+    public class LoginModel
     {
-        if (userName != null && password != null)
-            return new CurrentUser().Login(userName, password);
-        return false;
+        public bool Login(string userName, string password)
+        {
+            if (userName != null && password != null)
+            {
+                return new CurrentUser().Login(userName, password);
+            }
+
+            return false;
+        }
     }
 }

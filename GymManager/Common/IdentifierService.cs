@@ -1,55 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace GymManager.Common;
-
-public class IdentifierService
+namespace GymManager.Common
 {
-    public event EventHandler<EventArgsStatus> StateChanged;
-    private readonly Stack<EventHandler<EventArgsIdentifier>> _events = new();
-    private readonly IIdentifierDevice _identifierDevice;
-
-    public IdentifierService(IIdentifierDevice identifierDevice)
+    public class IdentifierService
     {
-        _identifierDevice = identifierDevice ?? throw new ArgumentNullException();
+        public event EventHandler<EventArgsStatus> StateChanged;
+        private readonly Stack<EventHandler<EventArgsIdentifier>> _events = new();
+        private readonly IIdentifierDevice _identifierDevice;
 
-        _identifierDevice.IdentifierReceived += IdentifierDevice_IdentifierReceived;
+        public void EventPop()
+        {
+            _events.Pop();
+        }
 
-        _identifierDevice.StateChanged += StateChangedEvent;
-    }
+        public void EventPush(EventHandler<EventArgsIdentifier> e)
+        {
+            _events.Push(e);
+        }
 
-    public void EventPop()
-    {
-        _events.Pop();
-    }
+        public void Start()
+        {
+            _identifierDevice?.Start();
+        }
 
-    public void EventPush(EventHandler<EventArgsIdentifier> e)
-    {
-        _events.Push(e);
-    }
+        public void Stop()
+        {
+            _identifierDevice?.Stop();
+        }
 
-    public void Start()
-    {
-        _identifierDevice?.Start();
-    }
+        private void IdentifierDevice_IdentifierReceived(object sender, EventArgsIdentifier e)
+        {
+            if (_events.Count == 0)
+            {
+                return;
+            }
 
-    public void Stop()
-    {
-        _identifierDevice?.Stop();
-    }
+            var env = _events.Peek();
 
-    private void IdentifierDevice_IdentifierReceived(object sender, EventArgsIdentifier e)
-    {
-        if (_events.Count == 0)
-            return;
+            env?.Invoke(this, e);
+        }
 
-        var env = _events.Peek();
+        private void StateChangedEvent(object sender, EventArgsStatus e)
+        {
+            StateChanged?.Invoke(this, e);
+        }
 
-        env?.Invoke(this, e);
-    }
+        public IdentifierService(IIdentifierDevice identifierDevice)
+        {
+            _identifierDevice = identifierDevice ?? throw new ArgumentNullException();
 
-    private void StateChangedEvent(object sender, EventArgsStatus e)
-    {
-        StateChanged?.Invoke(this, e);
+            _identifierDevice.IdentifierReceived += IdentifierDevice_IdentifierReceived;
+
+            _identifierDevice.StateChanged += StateChangedEvent;
+        }
     }
 }

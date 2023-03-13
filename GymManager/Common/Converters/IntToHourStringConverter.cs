@@ -2,17 +2,18 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace GymManager.Common.Converters;
-
-public class IntToHourStringConverter : IValueConverter
+namespace GymManager.Common.Converters
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public class IntToHourStringConverter : IValueConverter
     {
-        return value is int v ? EntityMethodsHelper.GetHourFromMinutes(v) : string.Empty;
-    }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value is int v ? EntityMethodsHelper.GetHourFromMinutes(v) : string.Empty;
+        }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return null;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return null;
+        }
     }
 }

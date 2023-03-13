@@ -1,13 +1,14 @@
 ﻿using System;
 
-namespace GymManager.Common;
-
-public class EventArgsIdentifier : EventArgs
+namespace GymManager.Common
 {
-    public string Identifier { get; init; }
-
-    public EventArgsIdentifier(string identifier)
+    public class EventArgsIdentifier : EventArgs
     {
-        Identifier = identifier;
+        public string Identifier { get; init; }
+
+        public EventArgsIdentifier(string identifier)
+        {
+            Identifier = identifier;
+        }
     }
 }

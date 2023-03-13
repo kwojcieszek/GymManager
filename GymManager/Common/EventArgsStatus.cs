@@ -1,13 +1,14 @@
 ﻿using System;
 
-namespace GymManager.Common;
-
-public class EventArgsStatus : EventArgs
+namespace GymManager.Common
 {
-    public StatusDevice Status { get; init; }
-
-    public EventArgsStatus(StatusDevice status)
+    public class EventArgsStatus : EventArgs
     {
-        Status = status;
+        public StatusDevice Status { get; init; }
+
+        public EventArgsStatus(StatusDevice status)
+        {
+            Status = status;
+        }
     }
 }

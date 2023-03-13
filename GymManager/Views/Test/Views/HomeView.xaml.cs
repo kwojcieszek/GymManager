@@ -1,14 +1,15 @@
 ﻿using System.Windows.Controls;
 
-namespace GymManager.Views.Test.Views;
-
-/// <summary>
-///     Interaction logic for AboutView.xaml
-/// </summary>
-public partial class HomeView : UserControl
+namespace GymManager.Views.Test.Views
 {
-    public HomeView()
+    /// <summary>
+    ///     Interaction logic for AboutView.xaml
+    /// </summary>
+    public partial class HomeView : UserControl
     {
-        InitializeComponent();
+        public HomeView()
+        {
+            InitializeComponent();
+        }
     }
 }

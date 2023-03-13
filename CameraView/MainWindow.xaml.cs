@@ -1,5 +1,4 @@
 ﻿using MahApps.Metro.Controls;
-using MediaCaptureWPF;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -11,15 +10,16 @@ using Windows.Media.MediaProperties;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
+using MediaCaptureWPF;
 
-namespace CaptureCamera
+namespace CameraView
 {
-    public partial class CameraView : MetroWindow
+    public partial class MainWindow : MetroWindow
     {
         bool m_initialized;
         MediaCapture _capture;
 
-        public CameraView()
+        public MainWindow()
         {
             InitializeComponent();
         }
@@ -43,27 +43,22 @@ namespace CaptureCamera
 
                 this.Preview.Source = preview;
                 await preview.StartAsync();
-
             }
             catch
             {
-
             }
-
         }
 
         private async void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             await CameraCaptutre();
         }
-
         private async Task CameraCaptutre()
         {
             try
-
             {
                 var myPictures = await Windows.Storage.StorageLibrary.GetLibraryAsync(Windows.Storage.KnownLibraryId.Pictures);
-                StorageFile file = await myPictures.SaveFolder.CreateFileAsync("CameraCaptutre1.jpg", CreationCollisionOption.ReplaceExisting);
+                var file = await myPictures.SaveFolder.CreateFileAsync("CameraCaptutre.jpg", CreationCollisionOption.ReplaceExisting);
 
                 using (var captureStream = new InMemoryRandomAccessStream())
                 {
@@ -95,6 +90,5 @@ namespace CaptureCamera
 
             this.Close();
         }
-
     }
 }

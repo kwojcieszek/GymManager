@@ -1,7 +1,8 @@
-﻿namespace GymManager.Common;
-
-public enum RfidReaderConverterType
+﻿namespace GymManager.Common
 {
-    HexToInt = 0,
-    TextToHexToInt = 1
+    public enum RfidReaderConverterType
+    {
+        HexToInt = 0,
+        TextToHexToInt = 1
+    }
 }

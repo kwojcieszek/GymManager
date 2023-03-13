@@ -3,19 +3,24 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
-namespace GymManager.Common.Extensions;
-
-public static class EnumExtensions
+namespace GymManager.Common.Extensions
 {
-    public static string GetDisplayName(this Enum enumValue)
+    public static class EnumExtensions
     {
-        string displayName;
-        displayName = enumValue.GetType()
-            .GetMember(enumValue.ToString())
-            .FirstOrDefault()
-            .GetCustomAttribute<DisplayAttribute>()?
-            .GetName();
-        if (string.IsNullOrEmpty(displayName)) displayName = enumValue.ToString();
-        return displayName;
+        public static string GetDisplayName(this Enum enumValue)
+        {
+            string displayName;
+            displayName = enumValue.GetType()
+                .GetMember(enumValue.ToString())
+                .FirstOrDefault()
+                .GetCustomAttribute<DisplayAttribute>()?
+                .GetName();
+            if (string.IsNullOrEmpty(displayName))
+            {
+                displayName = enumValue.ToString();
+            }
+
+            return displayName;
+        }
     }
 }

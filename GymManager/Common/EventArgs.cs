@@ -1,13 +1,14 @@
 ﻿using System;
 
-namespace GymManager.Common;
-
-public class EventArgs<T> : EventArgs
+namespace GymManager.Common
 {
-    public T Value { get; init; }
-
-    public EventArgs(T value)
+    public class EventArgs<T> : EventArgs
     {
-        Value = value;
+        public T Value { get; init; }
+
+        public EventArgs(T value)
+        {
+            Value = value;
+        }
     }
 }

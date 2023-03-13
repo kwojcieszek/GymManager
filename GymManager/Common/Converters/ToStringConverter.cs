@@ -2,17 +2,18 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace GymManager.Common.Converters;
-
-public class ToStringConverter : IValueConverter
+namespace GymManager.Common.Converters
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public class ToStringConverter : IValueConverter
     {
-        return value.ToString();
-    }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value.ToString();
+        }
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return value.ToString();
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value.ToString();
+        }
     }
 }

@@ -5,145 +5,162 @@ using System.Threading;
 using System.Threading.Tasks;
 using GodSharp.SerialPort;
 
-namespace GymManager.Common;
-
-public class IdentifierDeviceSerialPort : IIdentifierDevice
+namespace GymManager.Common
 {
-    public event EventHandler<EventArgsIdentifier> IdentifierReceived;
-    public event EventHandler<EventArgsStatus> StateChanged;
-    private const int lastKeyTimeoutMilisecound = 1000;
-    private const int recivedTimeoutMilisecound = 500;
-    private bool _isError;
-    private bool _isStarted;
-    private string _lastKey;
-    private readonly int _maxLenghtData;
-    private readonly RfidReaderConverter _readerConverter;
-    private readonly List<byte> _recivedData = new();
-    private readonly GodSerialPort _serialDevice;
-    private Task _startTask;
-    private readonly bool _suffixCrlf;
-    private long _timeLastKey;
-    private long _timeRecivedLastData;
-
-    public IdentifierDeviceSerialPort(string portName, int baudRate, RfidReaderConverter readerConverter,
-        bool suffixCrlf, int maxLenghtData)
+    public class IdentifierDeviceSerialPort : IIdentifierDevice
     {
-        _readerConverter = readerConverter;
-        _maxLenghtData = maxLenghtData;
-        _suffixCrlf = suffixCrlf;
+        public event EventHandler<EventArgsIdentifier> IdentifierReceived;
+        public event EventHandler<EventArgsStatus> StateChanged;
+        private bool _isError;
+        private bool _isStarted;
+        private string _lastKey;
+        private readonly int _maxLenghtData;
+        private readonly RfidReaderConverter _readerConverter;
+        private readonly List<byte> _recivedData = new();
+        private readonly GodSerialPort _serialDevice;
+        private Task _startTask;
+        private readonly bool _suffixCrlf;
+        private long _timeLastKey;
+        private long _timeRecivedLastData;
 
-        _serialDevice = new GodSerialPort(portName, baudRate, 0);
-    }
-
-    public void Start()
-    {
-        if (_isStarted)
-            return;
-
-        _isStarted = true;
-
-        _startTask = new Task(() =>
+        public void Start()
         {
-            while (_isStarted)
-                try
+            if (_isStarted)
+            {
+                return;
+            }
+
+            _isStarted = true;
+
+            _startTask = new Task(() =>
+            {
+                while (_isStarted)
                 {
-                    if (!_serialDevice.IsOpen || _isError)
+                    try
                     {
-                        _serialDevice.Open();
+                        if (!_serialDevice.IsOpen || _isError)
+                        {
+                            _serialDevice.Open();
+
+                            if (_serialDevice.IsOpen)
+                            {
+                                StateChanged?.Invoke(this, new EventArgsStatus(new StatusDevice(string.Empty, true)));
+
+                                _isError = false;
+                            }
+                            else
+                            {
+                                StateChanged?.Invoke(this,
+                                    new EventArgsStatus(new StatusDevice(
+                                        $"BŁĄD OTWARCIA PORTU {_serialDevice.PortName}",
+                                        false)));
+                            }
+                        }
 
                         if (_serialDevice.IsOpen)
                         {
-                            StateChanged?.Invoke(this, new EventArgsStatus(new StatusDevice(string.Empty, true)));
+                            DataReceived(_serialDevice.Read());
+                        }
 
-                            _isError = false;
-                        }
-                        else
-                        {
-                            StateChanged?.Invoke(this,
-                                new EventArgsStatus(new StatusDevice($"BŁĄD OTWARCIA PORTU {_serialDevice.PortName}",
-                                    false)));
-                        }
+                        Thread.Sleep(50);
                     }
+                    catch (Exception ex)
+                    {
+                        _isError = true;
 
-                    if (_serialDevice.IsOpen)
-                        DataReceived(_serialDevice.Read());
+                        Debug.WriteLine(ex.Message);
 
-                    Thread.Sleep(50);
+                        Logger.Log.Error(ex);
+
+                        StateChanged?.Invoke(this, new EventArgsStatus(new StatusDevice(ex.Message, false)));
+                    }
                 }
-                catch (Exception ex)
+            });
+
+            _startTask.Start();
+        }
+
+        public void Stop()
+        {
+            _isStarted = false;
+
+            _startTask?.Wait();
+        }
+
+        private void DataReceived(byte[] recivedData)
+        {
+            if (recivedData != null && recivedData.Length > 0 && _recivedData.Count > 0 &&
+                new TimeSpan(DateTime.Now.Ticks - _timeRecivedLastData).TotalMilliseconds > recivedTimeoutMilisecound)
+            {
+                _recivedData.Clear();
+            }
+
+            if (recivedData != null && recivedData.Length > 0)
+            {
+                _recivedData.AddRange(recivedData);
+                _timeRecivedLastData = DateTime.Now.Ticks;
+            }
+            else
+            {
+                return;
+            }
+
+            if (_recivedData.Count > _maxLenghtData)
+            {
+                _recivedData.Clear();
+                return;
+            }
+
+            string keyString = null;
+
+            if (_suffixCrlf)
+            {
+                if (IsCrlf(_recivedData))
                 {
-                    _isError = true;
-
-                    Debug.WriteLine(ex.Message);
-
-                    Logger.Log.Error(ex);
-
-                    StateChanged?.Invoke(this, new EventArgsStatus(new StatusDevice(ex.Message, false)));
+                    keyString = _readerConverter.Convert(_readerConverter.RemoveCrlf(_recivedData.ToArray()));
                 }
-        });
+            }
+            else
+            {
+                keyString = _readerConverter.Convert(_recivedData.ToArray());
+            }
 
-        _startTask.Start();
-    }
+            if (keyString == null)
+            {
+                return;
+            }
 
-    public void Stop()
-    {
-        _isStarted = false;
-
-        _startTask?.Wait();
-    }
-
-    private void DataReceived(byte[] recivedData)
-    {
-        if (recivedData != null && recivedData.Length > 0 && _recivedData.Count > 0 &&
-            new TimeSpan(DateTime.Now.Ticks - _timeRecivedLastData).TotalMilliseconds > recivedTimeoutMilisecound)
             _recivedData.Clear();
 
-        if (recivedData != null && recivedData.Length > 0)
-        {
-            _recivedData.AddRange(recivedData);
-            _timeRecivedLastData = DateTime.Now.Ticks;
-        }
-        else
-        {
-            return;
-        }
+            if (keyString == _lastKey && new TimeSpan(DateTime.Now.Ticks - _timeLastKey).TotalMilliseconds <
+                lastKeyTimeoutMilisecound)
+            {
+                return;
+            }
 
-        if (_recivedData.Count > _maxLenghtData)
-        {
-            _recivedData.Clear();
-            return;
+            _timeLastKey = DateTime.Now.Ticks;
+
+            _lastKey = keyString;
+
+            IdentifierReceived?.Invoke(this, new EventArgsIdentifier(keyString));
         }
 
-        string keyString = null;
-
-        if (_suffixCrlf)
+        private bool IsCrlf(List<byte> data)
         {
-            if (IsCrlf(_recivedData))
-                keyString = _readerConverter.Convert(_readerConverter.RemoveCrlf(_recivedData.ToArray()));
-        }
-        else
-        {
-            keyString = _readerConverter.Convert(_recivedData.ToArray());
+            return data[data.Count - 2] == 0x0d && data[data.Count - 1] == 0x0a ? true : false;
         }
 
-        if (keyString == null)
-            return;
+        private const int lastKeyTimeoutMilisecound = 1000;
+        private const int recivedTimeoutMilisecound = 500;
 
-        _recivedData.Clear();
+        public IdentifierDeviceSerialPort(string portName, int baudRate, RfidReaderConverter readerConverter,
+            bool suffixCrlf, int maxLenghtData)
+        {
+            _readerConverter = readerConverter;
+            _maxLenghtData = maxLenghtData;
+            _suffixCrlf = suffixCrlf;
 
-        if (keyString == _lastKey && new TimeSpan(DateTime.Now.Ticks - _timeLastKey).TotalMilliseconds <
-            lastKeyTimeoutMilisecound)
-            return;
-
-        _timeLastKey = DateTime.Now.Ticks;
-
-        _lastKey = keyString;
-
-        IdentifierReceived?.Invoke(this, new EventArgsIdentifier(keyString));
-    }
-
-    private bool IsCrlf(List<byte> data)
-    {
-        return data[data.Count - 2] == 0x0d && data[data.Count - 1] == 0x0a ? true : false;
+            _serialDevice = new GodSerialPort(portName, baudRate, 0);
+        }
     }
 }

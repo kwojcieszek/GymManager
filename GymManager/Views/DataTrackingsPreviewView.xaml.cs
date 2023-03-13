@@ -1,11 +1,12 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace GymManager.Views;
-
-public partial class DataTrackingsPreviewView : MetroWindow
+namespace GymManager.Views
 {
-    public DataTrackingsPreviewView()
+    public partial class DataTrackingsPreviewView : MetroWindow
     {
-        InitializeComponent();
+        public DataTrackingsPreviewView()
+        {
+            InitializeComponent();
+        }
     }
 }

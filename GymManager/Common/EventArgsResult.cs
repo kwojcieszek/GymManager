@@ -1,13 +1,14 @@
 ﻿using System;
 
-namespace GymManager.Common;
-
-public class EventArgsResult : EventArgs
+namespace GymManager.Common
 {
-    public IdentifierResult Result { get; init; }
-
-    public EventArgsResult(IdentifierResult result)
+    public class EventArgsResult : EventArgs
     {
-        Result = result;
+        public IdentifierResult Result { get; init; }
+
+        public EventArgsResult(IdentifierResult result)
+        {
+            Result = result;
+        }
     }
 }

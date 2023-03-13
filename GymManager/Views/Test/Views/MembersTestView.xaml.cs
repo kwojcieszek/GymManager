@@ -1,11 +1,12 @@
 ﻿using System.Windows.Controls;
 
-namespace GymManager.Views.Test.Views;
-
-public partial class MembersTestView : UserControl
+namespace GymManager.Views.Test.Views
 {
-    public MembersTestView()
+    public partial class MembersTestView : UserControl
     {
-        InitializeComponent();
+        public MembersTestView()
+        {
+            InitializeComponent();
+        }
     }
 }

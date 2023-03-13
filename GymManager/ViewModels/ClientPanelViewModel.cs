@@ -4,41 +4,42 @@ using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
 
-namespace GymManager.ViewModels;
-
-public class ClientPanelViewModel : INotifyPropertyChanged
+namespace GymManager.ViewModels
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public ICommand ContentRenderedCommand =>
-        _contentRenderedCommand ??= new RelayCommand(
-            x => { OnPropertyChange(nameof(DataContext)); });
-
-    public object DataContext => Window?.Tag;
-
-    public Window Owner
+    public class ClientPanelViewModel : INotifyPropertyChanged
     {
-        set => Window.Owner = value;
-        get => Window.Owner;
-    }
+        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _contentRenderedCommand;
+        private ICommand test;
 
-    public ICommand Test =>
-        test ??= new RelayCommand(
-            x =>
-            {
-                var secondaryScreenLeft = SystemParameters.PrimaryScreenWidth - SystemParameters.VirtualScreenWidth;
+        public ICommand ContentRenderedCommand =>
+            _contentRenderedCommand ??= new RelayCommand(
+                x => { OnPropertyChange(nameof(DataContext)); });
 
-                Window.WindowStartupLocation = WindowStartupLocation.Manual;
-                Window.Left = secondaryScreenLeft;
-                Window.Top = 0;
-            });
+        public object DataContext => Window?.Tag;
 
-    public Window Window => Helper.GetWindow(this);
-    private ICommand _contentRenderedCommand;
-    private ICommand test;
+        public Window Owner
+        {
+            set => Window.Owner = value;
+            get => Window.Owner;
+        }
 
-    private void OnPropertyChange([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public ICommand Test =>
+            test ??= new RelayCommand(
+                x =>
+                {
+                    var secondaryScreenLeft = SystemParameters.PrimaryScreenWidth - SystemParameters.VirtualScreenWidth;
+
+                    Window.WindowStartupLocation = WindowStartupLocation.Manual;
+                    Window.Left = secondaryScreenLeft;
+                    Window.Top = 0;
+                });
+
+        public Window Window => Helper.GetWindow(this);
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

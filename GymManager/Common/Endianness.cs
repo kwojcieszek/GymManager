@@ -1,7 +1,8 @@
-﻿namespace GymManager.Common;
-
-public enum Endianness
+﻿namespace GymManager.Common
 {
-    BigEndian = 0,
-    LittleEndian = 1
+    public enum Endianness
+    {
+        BigEndian = 0,
+        LittleEndian = 1
+    }
 }

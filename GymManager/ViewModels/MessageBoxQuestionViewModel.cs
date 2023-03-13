@@ -5,38 +5,41 @@ using System.Windows.Input;
 using GymManager.Common;
 using GymManager.Models;
 
-namespace GymManager.ViewModels;
-
-public class MessageBoxQuestionViewModel : INotifyPropertyChanged
+namespace GymManager.ViewModels
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public string Message
+    public class MessageBoxQuestionViewModel : INotifyPropertyChanged
     {
-        get => _model.Message;
-        set
+        public event PropertyChangedEventHandler PropertyChanged;
+        private readonly MessageBoxQuestionModel _model = new();
+        private ICommand _noCommand;
+        private ICommand _yesCommand;
+
+        public string Message
         {
-            _model.Message = value;
-            OnPropertyChange();
+            get => _model.Message;
+            set
+            {
+                _model.Message = value;
+                OnPropertyChange();
+            }
         }
-    }
 
-    public ICommand NoCommand =>
-        _noCommand ??= new RelayCommand(
-            x => { Window.DialogResult = false; });
+        public ICommand NoCommand =>
+            _noCommand ??= new RelayCommand(
+                x => { Window.DialogResult = false; });
 
-    public Window Window => Helper.GetWindow(this);
+        public Window Window => Helper.GetWindow(this);
 
-    public ICommand YesCommand =>
-        _yesCommand ??= new RelayCommand(
-            x => { Window.DialogResult = true; });
+        public ICommand YesCommand =>
+            _yesCommand ??= new RelayCommand(
+                x => { Window.DialogResult = true; });
 
-    private readonly MessageBoxQuestionModel _model = new();
-    private ICommand _noCommand;
-    private ICommand _yesCommand;
-
-    private void OnPropertyChange([CallerMemberName] string propertyName = null)
-    {
-        if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

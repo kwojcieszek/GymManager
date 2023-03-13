@@ -2,20 +2,21 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymManager.DbModels;
-
-[Index(nameof(Name), IsUnique = true)]
-public class Gender
+namespace GymManager.DbModels
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int GenderID { get; set; }
-
-    [Required]
-    public string Name { get; set; }
-
-    public Gender Copy()
+    [Index(nameof(Name), IsUnique = true)]
+    public class Gender
     {
-        return (Gender)MemberwiseClone();
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int GenderID { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+
+        public Gender Copy()
+        {
+            return (Gender)MemberwiseClone();
+        }
     }
 }

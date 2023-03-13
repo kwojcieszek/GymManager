@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics;
 
-namespace GymManager.Common;
-
-public class TeamViewer
+namespace GymManager.Common
 {
-    public string TeamViewerPath { get; set; } = $"{Path.ApplicationDirectory}\\TeamViewerQS.exe";
-
-    public void Run()
+    public class TeamViewer
     {
-        Process.Start(TeamViewerPath);
+        public string TeamViewerPath { get; set; } = $"{Path.ApplicationDirectory}\\TeamViewerQS.exe";
+
+        public void Run()
+        {
+            Process.Start(TeamViewerPath);
+        }
     }
 }

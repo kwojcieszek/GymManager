@@ -1,15 +1,16 @@
 ﻿using GymManager.Common;
 
-namespace GymManager.DbModels.Engines;
-
-public class MemoryContext : GymManagerContext
+namespace GymManager.DbModels.Engines
 {
-    public MemoryContext() : base(DatabaseTypes.Memory)
+    public class MemoryContext : GymManagerContext
     {
-    }
+        public override void Migrate()
+        {
+            base.Migrate();
+        }
 
-    public override void Migrate()
-    {
-        base.Migrate();
+        public MemoryContext() : base(DatabaseTypes.Memory)
+        {
+        }
     }
 }

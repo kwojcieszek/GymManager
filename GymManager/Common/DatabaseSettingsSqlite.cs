@@ -1,9 +1,12 @@
 ﻿using System;
 
-namespace GymManager.Common;
-
-public class DatabaseSettingsSqlite
+namespace GymManager.Common
 {
-    public string Directory { get; set; } = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}";
-    public string FileName { get; set; } = "GymManager.db";
+    public class DatabaseSettingsSqlite
+    {
+        public string Directory { get; set; } =
+            $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments)}";
+
+        public string FileName { get; set; } = "GymManager.db";
+    }
 }

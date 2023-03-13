@@ -1,13 +1,14 @@
-﻿namespace GymManager.Common;
-
-public class FormatText
+﻿namespace GymManager.Common
 {
-    public string Parameter { get; set; }
-    public string Value { get; set; }
-
-    public FormatText(string parameter, string value)
+    public class FormatText
     {
-        Parameter = parameter;
-        Value = value;
+        public string Parameter { get; set; }
+        public string Value { get; set; }
+
+        public FormatText(string parameter, string value)
+        {
+            Parameter = parameter;
+            Value = value;
+        }
     }
 }

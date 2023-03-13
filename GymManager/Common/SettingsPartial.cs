@@ -2,70 +2,78 @@
 using System.IO;
 using Newtonsoft.Json;
 
-namespace GymManager.Common;
-
-public partial class Settings
+namespace GymManager.Common
 {
-    public event EventHandler SettingsChanged;
-
-    public static Settings App => instance ??= new Settings();
-
-    private static readonly string filePath = $"{Path.ApplicationData}\\settings.db";
-    private static Settings instance;
-
-    [JsonIgnore]
-    private const int KEY = 734798442;
-
-    [JsonIgnore]
-    public bool IsExistSettingsFile => File.Exists(filePath);
-
-    private Settings()
+    public partial class Settings
     {
-    }
+        public event EventHandler SettingsChanged;
+        private static readonly string filePath = $"{Path.ApplicationData}\\settings.db";
+        private static Settings instance;
 
-    public static void Read()
-    {
-        var settingsJson = ReadFile();
+        public static Settings App => instance ??= new Settings();
 
-        if (settingsJson == null)
-            return;
+        [JsonIgnore]
+        public bool IsExistSettingsFile => File.Exists(filePath);
 
-        settingsJson = Cryptography.XorEncryptDecrypt(settingsJson, KEY);
+        public static void Read()
+        {
+            var settingsJson = ReadFile();
 
-        var settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
+            if (settingsJson == null)
+            {
+                return;
+            }
 
-        if (settings == null)
-            return;
+            settingsJson = Cryptography.XorEncryptDecrypt(settingsJson, KEY);
 
-        instance = settings;
-    }
+            var settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
 
-    public static void Write()
-    {
-        var settingsJson = JsonConvert.SerializeObject(instance);
+            if (settings == null)
+            {
+                return;
+            }
 
-        settingsJson = Cryptography.XorEncryptDecrypt(settingsJson, KEY);
+            instance = settings;
+        }
 
-        WriteFile(settingsJson);
+        public static void Write()
+        {
+            var settingsJson = JsonConvert.SerializeObject(instance);
 
-        App.SettingsChanged?.Invoke(App, EventArgs.Empty);
-    }
+            settingsJson = Cryptography.XorEncryptDecrypt(settingsJson, KEY);
 
-    private static string ReadFile()
-    {
-        if (!File.Exists(filePath))
-            return null;
+            WriteFile(settingsJson);
 
-        return File.ReadAllText(filePath);
-    }
+            App.SettingsChanged?.Invoke(App, EventArgs.Empty);
+        }
 
-    private static void WriteFile(string source)
-    {
-        var direcotry = System.IO.Path.GetDirectoryName(filePath);
+        private static string ReadFile()
+        {
+            if (!File.Exists(filePath))
+            {
+                return null;
+            }
 
-        if (!Directory.Exists(direcotry))
-            Directory.CreateDirectory(direcotry);
+            return File.ReadAllText(filePath);
+        }
 
-        File.WriteAllText(filePath, source);
+        private static void WriteFile(string source)
+        {
+            var direcotry = System.IO.Path.GetDirectoryName(filePath);
+
+            if (!Directory.Exists(direcotry))
+            {
+                Directory.CreateDirectory(direcotry);
+            }
+
+            File.WriteAllText(filePath, source);
+        }
+
+        [JsonIgnore]
+        private const int KEY = 734798442;
+
+        private Settings()
+        {
+        }
     }
 }

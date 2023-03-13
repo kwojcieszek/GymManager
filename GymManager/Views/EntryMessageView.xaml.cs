@@ -1,11 +1,12 @@
 ﻿using System.Windows;
 
-namespace GymManager.Views;
-
-public partial class EntryMessageView : Window
+namespace GymManager.Views
 {
-    public EntryMessageView()
+    public partial class EntryMessageView : Window
     {
-        InitializeComponent();
+        public EntryMessageView()
+        {
+            InitializeComponent();
+        }
     }
 }

@@ -9,95 +9,107 @@ using GymManager.DbModels;
 using GymManager.Models;
 using GymManager.Views;
 
-namespace GymManager.ViewModels;
-
-public class CabinetKeyEditViewModel : INotifyPropertyChanged
+namespace GymManager.ViewModels
 {
-    public event PropertyChangedEventHandler PropertyChanged;
+    public class CabinetKeyEditViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly CabinetKeyEditModel _model = new();
 
-    public ICommand ApplyCommand =>
-        _applyCommand ??= new RelayCommand(
-            x =>
-            {
-                if (CheckCabinetKey(_model.CabinetKey))
-                    try
-                    {
-                        _model.SaveChanges();
-
-                        Window.DialogResult = true;
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
-                    }
-            });
-
-    public CabinetKey CabinetKey => _model.CabinetKey;
-
-    public ICommand CancelCommand =>
-        _cancelCommand ??= new RelayCommand(
-            x => { Window.DialogResult = false; });
-
-    public ICommand ContentRenderedCommand =>
-        _contentRenderedCommand ??= new RelayCommand(
-            x =>
-            {
-                if (_model.CabinetKey == null)
+        public ICommand ApplyCommand =>
+            _applyCommand ??= new RelayCommand(
+                x =>
                 {
-                    Title = "DODAWANIE KLUCZA DO SZAFKI";
+                    if (CheckCabinetKey(_model.CabinetKey))
+                    {
+                        try
+                        {
+                            _model.SaveChanges();
 
-                    _model.SetNewObject();
-                }
-                else
+                            Window.DialogResult = true;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
+                        }
+                    }
+                });
+
+        public CabinetKey CabinetKey => _model.CabinetKey;
+
+        public ICommand CancelCommand =>
+            _cancelCommand ??= new RelayCommand(
+                x => { Window.DialogResult = false; });
+
+        public ICommand ContentRenderedCommand =>
+            _contentRenderedCommand ??= new RelayCommand(
+                x =>
                 {
-                    Title = $"EDYCJA KLUCZA DO SZAFKI [{_model.CabinetKey.Name}]";
-                }
+                    if (_model.CabinetKey == null)
+                    {
+                        Title = "DODAWANIE KLUCZA DO SZAFKI";
 
-                OnPropertyChange(nameof(CabinetKey));
-                OnPropertyChange(nameof(Title));
-            });
+                        _model.SetNewObject();
+                    }
+                    else
+                    {
+                        Title = $"EDYCJA KLUCZA DO SZAFKI [{_model.CabinetKey.Name}]";
+                    }
 
-    public List<Gender> Genders => _model.Genders;
+                    OnPropertyChange(nameof(CabinetKey));
+                    OnPropertyChange(nameof(Title));
+                });
 
-    public Window Owner
-    {
-        set => Window.Owner = value;
-        get => Window.Owner;
-    }
+        public List<Gender> Genders => _model.Genders;
 
-    public string Title { get; set; }
-    public Window Window => Helper.GetWindow(this);
-    private ICommand _applyCommand;
-    private ICommand _cancelCommand;
-    private ICommand _contentRenderedCommand;
-    private readonly CabinetKeyEditModel _model = new();
+        public Window Owner
+        {
+            set => Window.Owner = value;
+            get => Window.Owner;
+        }
 
-    public void SetEditObject(int cabinetKeyID)
-    {
-        _model.SetEditObject(cabinetKeyID);
-    }
+        public string Title { get; set; }
+        public Window Window => Helper.GetWindow(this);
 
-    private bool CheckCabinetKey(CabinetKey cabinetKey)
-    {
-        string message = null;
-        string filed;
+        public void SetEditObject(int cabinetKeyID)
+        {
+            _model.SetEditObject(cabinetKeyID);
+        }
 
-        if (_model.CabinetKey == null)
+        private bool CheckCabinetKey(CabinetKey cabinetKey)
+        {
+            string message = null;
+            string filed;
+
+            if (_model.CabinetKey == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(cabinetKey.Name))
+            {
+                filed = "NAZWA [NUMER KLUCZYKA]";
+            }
+            else if (cabinetKey.Gender == null)
+            {
+                filed = "PŁEĆ";
+            }
+            else
+            {
+                return true;
+            }
+
+            MessageBoxDb.FieldMustBeCompleted(Window, filed, message);
+
             return false;
-        if (string.IsNullOrEmpty(cabinetKey.Name))
-            filed = "NAZWA [NUMER KLUCZYKA]";
-        else if (cabinetKey.Gender == null)
-            filed = "PŁEĆ";
-        else
-            return true;
+        }
 
-        MessageBoxDb.FieldMustBeCompleted(Window, filed, message);
-
-        return false;
-    }
-
-    private void OnPropertyChange([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

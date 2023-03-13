@@ -2,20 +2,21 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymManager.DbModels;
-
-[Index(nameof(Name), IsUnique = false)]
-public class PermissionList
+namespace GymManager.DbModels
 {
-    [Required]
-    public string Name { get; set; }
-
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int PermissionListID { get; set; }
-
-    public User Copy()
+    [Index(nameof(Name), IsUnique = false)]
+    public class PermissionList
     {
-        return (User)MemberwiseClone();
+        [Required]
+        public string Name { get; set; }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int PermissionListID { get; set; }
+
+        public User Copy()
+        {
+            return (User)MemberwiseClone();
+        }
     }
 }

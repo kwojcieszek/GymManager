@@ -5,48 +5,53 @@ using GymManager.Common;
 using GymManager.DbModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymManager.Models;
-
-public class CabinetKeyEditModel
+namespace GymManager.Models
 {
-    public CabinetKey CabinetKey { get; private set; }
-    public List<Gender> Genders => _db.Genders.OrderBy(p => p.GenderID).ToList();
-    private readonly GymManagerContext _db = new();
-
-    public void SaveChanges()
+    public class CabinetKeyEditModel
     {
-        _db.SaveChanges<CabinetKey>();
-    }
+        private readonly GymManagerContext _db = new();
+        public CabinetKey CabinetKey { get; private set; }
+        public List<Gender> Genders => _db.Genders.OrderBy(p => p.GenderID).ToList();
 
-    public CabinetKey SetEditObject(int cabinetKeyID)
-    {
-        if (CabinetKey != null)
-            throw new Exception("Object is exist!");
-
-        CabinetKey = _db.CabinetKeys
-            .Where(c => c.CabinetKeyID == cabinetKeyID)
-            .Include(g => g.Gender)
-            .FirstOrDefault();
-
-        CabinetKey.DateModified = DateTime.Now;
-        CabinetKey.ModifiedBy = CurrentUser.User.UserID;
-
-        return CabinetKey;
-    }
-
-    public CabinetKey SetNewObject()
-    {
-        if (CabinetKey != null)
-            throw new Exception("Object is exist!");
-
-        CabinetKey = new CabinetKey
+        public void SaveChanges()
         {
-            DateAdded = DateTime.Now,
-            AddedBy = CurrentUser.User.UserID
-        };
+            _db.SaveChanges<CabinetKey>();
+        }
 
-        _db.Add(CabinetKey);
+        public CabinetKey SetEditObject(int cabinetKeyID)
+        {
+            if (CabinetKey != null)
+            {
+                throw new Exception("Object is exist!");
+            }
 
-        return CabinetKey;
+            CabinetKey = _db.CabinetKeys
+                .Where(c => c.CabinetKeyID == cabinetKeyID)
+                .Include(g => g.Gender)
+                .FirstOrDefault();
+
+            CabinetKey.DateModified = DateTime.Now;
+            CabinetKey.ModifiedBy = CurrentUser.User.UserID;
+
+            return CabinetKey;
+        }
+
+        public CabinetKey SetNewObject()
+        {
+            if (CabinetKey != null)
+            {
+                throw new Exception("Object is exist!");
+            }
+
+            CabinetKey = new CabinetKey
+            {
+                DateAdded = DateTime.Now,
+                AddedBy = CurrentUser.User.UserID
+            };
+
+            _db.Add(CabinetKey);
+
+            return CabinetKey;
+        }
     }
 }

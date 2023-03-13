@@ -1,11 +1,12 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace GymManager.Views;
-
-public partial class DatabasesSettingsView : MetroWindow
+namespace GymManager.Views
 {
-    public DatabasesSettingsView()
+    public partial class DatabasesSettingsView : MetroWindow
     {
-        InitializeComponent();
+        public DatabasesSettingsView()
+        {
+            InitializeComponent();
+        }
     }
 }

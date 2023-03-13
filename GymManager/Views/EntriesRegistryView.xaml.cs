@@ -1,11 +1,12 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace GymManager.Views;
-
-public partial class EntriesRegistryView : MetroWindow
+namespace GymManager.Views
 {
-    public EntriesRegistryView()
+    public partial class EntriesRegistryView : MetroWindow
     {
-        InitializeComponent();
+        public EntriesRegistryView()
+        {
+            InitializeComponent();
+        }
     }
 }

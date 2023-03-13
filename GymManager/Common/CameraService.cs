@@ -1,54 +1,57 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 
-namespace GymManager.Common;
-
-public class CameraService
+namespace GymManager.Common
 {
-    public string MyPicturesLibraryFileName
+    public class CameraService
     {
-        set => _fullPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)}\\{value}";
-    }
+        private string _fullPath;
 
-    public string PathExecute { get; set; }
-    private string _fullPath;
-
-    public byte[] Start()
-    {
-        CleanData();
-
-        var process = Process.Start(PathExecute);
-
-        process?.WaitForExit(1000 * 60);
-
-        var data = GetData();
-
-        CleanData();
-
-        return data;
-    }
-
-    private void CleanData()
-    {
-        try
+        public string MyPicturesLibraryFileName
         {
-            File.Delete(_fullPath);
+            set => _fullPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)}\\{value}";
         }
-        catch
-        {
-        }
-    }
 
-    private byte[] GetData()
-    {
-        try
+        public string PathExecute { get; set; }
+
+        public byte[] Start()
         {
-            return File.ReadAllBytes(_fullPath);
+            CleanData();
+
+            var process = Process.Start(PathExecute);
+
+            process?.WaitForExit(1000 * 60);
+
+            var data = GetData();
+
+            Task.Factory.StartNew(CleanData);
+
+            return data;
         }
-        catch
+
+        private void CleanData()
         {
-            return null;
+            try
+            {
+                File.Delete(_fullPath);
+            }
+            catch
+            {
+            }
+        }
+
+        private byte[] GetData()
+        {
+            try
+            {
+                return File.ReadAllBytes(_fullPath);
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

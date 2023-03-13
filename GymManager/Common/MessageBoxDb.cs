@@ -1,12 +1,13 @@
 ﻿using System.Windows;
 using GymManager.Views;
 
-namespace GymManager.Common;
-
-public static class MessageBoxDb
+namespace GymManager.Common
 {
-    public static void FieldMustBeCompleted(Window window, string filed, string message = null)
+    public static class MessageBoxDb
     {
-        MessageView.MessageBoxInfoView(window, message ?? $"POLE '{filed}'\nMUSI ZOSTAC UZUPENIONE!", true);
+        public static void FieldMustBeCompleted(Window window, string filed, string message = null)
+        {
+            MessageView.MessageBoxInfoView(window, message ?? $"POLE '{filed}'\nMUSI ZOSTAC UZUPENIONE!", true);
+        }
     }
 }

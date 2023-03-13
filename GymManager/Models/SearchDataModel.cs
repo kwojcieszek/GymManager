@@ -1,8 +1,9 @@
 ﻿using GymManager.DbModels;
 
-namespace GymManager.Models;
-
-public class SearchDataModel
+namespace GymManager.Models
 {
-    private readonly GymManagerContext _db = new();
+    public class SearchDataModel
+    {
+        private readonly GymManagerContext _db = new();
+    }
 }

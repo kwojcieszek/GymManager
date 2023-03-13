@@ -1,11 +1,12 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace GymManager.Views;
-
-public partial class CabinetKeyEditView : MetroWindow
+namespace GymManager.Views
 {
-    public CabinetKeyEditView()
+    public partial class CabinetKeyEditView : MetroWindow
     {
-        InitializeComponent();
+        public CabinetKeyEditView()
+        {
+            InitializeComponent();
+        }
     }
 }

@@ -5,40 +5,41 @@ using System.Windows.Input;
 using GymManager.Common;
 using GymManager.Models;
 
-namespace GymManager.ViewModels;
-
-public class RfidViewModel : INotifyPropertyChanged
+namespace GymManager.ViewModels
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public ICommand CloseCommand =>
-        _closeCommand ??= new RelayCommand(
-            x => { Window?.Close(); });
-
-    public ICommand ClosedCommand =>
-        _closedCommand ??= new RelayCommand(
-            x => { _model.CloseIdentifierService(); });
-
-    public string Identifier => _model.Identifier;
-
-    public string PathGif => $"{Path.ApplicationDirectory}\\Images\\Waiting_circle.gif";
-    public Window Window => Helper.GetWindow(this);
-    private ICommand _closeCommand;
-    private ICommand _closedCommand;
-    private readonly RfidModel _model = new();
-
-    public RfidViewModel()
+    public class RfidViewModel : INotifyPropertyChanged
     {
-        _model.EventNewIdentifier += (o, e) =>
+        public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _closeCommand;
+        private ICommand _closedCommand;
+        private readonly RfidModel _model = new();
+
+        public ICommand CloseCommand =>
+            _closeCommand ??= new RelayCommand(
+                x => { Window?.Close(); });
+
+        public ICommand ClosedCommand =>
+            _closedCommand ??= new RelayCommand(
+                x => { _model.CloseIdentifierService(); });
+
+        public string Identifier => _model.Identifier;
+
+        public string PathGif => $"{Path.ApplicationDirectory}\\Images\\Waiting_circle.gif";
+        public Window Window => Helper.GetWindow(this);
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {
-            new Audio().Play("beep", true);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
-            Helper.Invoke(() => Window?.Close());
-        };
-    }
+        public RfidViewModel()
+        {
+            _model.EventNewIdentifier += (o, e) =>
+            {
+                new Audio().Play("beep", true);
 
-    private void OnPropertyChange([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                Helper.Invoke(() => Window?.Close());
+            };
+        }
     }
 }

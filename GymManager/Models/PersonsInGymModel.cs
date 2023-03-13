@@ -4,47 +4,52 @@ using System.Linq;
 using GymManager.DbModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymManager.Models;
-
-public class PersonsInGymModel
+namespace GymManager.Models
 {
-    public List<EntryRegistry> EntriesRegistry
+    public class PersonsInGymModel
     {
-        get
+        private List<EntryRegistry> _entriesRegistry;
+
+        public List<EntryRegistry> EntriesRegistry
         {
-            if (_entriesRegistry == null)
-                GetEntriesRegistry();
+            get
+            {
+                if (_entriesRegistry == null)
+                {
+                    GetEntriesRegistry();
+                }
+
+                return _entriesRegistry;
+            }
+        }
+
+        public void CloseRow(EntryRegistry entryRegistry)
+        {
+            if (entryRegistry == null)
+            {
+                throw new ArgumentNullException("Element do usunięcia jest pusty.");
+            }
+
+            var db = new GymManagerContext();
+
+            entryRegistry.IsAcive = false;
+
+            db.EntriesRegistry.Remove(entryRegistry);
+
+            db.SaveChanges();
+        }
+
+        public List<EntryRegistry> GetEntriesRegistry()
+        {
+            _entriesRegistry = new GymManagerContext()
+                .EntriesRegistry
+                .Where(e => e.IsAcive)
+                .Include(m => m.Member)
+                .Include(c => c.CabinetKey)
+                .Include(p => p.Pass)
+                .ToList();
 
             return _entriesRegistry;
         }
-    }
-
-    private List<EntryRegistry> _entriesRegistry;
-
-    public void CloseRow(EntryRegistry entryRegistry)
-    {
-        if (entryRegistry == null)
-            throw new ArgumentNullException("Element do usunięcia jest pusty.");
-
-        var db = new GymManagerContext();
-
-        entryRegistry.IsAcive = false;
-
-        db.EntriesRegistry.Remove(entryRegistry);
-
-        db.SaveChanges();
-    }
-
-    public List<EntryRegistry> GetEntriesRegistry()
-    {
-        _entriesRegistry = new GymManagerContext()
-            .EntriesRegistry
-            .Where(e => e.IsAcive)
-            .Include(m => m.Member)
-            .Include(c => c.CabinetKey)
-            .Include(p => p.Pass)
-            .ToList();
-
-        return _entriesRegistry;
     }
 }

@@ -2,26 +2,27 @@
 using System.CodeDom.Compiler;
 using System.Diagnostics;
 
-namespace GymManager.Common;
-
-public static class MainClass
+namespace GymManager.Common
 {
-    /// <summary>
-    ///     Application Entry Point.
-    /// </summary>
-    [STAThread]
-    [DebuggerNonUserCode]
-    [GeneratedCode("PresentationBuildTasks", "6.0.0.0")]
-    public static void Main(string[] args)
+    public static class MainClass
     {
-        Settings.Read();
+        /// <summary>
+        ///     Application Entry Point.
+        /// </summary>
+        [STAThread]
+        [DebuggerNonUserCode]
+        [GeneratedCode("PresentationBuildTasks", "6.0.0.0")]
+        public static void Main(string[] args)
+        {
+            Settings.Read();
 
-        var argsList = new Args(args);
+            var argsList = new Args(args);
 
-        var app = new App();
+            var app = new App();
 
-        app.InitializeComponent();
+            app.InitializeComponent();
 
-        app.Run();
+            app.Run();
+        }
     }
 }

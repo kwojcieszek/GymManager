@@ -1,13 +1,14 @@
-﻿namespace GymManager.Common;
-
-public class StatusDevice
+﻿namespace GymManager.Common
 {
-    public bool IsWorking { get; set; }
-    public string Message { get; set; }
-
-    public StatusDevice(string message, bool isWorking)
+    public class StatusDevice
     {
-        Message = message;
-        IsWorking = isWorking;
+        public bool IsWorking { get; set; }
+        public string Message { get; set; }
+
+        public StatusDevice(string message, bool isWorking)
+        {
+            Message = message;
+            IsWorking = isWorking;
+        }
     }
 }

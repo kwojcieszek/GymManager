@@ -1,15 +1,16 @@
 ﻿using GymManager.Common;
 
-namespace GymManager.DbModels.Engines;
-
-public class PostgreSqlContext : GymManagerContext
+namespace GymManager.DbModels.Engines
 {
-    public PostgreSqlContext() : base(DatabaseTypes.PostgreSql)
+    public class PostgreSqlContext : GymManagerContext
     {
-    }
+        public override void Migrate()
+        {
+            base.Migrate();
+        }
 
-    public override void Migrate()
-    {
-        base.Migrate();
+        public PostgreSqlContext() : base(DatabaseTypes.PostgreSql)
+        {
+        }
     }
 }

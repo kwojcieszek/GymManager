@@ -1,14 +1,15 @@
 ﻿using System.Windows.Controls;
 
-namespace GymManager.Views.Test.Views;
-
-/// <summary>
-///     Interaction logic for AboutView.xaml
-/// </summary>
-public partial class AboutView : UserControl
+namespace GymManager.Views.Test.Views
 {
-    public AboutView()
+    /// <summary>
+    ///     Interaction logic for AboutView.xaml
+    /// </summary>
+    public partial class AboutView : UserControl
     {
-        InitializeComponent();
+        public AboutView()
+        {
+            InitializeComponent();
+        }
     }
 }

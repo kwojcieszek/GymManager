@@ -1,11 +1,12 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace GymManager.Views;
-
-public partial class RfidView : MetroWindow
+namespace GymManager.Views
 {
-    public RfidView()
+    public partial class RfidView : MetroWindow
     {
-        InitializeComponent();
+        public RfidView()
+        {
+            InitializeComponent();
+        }
     }
 }

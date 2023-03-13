@@ -1,15 +1,16 @@
 ﻿using System;
 
-namespace GymManager.Common;
-
-public class StartJob
+namespace GymManager.Common
 {
-    public Action Action { get; }
-    public string Description { get; }
-
-    public StartJob(Action action, string description)
+    public class StartJob
     {
-        Action = action;
-        Description = description;
+        public Action Action { get; }
+        public string Description { get; }
+
+        public StartJob(Action action, string description)
+        {
+            Action = action;
+            Description = description;
+        }
     }
 }

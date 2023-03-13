@@ -4,57 +4,63 @@ using System.Linq;
 using GymManager.DbModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymManager.Models;
-
-public class MembersModel
+namespace GymManager.Models
 {
-    public List<Member> Members
+    public class MembersModel
     {
-        get
+        private List<Member> _members;
+
+        public List<Member> Members
         {
-            if (_members == null)
-                GetMembers(OnlyActives);
+            get
+            {
+                if (_members == null)
+                {
+                    GetMembers(OnlyActives);
+                }
 
-            return _members.ToList();
+                return _members.ToList();
+            }
         }
-    }
 
-    public bool OnlyActives { get; set; } = true;
-    private List<Member> _members;
+        public bool OnlyActives { get; set; } = true;
 
-    public void Delete(Member member)
-    {
-        if (member == null)
-            throw new ArgumentNullException("Element do usunięcia jest pusty.");
+        public void Delete(Member member)
+        {
+            if (member == null)
+            {
+                throw new ArgumentNullException("Element do usunięcia jest pusty.");
+            }
 
-        var db = new GymManagerContext();
+            var db = new GymManagerContext();
 
-        db.Members.Remove(member);
+            db.Members.Remove(member);
 
-        db.SaveChanges<Member, Identifier>();
-    }
+            db.SaveChanges<Member, Identifier>();
+        }
 
-    public Member GetMemberById(string id)
-    {
-        var member = new GymManagerContext()
-            .Members
-            .Where(m => m.Id == id)
-            .FirstOrDefault();
+        public Member GetMemberById(string id)
+        {
+            var member = new GymManagerContext()
+                .Members
+                .Where(m => m.Id == id)
+                .FirstOrDefault();
 
-        return member;
-    }
+            return member;
+        }
 
-    public List<Member> GetMembers(bool onlyActives)
-    {
-        _members = new GymManagerContext()
-            .Members
-            .Where(m => m.IsAcive == true || m.IsAcive == onlyActives)
-            .Include(p => p.Pass)
-            .Include(g => g.Gender)
-            .Include(u => u.AddedByUser)
-            .Include(u => u.ModifiedByUser)
-            .ToList();
+        public List<Member> GetMembers(bool onlyActives)
+        {
+            _members = new GymManagerContext()
+                .Members
+                .Where(m => m.IsAcive == true || m.IsAcive == onlyActives)
+                .Include(p => p.Pass)
+                .Include(g => g.Gender)
+                .Include(u => u.AddedByUser)
+                .Include(u => u.ModifiedByUser)
+                .ToList();
 
-        return _members;
+            return _members;
+        }
     }
 }

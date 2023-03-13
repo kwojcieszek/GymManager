@@ -5,48 +5,51 @@ using GymManager.Common.Extensions;
 using GymManager.DbModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymManager.Models;
-
-public class EntriesRegistryModel
+namespace GymManager.Models
 {
-    public List<EntryRegistry> EntriesRegistry
+    public class EntriesRegistryModel
     {
-        get
+        private List<EntryRegistry> _entriesRegistry;
+
+        public List<EntryRegistry> EntriesRegistry
         {
-            if (_entriesRegistry == null)
-                GetEntriesRegistry();
+            get
+            {
+                if (_entriesRegistry == null)
+                {
+                    GetEntriesRegistry();
+                }
 
-            return _entriesRegistry.ToList();
-        }
-    }
-
-    private List<EntryRegistry> _entriesRegistry;
-
-    public List<EntryRegistry> GetEntriesRegistry(DateTime? dateFrom = null, DateTime? dateTo = null)
-    {
-        if (dateFrom == null || dateTo == null)
-        {
-            _entriesRegistry = new GymManagerContext()
-                .EntriesRegistry
-                .Include(m => m.Member)
-                .Include(c => c.CabinetKey)
-                .Include(p => p.Pass)
-                .ToList();
-        }
-        else
-        {
-            dateFrom = dateFrom.Value.AbsoluteStart();
-            dateTo = dateTo.Value.AbsoluteEnd();
-
-            _entriesRegistry = new GymManagerContext()
-                .EntriesRegistry
-                .Where(pr => pr.EntryDate >= dateFrom && pr.EntryDate <= dateTo)
-                .Include(m => m.Member)
-                .Include(c => c.CabinetKey)
-                .Include(p => p.Pass)
-                .ToList();
+                return _entriesRegistry.ToList();
+            }
         }
 
-        return _entriesRegistry;
+        public List<EntryRegistry> GetEntriesRegistry(DateTime? dateFrom = null, DateTime? dateTo = null)
+        {
+            if (dateFrom == null || dateTo == null)
+            {
+                _entriesRegistry = new GymManagerContext()
+                    .EntriesRegistry
+                    .Include(m => m.Member)
+                    .Include(c => c.CabinetKey)
+                    .Include(p => p.Pass)
+                    .ToList();
+            }
+            else
+            {
+                dateFrom = dateFrom.Value.AbsoluteStart();
+                dateTo = dateTo.Value.AbsoluteEnd();
+
+                _entriesRegistry = new GymManagerContext()
+                    .EntriesRegistry
+                    .Where(pr => pr.EntryDate >= dateFrom && pr.EntryDate <= dateTo)
+                    .Include(m => m.Member)
+                    .Include(c => c.CabinetKey)
+                    .Include(p => p.Pass)
+                    .ToList();
+            }
+
+            return _entriesRegistry;
+        }
     }
 }

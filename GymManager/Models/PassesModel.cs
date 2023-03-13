@@ -4,50 +4,56 @@ using System.Linq;
 using GymManager.DbModels;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymManager.Models;
-
-public class PassesModel
+namespace GymManager.Models
 {
-    public bool OnlyActives { get; set; } = true;
-
-    public List<Pass> Passes
+    public class PassesModel
     {
-        get
+        private List<Pass> _passes;
+        public bool OnlyActives { get; set; } = true;
+
+        public List<Pass> Passes
         {
-            if (_passes == null)
-                GetPasses(OnlyActives);
+            get
+            {
+                if (_passes == null)
+                {
+                    GetPasses(OnlyActives);
+                }
 
-            return _passes.ToList();
+                return _passes.ToList();
+            }
         }
-    }
 
-    private List<Pass> _passes;
+        public void Delete(Pass pass)
+        {
+            if (pass == null)
+            {
+                throw new ArgumentNullException("Element do usunięcia jest pusty.");
+            }
 
-    public void Delete(Pass pass)
-    {
-        if (pass == null)
-            throw new ArgumentNullException("Element do usunięcia jest pusty.");
+            if (_passes == null)
+            {
+                throw new ArgumentNullException("Źródło danych ma pustą wartość.");
+            }
 
-        if (_passes == null)
-            throw new ArgumentNullException("Źródło danych ma pustą wartość.");
+            var db = new GymManagerContext();
 
-        var db = new GymManagerContext();
+            db.Passes.Remove(pass);
 
-        db.Passes.Remove(pass);
+            db.SaveChanges<Pass>();
+        }
 
-        db.SaveChanges<Pass>();
-    }
+        public List<Pass> GetPasses(bool onlyActives)
+        {
+            _passes = new GymManagerContext()
+                .Passes
+                .Where(m => m.IsAcive == true || m.IsAcive == onlyActives)
+                .Include(t => t.Tax)
+                .Include(p => p.PassTime)
+                .Include(a => a.AddedByUser)
+                .Include(m => m.ModifiedByUser).ToList();
 
-    public List<Pass> GetPasses(bool onlyActives)
-    {
-        _passes = new GymManagerContext()
-            .Passes
-            .Where(m => m.IsAcive == true || m.IsAcive == onlyActives)
-            .Include(t => t.Tax)
-            .Include(p => p.PassTime)
-            .Include(a => a.AddedByUser)
-            .Include(m => m.ModifiedByUser).ToList();
-
-        return _passes;
+            return _passes;
+        }
     }
 }

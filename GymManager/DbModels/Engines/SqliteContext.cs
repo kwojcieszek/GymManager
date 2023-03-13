@@ -1,15 +1,16 @@
 ﻿using GymManager.Common;
 
-namespace GymManager.DbModels.Engines;
-
-public class SqliteContext : GymManagerContext
+namespace GymManager.DbModels.Engines
 {
-    public SqliteContext() : base(DatabaseTypes.Sqlite)
+    public class SqliteContext : GymManagerContext
     {
-    }
+        public override void Migrate()
+        {
+            base.Migrate();
+        }
 
-    public override void Migrate()
-    {
-        base.Migrate();
+        public SqliteContext() : base(DatabaseTypes.Sqlite)
+        {
+        }
     }
 }

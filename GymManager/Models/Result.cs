@@ -1,13 +1,14 @@
-﻿namespace GymManager.Models;
-
-public class Result
+﻿namespace GymManager.Models
 {
-    public string ExceptionMessage { get; set; }
-    public Results ResultValue { get; set; }
-
-    public Result(Results resultValue, string exceptionMessage = "")
+    public class Result
     {
-        ResultValue = resultValue;
-        ExceptionMessage = exceptionMessage;
+        public string ExceptionMessage { get; set; }
+        public Results ResultValue { get; set; }
+
+        public Result(Results resultValue, string exceptionMessage = "")
+        {
+            ResultValue = resultValue;
+            ExceptionMessage = exceptionMessage;
+        }
     }
 }

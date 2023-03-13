@@ -1,8 +1,9 @@
-﻿namespace GymManager.Common;
-
-public enum TrackerOperations
+﻿namespace GymManager.Common
 {
-    Add = 1,
-    Edit = 2,
-    Delete = 3
+    public enum TrackerOperations
+    {
+        Add = 1,
+        Edit = 2,
+        Delete = 3
+    }
 }

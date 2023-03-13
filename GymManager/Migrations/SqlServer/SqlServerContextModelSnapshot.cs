@@ -870,7 +870,7 @@ namespace GymManager.Migrations
                             PassID = 1,
                             AddedBy = 1,
                             Continuation = true,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1966),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8509),
                             Description = "",
                             EentryNumberOfMonths = 1,
                             EntryNetPrice = 0m,
@@ -887,7 +887,7 @@ namespace GymManager.Migrations
                             PassID = 2,
                             AddedBy = 1,
                             Continuation = true,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1971),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8515),
                             Description = "Wstpęp wolny na miesiąc",
                             EentryNumberOfMonths = 1,
                             EntryNetPrice = 20.00m,
@@ -906,7 +906,7 @@ namespace GymManager.Migrations
                             AccessTimeTo = new DateTime(2000, 1, 1, 14, 0, 0, 0, DateTimeKind.Unspecified),
                             AddedBy = 1,
                             Continuation = true,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1977),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8524),
                             Description = "Wstpęp wolny w godz. 9-14 na miesiąc",
                             EentryNumberOfMonths = 1,
                             EntryNetPrice = 20.00m,
@@ -923,7 +923,7 @@ namespace GymManager.Migrations
                             PassID = 4,
                             AddedBy = 1,
                             Continuation = true,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1979),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8526),
                             Description = "Wstpęp wolny dla studentów",
                             EentryNumberOfMonths = 1,
                             EntryNetPrice = 0m,
@@ -940,7 +940,7 @@ namespace GymManager.Migrations
                             PassID = 5,
                             AddedBy = 1,
                             Continuation = true,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1982),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8528),
                             Description = "Wstpęp wolny na miesiąc",
                             EentryNumberOfMonths = 1,
                             EntryNetPrice = 0m,
@@ -957,7 +957,7 @@ namespace GymManager.Migrations
                             PassID = 6,
                             AddedBy = 1,
                             Continuation = true,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1983),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8530),
                             Description = "Wstpęp jednorazowy",
                             EentryNumberOfMonths = 1,
                             EntryNetPrice = 0m,
@@ -1240,6 +1240,11 @@ namespace GymManager.Migrations
                         {
                             PermissionListID = 27,
                             Name = "DODAJ WEJŚCIE/WYJŚCIE BEZ IDENTYFIKATORA"
+                        },
+                        new
+                        {
+                            PermissionListID = 28,
+                            Name = "PODGLĄD CZŁONKÓW"
                         });
                 });
 
@@ -1344,7 +1349,7 @@ namespace GymManager.Migrations
                         new
                         {
                             TaxID = 1,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1933),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8479),
                             IsAcive = true,
                             Name = "A",
                             Rate = 23
@@ -1352,7 +1357,7 @@ namespace GymManager.Migrations
                         new
                         {
                             TaxID = 2,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1936),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8482),
                             IsAcive = true,
                             Name = "B",
                             Rate = 8
@@ -1360,7 +1365,7 @@ namespace GymManager.Migrations
                         new
                         {
                             TaxID = 3,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1937),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8483),
                             IsAcive = true,
                             Name = "C",
                             Rate = 5
@@ -1368,7 +1373,7 @@ namespace GymManager.Migrations
                         new
                         {
                             TaxID = 4,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1938),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8484),
                             IsAcive = true,
                             Name = "D",
                             Rate = 0
@@ -1444,7 +1449,7 @@ namespace GymManager.Migrations
                         new
                         {
                             UserID = 1,
-                            DateAdded = new DateTime(2023, 1, 20, 12, 48, 24, 129, DateTimeKind.Local).AddTicks(1820),
+                            DateAdded = new DateTime(2023, 2, 15, 15, 7, 41, 978, DateTimeKind.Local).AddTicks(8357),
                             FirstName = "Administrator",
                             IsAcive = true,
                             IsAdmin = true,
