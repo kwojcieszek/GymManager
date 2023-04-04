@@ -95,7 +95,7 @@ namespace GymManager.ViewModels
                             IdentifierMessage.AccessEntry)
                         {
                             if (MessageView.MessageBoxQuestionView(Window,
-                                    $"BRAK WAŻNEGO KARNETU!\nMIMO TO CZY CHCESZ DODAĆ '{(entryRegistry == null ? "WEJŚCIE" : "WYJŚCIE")}' DLA\n{dx.SelectedItem.FirstName} {dx.SelectedItem.LastName} [{dx.SelectedItem.Id}] ?"))
+                                    $"BRAK WAŻNEGO KARNETU!\nMIMO TO CZY CHCESZ DODAĆ 'WEJŚCIE' DLA\n{dx.SelectedItem.FirstName} {dx.SelectedItem.LastName} [{dx.SelectedItem.Id}] ?"))
                             {
                                 EntryService.GetInstance().Entry(dx.SelectedItem, true);
                             }

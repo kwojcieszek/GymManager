@@ -35,7 +35,7 @@ namespace GymManager.ViewModels
             _changeCabinetKeyCommand ??= new RelayCommand(
                 x =>
                 {
-                    lock (_changeCabinetKeyCommand)
+                    lock (_model)
                     {
                         var selectedItem = _model.LastEntryRegistry;
 

@@ -98,16 +98,8 @@ namespace GymManager.Common
 
             if (access && checkAndWrite)
             {
-                if (checkAndWrite)
-                {
-                    LastIdentifierResult =
-                        idresult = CreateEntry(identifier, null, passesRegistry.FirstOrDefault(), member);
-                }
-                else
-                {
-                    idresult = new IdentifierResult(IdentifierMessage.AccessEntry, null, null, null, null,
-                        endOfPassesRegistry.FirstOrDefault());
-                }
+                LastIdentifierResult =
+                    idresult = CreateEntry(identifier, null, passesRegistry.FirstOrDefault(), member);
 
                 return idresult;
             }
@@ -204,18 +196,15 @@ namespace GymManager.Common
             CabinetKey cabinetKey = null;
 
             var entryRegistry = db.EntriesRegistry
-                .Where(e => e.EntryRegistryID == entryRegistryID)
-                .FirstOrDefault();
+                .FirstOrDefault(e => e.EntryRegistryID == entryRegistryID);
 
             var member = db.Members
-                .Where(m => m.MemberID == entryRegistry.MemberID)
-                .FirstOrDefault();
+                .FirstOrDefault(m => m.MemberID == entryRegistry.MemberID);
 
-            if (entryRegistry.CabinetKeyID.HasValue)
+            if (entryRegistry!= null && entryRegistry.CabinetKeyID.HasValue)
             {
                 cabinetKey = db.CabinetKeys
-                    .Where(c => c.CabinetKeyID == entryRegistry.CabinetKeyID)
-                    .FirstOrDefault();
+                    .FirstOrDefault(c => c.CabinetKeyID == entryRegistry.CabinetKeyID);
             }
 
             return new IdentifierResult(identifierMessage, entryRegistry, member, passRegistry, cabinetKey,
@@ -231,8 +220,7 @@ namespace GymManager.Common
             {
                 member = db
                     .Members
-                    .Where(m => m.MemberID == identifier.MemberID)
-                    .FirstOrDefault();
+                    .FirstOrDefault(m => m.MemberID == identifier.MemberID);
             }
 
             if (member == null)
