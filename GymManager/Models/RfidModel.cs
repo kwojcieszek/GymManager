@@ -6,15 +6,10 @@ namespace GymManager.Models
     public class RfidModel
     {
         public event EventHandler EventNewIdentifier;
-        private readonly EventHandler<EventArgsIdentifier> _eventArgsIdentifier;
-        private readonly IdentifierService _identifierService;
 
         public string Identifier { get; set; }
-
-        public void CloseIdentifierService()
-        {
-            _identifierService.EventPop();
-        }
+        private readonly EventHandler<EventArgsIdentifier> _eventArgsIdentifier;
+        private readonly IdentifierService _identifierService;
 
         public RfidModel()
         {
@@ -28,6 +23,11 @@ namespace GymManager.Models
             _identifierService = new IdentifierServiceInstances().GetIdentifierService("main");
 
             _identifierService.EventPush(_eventArgsIdentifier);
+        }
+
+        public void CloseIdentifierService()
+        {
+            _identifierService.EventPop();
         }
     }
 }

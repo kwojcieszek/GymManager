@@ -10,7 +10,7 @@ namespace GymManager.Views.Test
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             // first value is selected menu item, second value is selected option item
-            if (values != null && values.Length > 1)
+            if(values != null && values.Length > 1)
             {
                 return values[0] ?? values[1];
             }

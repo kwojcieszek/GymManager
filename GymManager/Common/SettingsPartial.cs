@@ -7,19 +7,26 @@ namespace GymManager.Common
     public partial class Settings
     {
         public event EventHandler SettingsChanged;
-        private static readonly string filePath = $"{Path.ApplicationData}\\settings.db";
-        private static Settings instance;
 
-        public static Settings App => instance ??= new Settings();
+        public static Settings App => _instance ??= new Settings();
+        private static Settings _instance;
+        private static readonly string FilePath = $"{Path.ApplicationData}\\settings.db";
 
         [JsonIgnore]
-        public bool IsExistSettingsFile => File.Exists(filePath);
+        private const int KEY = 734798442;
+
+        [JsonIgnore]
+        public bool IsExistSettingsFile => File.Exists(FilePath);
+
+        private Settings()
+        {
+        }
 
         public static void Read()
         {
             var settingsJson = ReadFile();
 
-            if (settingsJson == null)
+            if(settingsJson == null)
             {
                 return;
             }
@@ -28,17 +35,17 @@ namespace GymManager.Common
 
             var settings = JsonConvert.DeserializeObject<Settings>(settingsJson);
 
-            if (settings == null)
+            if(settings == null)
             {
                 return;
             }
 
-            instance = settings;
+            _instance = settings;
         }
 
         public static void Write()
         {
-            var settingsJson = JsonConvert.SerializeObject(instance);
+            var settingsJson = JsonConvert.SerializeObject(_instance);
 
             settingsJson = Cryptography.XorEncryptDecrypt(settingsJson, KEY);
 
@@ -49,31 +56,24 @@ namespace GymManager.Common
 
         private static string ReadFile()
         {
-            if (!File.Exists(filePath))
+            if(!File.Exists(FilePath))
             {
                 return null;
             }
 
-            return File.ReadAllText(filePath);
+            return File.ReadAllText(FilePath);
         }
 
         private static void WriteFile(string source)
         {
-            var direcotry = System.IO.Path.GetDirectoryName(filePath);
+            var direcotry = System.IO.Path.GetDirectoryName(FilePath);
 
-            if (!Directory.Exists(direcotry))
+            if(direcotry != null && !Directory.Exists(direcotry))
             {
                 Directory.CreateDirectory(direcotry);
             }
 
-            File.WriteAllText(filePath, source);
-        }
-
-        [JsonIgnore]
-        private const int KEY = 734798442;
-
-        private Settings()
-        {
+            File.WriteAllText(FilePath, source);
         }
     }
 }

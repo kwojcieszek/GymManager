@@ -15,7 +15,6 @@ namespace GymManager.Common.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return value is Visibility v && v == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
-            ;
         }
     }
 }

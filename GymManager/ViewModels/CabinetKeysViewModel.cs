@@ -15,24 +15,17 @@ namespace GymManager.ViewModels
     public class CabinetKeysViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _addCommand;
-        private ICommand _closeCommand;
-        private ICommand _deleteCommand;
-        private ICommand _editCommand;
-        private readonly CabinetKeysModel _model = new();
-        private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
 
         public ICommand AddCommand =>
             _addCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddCabinetKeys))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddCabinetKeys))
                     {
                         return;
                     }
 
-                    if (Add())
+                    if(Add())
                     {
                         _model.GetCabinetKeys(OnlyActives);
 
@@ -53,12 +46,12 @@ namespace GymManager.ViewModels
             _deleteCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeleteCabinetKeys))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeleteCabinetKeys))
                     {
                         return;
                     }
 
-                    if (Delete())
+                    if(Delete())
                     {
                         _model.GetCabinetKeys(OnlyActives);
 
@@ -70,12 +63,12 @@ namespace GymManager.ViewModels
             _editCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditCabinetKeys))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditCabinetKeys))
                     {
                         return;
                     }
 
-                    if (Edit())
+                    if(Edit())
                     {
                         _model.GetCabinetKeys(OnlyActives);
 
@@ -111,6 +104,13 @@ namespace GymManager.ViewModels
         public CabinetKey SelectedItem { get; set; }
 
         public Window Window => Helper.GetWindow(this);
+        private ICommand _addCommand;
+        private ICommand _closeCommand;
+        private ICommand _deleteCommand;
+        private ICommand _editCommand;
+        private readonly CabinetKeysModel _model = new();
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
 
         public bool Add(Window window = null)
         {
@@ -121,9 +121,10 @@ namespace GymManager.ViewModels
                 var cabinetKeyEditView = new CabinetKeyEditView();
                 var model = cabinetKeyEditView.DataContext as CabinetKeyEditViewModel;
                 model.Owner = window;
+
                 return cabinetKeyEditView.ShowDialog().Value;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(window, ex.Message, true);
 
@@ -133,20 +134,20 @@ namespace GymManager.ViewModels
 
         private bool Delete()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
 
             var message = $"CZY NA PEWNO USUNĄĆ KLUCZYK DO SZAFKI\n{SelectedItem.Name} ?";
 
-            if (MessageView.MessageBoxQuestionView(Window, message))
+            if(MessageView.MessageBoxQuestionView(Window, message))
             {
                 try
                 {
                     _model.Delete(SelectedItem);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
 
@@ -161,7 +162,7 @@ namespace GymManager.ViewModels
 
         private bool Edit()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
@@ -172,9 +173,10 @@ namespace GymManager.ViewModels
                 var model = cabinetKeyEditView.DataContext as CabinetKeyEditViewModel;
                 model.Owner = Window;
                 model.SetEditObject(SelectedItem.CabinetKeyID);
+
                 return cabinetKeyEditView.ShowDialog().Value;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(Window, ex.Message, true);
 

@@ -9,13 +9,11 @@ namespace GymManager.Models
 {
     public class PassesMembersModel
     {
-        private List<PassRegistry> _passRegistry;
-
         public List<PassRegistry> PassRegistry
         {
             get
             {
-                if (_passRegistry == null)
+                if(_passRegistry == null)
                 {
                     GetPassRegistry();
                 }
@@ -24,9 +22,11 @@ namespace GymManager.Models
             }
         }
 
+        private List<PassRegistry> _passRegistry;
+
         public void Delete(PassRegistry pass)
         {
-            if (pass == null)
+            if(pass == null)
             {
                 throw new Exception("Element do usunięcia jest pusty.");
             }
@@ -40,7 +40,7 @@ namespace GymManager.Models
 
         public List<PassRegistry> GetPassRegistry(DateTime? dateFrom = null, DateTime? dateTo = null)
         {
-            if (dateFrom == null || dateTo == null)
+            if(dateFrom == null || dateTo == null)
             {
                 _passRegistry = new GymManagerContext()
                     .PassesRegistry

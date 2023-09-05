@@ -9,9 +9,9 @@ namespace GymManager.Models
 {
     public class CabinetKeyEditModel
     {
-        private readonly GymManagerContext _db = new();
         public CabinetKey CabinetKey { get; private set; }
         public List<Gender> Genders => _db.Genders.OrderBy(p => p.GenderID).ToList();
+        private readonly GymManagerContext _db = new();
 
         public void SaveChanges()
         {
@@ -20,7 +20,7 @@ namespace GymManager.Models
 
         public CabinetKey SetEditObject(int cabinetKeyID)
         {
-            if (CabinetKey != null)
+            if(CabinetKey != null)
             {
                 throw new Exception("Object is exist!");
             }
@@ -38,9 +38,9 @@ namespace GymManager.Models
 
         public CabinetKey SetNewObject()
         {
-            if (CabinetKey != null)
+            if(CabinetKey != null)
             {
-                throw new Exception("Object is exist!");
+                throw new Exception("The object exists!");
             }
 
             CabinetKey = new CabinetKey

@@ -15,7 +15,7 @@ namespace GymManager.Common.Extensions
                 .FirstOrDefault()
                 .GetCustomAttribute<DisplayAttribute>()?
                 .GetName();
-            if (string.IsNullOrEmpty(displayName))
+            if(string.IsNullOrEmpty(displayName))
             {
                 displayName = enumValue.ToString();
             }

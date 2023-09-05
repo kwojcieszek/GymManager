@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GymManager.Models
+namespace GymManager.Common
 {
     public class DatabaseTestException : Exception
     {

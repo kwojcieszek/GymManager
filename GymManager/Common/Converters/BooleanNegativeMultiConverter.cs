@@ -10,9 +10,9 @@ namespace GymManager.Common.Converters
         {
             var result = false;
 
-            foreach (var value in values)
+            foreach(var value in values)
             {
-                if (value is bool v)
+                if(value is bool v)
                 {
                     result = result ^ v;
                 }

@@ -7,6 +7,7 @@
         {
             var dev = new IdentifierDeviceSerialPort(serialPortSettings.PortName, serialPortSettings.BaudRate,
                 new RfidReaderConverter(rfidReaderConverterType, endianness), suffixCrlf, maxLenghtData);
+
             return new IdentifierService(dev);
         }
     }

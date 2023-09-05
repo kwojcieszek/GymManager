@@ -35,7 +35,7 @@ namespace GymManager
             Dispatcher.UnhandledException += (sender, args) =>
             {
                 // If we are debugging, let Visual Studio handle the exception and take us to the code that threw it.
-                if (!Debugger.IsAttached)
+                if(!Debugger.IsAttached)
                 {
                     args.Handled = true;
                     ShowUnhandledException(args.Exception, "Dispatcher.UnhandledException", true);
@@ -48,7 +48,7 @@ namespace GymManager
             Current.DispatcherUnhandledException += (sender, args) =>
             {
                 // If we are debugging, let Visual Studio handle the exception and take us to the code that threw it.
-                if (!Debugger.IsAttached)
+                if(!Debugger.IsAttached)
                 {
                     args.Handled = true;
                     ShowUnhandledException(args.Exception, "Application.Current.DispatcherUnhandledException", true);

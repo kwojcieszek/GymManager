@@ -15,11 +15,6 @@ namespace GymManager.ViewModels
     public class StartViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closingCommand;
-        private ICommand _contentRenderedCommand;
-        private readonly StartModel _model = new();
-        private DispatcherTimer _timerStartDatabasesSettings;
-        private DispatcherTimer _timerStartMain;
 
         public ICommand ClosingCommand =>
             _closingCommand ??= new RelayCommand(
@@ -29,7 +24,7 @@ namespace GymManager.ViewModels
             _contentRenderedCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (_model.IsExistSettingsFile)
+                    if(_model.IsExistSettingsFile)
                     {
                         Start();
                     }
@@ -44,65 +39,11 @@ namespace GymManager.ViewModels
         public string Title => "GYM MANGER";
 
         public Window Window => Helper.GetWindow(this);
-
-        private void OnPropertyChange([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void Start(bool databasesSettings = false)
-        {
-            if (!databasesSettings)
-            {
-                Task.Factory.StartNew(() => _model.StartJobs());
-            }
-
-            _timerStartMain = new DispatcherTimer
-            {
-                Interval = new TimeSpan(0, 0, 0, 0, 10)
-            };
-            _timerStartMain.Tick += (o, e) => StartMainWiwndow();
-
-
-            _timerStartDatabasesSettings = new DispatcherTimer
-            {
-                Interval = new TimeSpan(0, 0, 0, 0, 10)
-            };
-            _timerStartDatabasesSettings.Tick += (o, e) => StartDatabasesSettingsWiwndow();
-
-            if (databasesSettings)
-            {
-                _timerStartDatabasesSettings.Start();
-            }
-        }
-
-        private void StartDatabasesSettingsWiwndow()
-        {
-            _timerStartDatabasesSettings.Stop();
-
-            var view = new DatabasesSettingsView();
-            var model = view.DataContext as DatabasesSettingsViewModel;
-            model.Owner = Window;
-            var result = view.ShowDialog();
-
-            if (result.HasValue && result.Value)
-            {
-                Start();
-            }
-            else
-            {
-                Application.Current.Shutdown();
-            }
-        }
-
-        private void StartMainWiwndow()
-        {
-            _timerStartMain.Stop();
-
-            Helper.Invoke(() => Window.Hide());
-
-            new MangerView().Show();
-        }
+        private ICommand _closingCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly StartModel _model = new();
+        private DispatcherTimer _timerStartDatabasesSettings;
+        private DispatcherTimer _timerStartMain;
 
         public StartViewModel()
         {
@@ -115,11 +56,11 @@ namespace GymManager.ViewModels
 
             _model.JobFinished += (sender, e) =>
             {
-                if (e.ResultValue != Results.OK && e.ResultValue == Results.OtherError)
+                if(e.ResultValue != Results.OK && e.ResultValue == Results.OtherError)
                 {
                     Task.Factory.StartNew(() =>
                     {
-                        for (var i = 0; i < 5; i++)
+                        for(var i = 0; i < 5; i++)
                         {
                             JobDescription =
                                 $"START SYSTEMU ZAKOŃCZONY NIEPOWODZENIEM\nAPLIKACJA ZAKOŃCZY PRACĘ ZA {5 - i} SEKUND";
@@ -137,7 +78,7 @@ namespace GymManager.ViewModels
                         }));
                     });
                 }
-                else if (e.ResultValue != Results.OK && e.ResultValue == Results.DatabaseConnectionError)
+                else if(e.ResultValue != Results.OK && e.ResultValue == Results.DatabaseConnectionError)
                 {
                     Task.Factory.StartNew(() =>
                     {
@@ -149,11 +90,70 @@ namespace GymManager.ViewModels
                             new ThreadStart(delegate { _timerStartDatabasesSettings.Start(); }));
                     });
                 }
-                else if (e.ResultValue == Results.OK)
+                else if(e.ResultValue == Results.OK)
                 {
                     _timerStartMain.Start();
                 }
             };
+        }
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Start(bool databasesSettings = false)
+        {
+            if(!databasesSettings)
+            {
+                Task.Factory.StartNew(() => _model.StartJobs());
+            }
+
+            _timerStartMain = new DispatcherTimer
+            {
+                Interval = new TimeSpan(0, 0, 0, 0, 10)
+            };
+            _timerStartMain.Tick += (o, e) => StartMainWiwndow();
+
+
+            _timerStartDatabasesSettings = new DispatcherTimer
+            {
+                Interval = new TimeSpan(0, 0, 0, 0, 10)
+            };
+            _timerStartDatabasesSettings.Tick += (o, e) => StartDatabasesSettingsWiwndow();
+
+            if(databasesSettings)
+            {
+                _timerStartDatabasesSettings.Start();
+            }
+        }
+
+        private void StartDatabasesSettingsWiwndow()
+        {
+            _timerStartDatabasesSettings.Stop();
+
+            var view = new DatabasesSettingsView();
+            var model = view.DataContext as DatabasesSettingsViewModel;
+            model.Owner = Window;
+            var result = view.ShowDialog();
+
+            if(result.HasValue && result.Value)
+            {
+                Start();
+            }
+            else
+            {
+                Application.Current.Shutdown();
+            }
+        }
+
+        private void StartMainWiwndow()
+        {
+            _timerStartMain.Stop();
+
+            Helper.Invoke(() => Window.Hide());
+
+            new MangerView().Show();
         }
     }
 }

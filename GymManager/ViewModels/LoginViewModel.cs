@@ -11,8 +11,6 @@ namespace GymManager.ViewModels
     public class LoginViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _cancelCommand;
-        private readonly LoginModel _model = new();
 
         public ICommand CancelCommand =>
             _cancelCommand ??= new RelayCommand(
@@ -23,10 +21,17 @@ namespace GymManager.ViewModels
         public string UserName { get; set; }
 
         public Window Window => Helper.GetWindow(this);
+        private ICommand _cancelCommand;
+        private readonly LoginModel _model = new();
+
+        public LoginViewModel()
+        {
+            LoginCommand = new RelayCommand(Login);
+        }
 
         public void LoginUser(string username, string password)
         {
-            if (_model.Login(username, password ?? string.Empty))
+            if(_model.Login(username, password ?? string.Empty))
             {
                 Window?.Close();
             }
@@ -42,9 +47,9 @@ namespace GymManager.ViewModels
 
         private void Login(object obj)
         {
-            if (obj is object[] user)
+            if(obj is object[] user)
             {
-                if (user.Length == 2 && user[0] is string userName && user[1] is string password)
+                if(user.Length == 2 && user[0] is string userName && user[1] is string password)
                 {
                     LoginUser(userName, password);
                 }
@@ -54,11 +59,6 @@ namespace GymManager.ViewModels
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public LoginViewModel()
-        {
-            LoginCommand = new RelayCommand(Login);
         }
     }
 }

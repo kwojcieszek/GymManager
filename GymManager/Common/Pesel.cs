@@ -7,7 +7,7 @@ namespace GymManager.Common
     {
         public DateTime? GetBirthDate(char[] pesel)
         {
-            if (pesel.Length != 11)
+            if(pesel.Length != 11)
             {
                 return null;
             }
@@ -21,7 +21,7 @@ namespace GymManager.Common
 
         public Gender? GetGender(char[] pesel)
         {
-            if (pesel.Length != 11)
+            if(pesel.Length != 11)
             {
                 return null;
             }
@@ -31,13 +31,13 @@ namespace GymManager.Common
 
         public bool IsValid(char[] pesel)
         {
-            if (pesel.Length != 11)
+            if(pesel.Length != 11)
             {
                 return false;
             }
 
             var sum = 0;
-            for (var i = 0; i < 10; i++)
+            for(var i = 0; i < 10; i++)
             {
                 sum += pesel[i].ToInt() * (1 + i % 2 * 2 + i / 2 % 2 * 6);
             }

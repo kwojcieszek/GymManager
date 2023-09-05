@@ -14,12 +14,6 @@ namespace GymManager.ViewModels
     public class EntriesRegistryViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closeCommand;
-        private DateTime _dateFrom = DateTime.Now.Date;
-        private DateTime _dateTo = DateTime.Now.Date;
-        private readonly EntriesRegistryModel _model = new();
-        private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
 
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
@@ -76,15 +70,21 @@ namespace GymManager.ViewModels
         public EntryRegistry SelectedItem { get; set; }
 
         public Window Window => Helper.GetWindow(this);
-
-        private void OnPropertyChange([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        private ICommand _closeCommand;
+        private DateTime _dateFrom = DateTime.Now.Date;
+        private DateTime _dateTo = DateTime.Now.Date;
+        private readonly EntriesRegistryModel _model = new();
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
 
         public EntriesRegistryViewModel()
         {
             _model.GetEntriesRegistry(_dateFrom, _dateTo);
+        }
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

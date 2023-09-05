@@ -64,10 +64,7 @@ namespace GymManager.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>("nvarchar(50)", maxLength: 50, nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DataTrackingOperations", x => x.DataTrackingOperationID);
-                });
+                constraints: table => { table.PrimaryKey("PK_DataTrackingOperations", x => x.DataTrackingOperationID); });
 
             migrationBuilder.CreateTable(
                 "MediaCarriers",

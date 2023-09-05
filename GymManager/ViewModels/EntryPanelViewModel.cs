@@ -17,29 +17,18 @@ namespace GymManager.ViewModels
     public class EntryPanelViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _changeCabinetKeyCommand;
-        private ICommand _contentRenderedCommand;
-
-        private readonly EntryPanelModel _model =
-            new((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue);
-
-        private int _taskStackMessage;
-#pragma warning disable CS0169
-#pragma warning disable IDE0051
-        private readonly DispatcherTimer _timer;
-#pragma warning restore IDE0051
-#pragma warning restore CS0169
-        private readonly int _timeVisibilityMessage = 10000;
+        public static string Time => DateTime.Now.ToLongTimeString();
+        public static int UnreadMessages => 0;
 
         public ICommand ChangeCabinetKeyCommand =>
             _changeCabinetKeyCommand ??= new RelayCommand(
                 x =>
                 {
-                    lock (_model)
+                    lock(_model)
                     {
                         var selectedItem = _model.LastEntryRegistry;
 
-                        if (selectedItem == null)
+                        if(selectedItem == null)
                         {
                             return;
                         }
@@ -49,7 +38,7 @@ namespace GymManager.ViewModels
 
                         var result = view.ShowDialog();
 
-                        if (result.HasValue && result.Value && dx?.SelectedItem != null)
+                        if(result.HasValue && result.Value && dx?.SelectedItem != null)
                         {
                             _model.ChangeCabinetKey(selectedItem, dx.SelectedItem);
 
@@ -63,9 +52,10 @@ namespace GymManager.ViewModels
 
         public ICommand ContentRenderedCommand
         {
-            get => _contentRenderedCommand ??= new RelayCommand(
-                x =>
-                {
+            get =>
+                _contentRenderedCommand ??= new RelayCommand(
+                    x =>
+                    {
 #if DEBUGA
                        this._timer = new DispatcherTimer();
                        this._timer.Interval = new TimeSpan(0, 0, 1);
@@ -86,15 +76,14 @@ namespace GymManager.ViewModels
                        //view.Show();
 
 #endif
-                });
+                    });
         }
 
         public Visibility EntryOK { get; set; } = Visibility.Hidden;
         public Visibility EntryStop { get; set; } = Visibility.Hidden;
         public Visibility EntryWaiting { get; set; }
 
-        public Visibility EntryWaitingNegative =>
-            EntryWaiting == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
+        public Visibility EntryWaitingNegative => EntryWaiting == Visibility.Visible ? Visibility.Hidden : Visibility.Visible;
 
         public Visibility Error { get; set; } = Visibility.Hidden;
         public string ErrorMessage { get; set; }
@@ -108,14 +97,35 @@ namespace GymManager.ViewModels
         public string Message3 { get; set; }
         public string Message4 { get; set; }
         public int NumersOfPeopeInGym => _model.NumersOfPeopeInGym;
-        public static string Time => DateTime.Now.ToLongTimeString();
-        public static int UnreadMessages => 0;
 
         public Visibility VisibleMemberPhoto { get; set; }
+        private ICommand _changeCabinetKeyCommand;
+        private ICommand _contentRenderedCommand;
+
+        private readonly EntryPanelModel _model =
+            new((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue);
+
+        private int _taskStackMessage;
+#pragma warning disable CS0169
+#pragma warning disable IDE0051
+        private readonly DispatcherTimer _timer;
+#pragma warning restore IDE0051
+#pragma warning restore CS0169
+        private readonly int _timeVisibilityMessage = 10000;
+
+        public EntryPanelViewModel()
+        {
+            _model.EventResult += EventResult;
+            _model.EventStateChanged += EventStateChanged;
+
+            Settings.App.SettingsChanged += (sender, args) => { OnPropertyChange(nameof(ImageLogoPath)); };
+
+            EntryWaiting = IsIdentifierDevice ? Visibility.Visible : Visibility.Hidden;
+        }
 
         private void EventResult(object sender, EventArgsResult e)
         {
-            if (e.Result.Message == IdentifierMessage.AccessEntry)
+            if(e.Result.Message == IdentifierMessage.AccessEntry)
             {
                 EntryOK = Visibility.Visible;
                 VisibleMemberPhoto = Visibility.Visible;
@@ -135,7 +145,7 @@ namespace GymManager.ViewModels
 
                 new Audio().Play("beep", "entry");
             }
-            else if (e.Result.Message == IdentifierMessage.AccessExit)
+            else if(e.Result.Message == IdentifierMessage.AccessExit)
             {
                 EntryOK = Visibility.Hidden;
                 ExitOK = Visibility.Visible;
@@ -159,34 +169,34 @@ namespace GymManager.ViewModels
                 VisibleMemberPhoto = Visibility.Hidden;
                 EntryWaiting = Visibility.Hidden;
 
-                if (e.Result.Message == IdentifierMessage.NoIdentifier)
+                if(e.Result.Message == IdentifierMessage.NoIdentifier)
                 {
                     Message1 = "BRAK DOSTĘPU";
                     Message2 = "NIEZNANY IDENTYFIKATOR";
                     Message3 = "";
                     Message4 = "";
                 }
-                else if (e.Result.Message == IdentifierMessage.PassExpiration ||
-                         e.Result.Message == IdentifierMessage.OutOfTime)
+                else if(e.Result.Message == IdentifierMessage.PassExpiration ||
+                        e.Result.Message == IdentifierMessage.OutOfTime)
                 {
                     Message1 = "BRAK DOSTĘPU";
                     Message3 =
                         $"CZŁONEK: {e.Result.Member.FirstName} {e.Result.Member.LastName} [{e.Result.Member.Id}]";
                     Message4 = "UWAGI:";
 
-                    if (e.Result.Message == IdentifierMessage.PassExpiration)
+                    if(e.Result.Message == IdentifierMessage.PassExpiration)
                     {
                         Message2 = e.Result.PassRegistry != null
                             ? $"KARNET STACIŁ WAŻNOŚĆ W DNIU: {e.Result.PassRegistry.EndDate:dd-MM-yyyy}"
                             : "BRAK KARNETU";
                     }
-                    else if (e.Result.Message == IdentifierMessage.OutOfTime)
+                    else if(e.Result.Message == IdentifierMessage.OutOfTime)
                     {
                         Message2 =
                             $"KARNET '{e.Result.PassRegistry.Pass.Name}' WAŻNY W GODZINACH OD {e.Result.PassRegistry.Pass.AccessTimeFrom:HH:mm} DO {e.Result.PassRegistry.Pass.AccessTimeTo:HH:mm}";
                     }
                 }
-                else if (e.Result.Message == IdentifierMessage.SubscriptionSuspension)
+                else if(e.Result.Message == IdentifierMessage.SubscriptionSuspension)
                 {
                     Message1 = "BRAK DOSTĘPU";
                     Message3 =
@@ -197,7 +207,7 @@ namespace GymManager.ViewModels
                         ? $"KARNET ZAWIESZONO DO DNIA {e.Result.PassRegistry.EndSuspensionDate:dd-MM-yyyy}"
                         : "BRAK KARNETU";
                 }
-                else if (e.Result.Message == IdentifierMessage.UnknowError)
+                else if(e.Result.Message == IdentifierMessage.UnknowError)
                 {
                     Message1 = "BRAK DOSTĘPU";
                     Message2 = "NIEZNANY BŁĄD";
@@ -209,7 +219,7 @@ namespace GymManager.ViewModels
             }
 
 
-            if (e.Result.Member != null)
+            if(e.Result.Member != null)
             {
                 MemberPhoto = _model.GetPhoto(e.Result.Member.MemberID);
             }
@@ -230,7 +240,7 @@ namespace GymManager.ViewModels
             OnPropertyChange(nameof(EntryWaitingNegative));
             OnPropertyChange(nameof(Error));
 
-            if (!Helper.GetApplicationActive())
+            if(!Helper.GetApplicationActive())
             {
                 Task.Factory.StartNew(() =>
                 {
@@ -260,13 +270,13 @@ namespace GymManager.ViewModels
 
                 _taskStackMessage--;
 
-                if (_taskStackMessage == 0)
+                if(_taskStackMessage == 0)
                 {
                     EntryOK = Visibility.Hidden;
                     ExitOK = Visibility.Hidden;
                     EntryStop = Visibility.Hidden;
 
-                    if (IsIdentifierDevice)
+                    if(IsIdentifierDevice)
                     {
                         EntryWaiting = Visibility.Visible;
                     }
@@ -288,7 +298,7 @@ namespace GymManager.ViewModels
 
         private void EventStateChanged(object sender, EventArgsStatus e)
         {
-            if (e.Status.IsWorking)
+            if(e.Status.IsWorking)
             {
                 Error = Visibility.Hidden;
                 EntryOK = Visibility.Hidden;
@@ -296,7 +306,7 @@ namespace GymManager.ViewModels
                 EntryStop = Visibility.Hidden;
                 VisibleMemberPhoto = Visibility.Hidden;
 
-                if (IsIdentifierDevice)
+                if(IsIdentifierDevice)
                 {
                     EntryWaiting = Visibility.Visible;
                 }
@@ -327,16 +337,6 @@ namespace GymManager.ViewModels
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public EntryPanelViewModel()
-        {
-            _model.EventResult += EventResult;
-            _model.EventStateChanged += EventStateChanged;
-
-            Settings.App.SettingsChanged += (sender, args) => { OnPropertyChange(nameof(ImageLogoPath)); };
-
-            EntryWaiting = IsIdentifierDevice ? Visibility.Visible : Visibility.Hidden;
         }
     }
 }

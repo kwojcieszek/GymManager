@@ -9,14 +9,13 @@ namespace GymManager.DbModels
 {
     public class GymManagerContext : DbContext
     {
-        private readonly DatabaseTypes _databaseType;
+        public static DatabaseTypes DefaultDatabaseType { get; set; }
 
         public DbSet<CabinetKey> CabinetKeys { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<DataTrackingDefinition> DataTrackingDefinitions { get; set; }
         public DbSet<DataTrackingOperation> DataTrackingOperations { get; set; }
         public DbSet<DataTracking> DataTrackings { get; set; }
-        public static DatabaseTypes DefaultDatabaseType { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<EntryRegistry> EntriesRegistry { get; set; }
         public DbSet<Gender> Genders { get; set; }
@@ -35,6 +34,17 @@ namespace GymManager.DbModels
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Tax> Taxes { get; set; }
         public DbSet<User> Users { get; set; }
+        private readonly DatabaseTypes _databaseType;
+
+        public GymManagerContext(DatabaseTypes databaseType)
+        {
+            _databaseType = databaseType;
+        }
+
+        public GymManagerContext()
+        {
+            _databaseType = DefaultDatabaseType;
+        }
 
         public virtual void Migrate()
         {
@@ -118,7 +128,7 @@ namespace GymManager.DbModels
         private TrackingDatabase Tracking<T>(TrackingDatabase tracker, IEnumerable<EntityEntry<T>> entityEntry)
             where T : class
         {
-            if (entityEntry is null)
+            if(entityEntry is null)
             {
                 throw new ArgumentNullException(nameof(entityEntry));
             }
@@ -126,11 +136,11 @@ namespace GymManager.DbModels
             var entities = from t in base.ChangeTracker.Entries<T>()
                 select t;
 
-            foreach (var entity in entities)
+            foreach(var entity in entities)
             {
                 var trackerOperations = TransalteStatus(entity.State);
 
-                if (trackerOperations.HasValue && trackerOperations.Value != TrackerOperations.Add)
+                if(trackerOperations.HasValue && trackerOperations.Value != TrackerOperations.Add)
                 {
                     tracker.TrackerFromDatabase<T>(entity.CurrentValues, trackerOperations.Value);
                 }
@@ -150,16 +160,6 @@ namespace GymManager.DbModels
                 EntityState.Unchanged => null,
                 _ => null
             };
-        }
-
-        public GymManagerContext(DatabaseTypes databaseType)
-        {
-            _databaseType = databaseType;
-        }
-
-        public GymManagerContext()
-        {
-            _databaseType = DefaultDatabaseType;
         }
     }
 }

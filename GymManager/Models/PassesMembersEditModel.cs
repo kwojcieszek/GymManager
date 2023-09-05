@@ -9,22 +9,22 @@ namespace GymManager.Models
 {
     public class PassesMembersEditModel
     {
-        private readonly GymManagerContext _db = new();
         public List<Pass> Passes => _db.Passes.ToList();
         public PassRegistry PassRegistry { get; private set; }
+        private readonly GymManagerContext _db = new();
 
         public string GetContinuationText()
         {
             var member = PassRegistry?.Member;
 
-            if (member == null)
+            if(member == null)
             {
                 return string.Empty;
             }
 
             var continuation = PassesHelper.ContinuousPass(member.MemberID, PassRegistry.StartDate);
 
-            if (continuation > 0)
+            if(continuation > 0)
             {
                 return continuation == 1 ? $"{continuation} MIESIĄC" : $"{continuation} MIESIĄCE";
             }
@@ -36,7 +36,7 @@ namespace GymManager.Models
         {
             var member = PassRegistry?.Member;
 
-            if (member == null)
+            if(member == null)
             {
                 return string.Empty;
             }
@@ -46,7 +46,7 @@ namespace GymManager.Models
             var summaryOfDaysSubscriptionSuspension =
                 PassesHelper.GetSummaryOfDaysSubscriptionSuspension(member.MemberID, DateTime.Now.Year, 0);
 
-            if (pass == null)
+            if(pass == null)
             {
                 return string.Empty;
             }
@@ -60,7 +60,7 @@ namespace GymManager.Models
             var identifier = _db.Identifiers
                 .FirstOrDefault(i => i.Key == IdentifierKey);
 
-            if (identifier != null)
+            if(identifier != null)
             {
                 return _db.Members
                     .Include(i => i.Pass)
@@ -77,7 +77,7 @@ namespace GymManager.Models
 
         public void SaveChanges()
         {
-            if (PassRegistry.PassID != 99)
+            if(PassRegistry.PassID != 99)
             {
                 PassesHelper.SetEndDate(PassRegistry);
             }
@@ -101,7 +101,7 @@ namespace GymManager.Models
 
         public PassRegistry SetNewObject(int memberID = 0)
         {
-            if (PassRegistry != null)
+            if(PassRegistry != null)
             {
                 throw new Exception("Object is exist!");
             }
@@ -116,7 +116,7 @@ namespace GymManager.Models
                 Continuation = true
             };
 
-            if (memberID > 0)
+            if(memberID > 0)
             {
                 SetPassRegistry(memberID);
             }
@@ -128,7 +128,7 @@ namespace GymManager.Models
 
         public void SetPassRegistry(int memberID)
         {
-            if (PassRegistry != null)
+            if(PassRegistry != null)
             {
                 var member = _db
                     .Members
@@ -138,7 +138,7 @@ namespace GymManager.Models
 
                 PassRegistry.Member = member;
 
-                if (member?.Pass != null)
+                if(member?.Pass != null)
                 {
                     PassRegistry.Pass = member.Pass;
                     PassRegistry.PassID = member.Pass.PassID;

@@ -10,21 +10,35 @@ namespace GymManager.Models
     {
         public event EventHandler<EventArgsResult> EventResult;
         public event EventHandler<EventArgsStatus> EventStateChanged;
-        private readonly EntryService _entryService = EntryService.GetInstance();
 
         public bool IsIdentifierDevice => EntryService.DefaultIdentifierDevices != IdentifierDevices.None;
 
-        public EntryRegistry LastEntryRegistry => new GymManagerContext()
-            .EntriesRegistry
-            .Where(d => d.EntryDate.Date == DateTime.Now.Date)
-            .Include(m => m.Member)
-            .Include(c => c.CabinetKey)
-            .OrderByDescending(r => r.EntryDate)
-            .Take(1).FirstOrDefault();
+        public EntryRegistry LastEntryRegistry =>
+            new GymManagerContext()
+                .EntriesRegistry
+                .Where(d => d.EntryDate.Date == DateTime.Now.Date)
+                .Include(m => m.Member)
+                .Include(c => c.CabinetKey)
+                .OrderByDescending(r => r.EntryDate)
+                .Take(1).FirstOrDefault();
 
-        public int NumersOfPeopeInGym => new GymManagerContext()
-            .EntriesRegistry
-            .Count(r => r.IsAcive);
+        public int NumersOfPeopeInGym =>
+            new GymManagerContext()
+                .EntriesRegistry
+                .Count(r => r.IsAcive);
+
+        private readonly EntryService _entryService = EntryService.GetInstance();
+
+        public EntryPanelModel(bool isDesignMode = false)
+        {
+            if(isDesignMode)
+            {
+                return;
+            }
+
+            _entryService.EventResult += (s, e) => EventResult?.Invoke(this, e);
+            _entryService.EventStateChanged += (s, e) => EventStateChanged?.Invoke(this, e);
+        }
 
         public void ChangeCabinetKey(EntryRegistry entryRegistry, CabinetKey cabinetKey)
         {
@@ -38,17 +52,6 @@ namespace GymManager.Models
                 .FirstOrDefault(m => m.MemberID == memberID);
 
             return photo != null ? photo.Data : new byte[] { };
-        }
-
-        public EntryPanelModel(bool isDesignMode = false)
-        {
-            if (isDesignMode)
-            {
-                return;
-            }
-
-            _entryService.EventResult += (s, e) => EventResult?.Invoke(this, e);
-            _entryService.EventStateChanged += (s, e) => EventStateChanged?.Invoke(this, e);
         }
     }
 }

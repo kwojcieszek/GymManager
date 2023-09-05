@@ -15,24 +15,6 @@ namespace GymManager.Common.DataGridExtensions
         private readonly Action _target;
 
         /// <summary>
-        ///     Ticks this instance to trigger the throttle.
-        /// </summary>
-        public void Tick()
-        {
-            Interlocked.Increment(ref _counter);
-
-            _dispatcher.BeginInvoke(_priority, (Action)delegate
-            {
-                if (Interlocked.Decrement(ref _counter) != 0)
-                {
-                    return;
-                }
-
-                _target();
-            });
-        }
-
-        /// <summary>
         ///     Initializes a new instance of the <see cref="DispatcherThrottle" /> class.
         /// </summary>
         /// <param name="priority">The priority of the dispatcher.</param>
@@ -41,6 +23,24 @@ namespace GymManager.Common.DataGridExtensions
         {
             _target = target;
             _priority = priority;
+        }
+
+        /// <summary>
+        ///     Ticks this instance to trigger the throttle.
+        /// </summary>
+        public void Tick()
+        {
+            Interlocked.Increment(ref _counter);
+
+            _dispatcher.BeginInvoke(_priority, (Action)delegate
+            {
+                if(Interlocked.Decrement(ref _counter) != 0)
+                {
+                    return;
+                }
+
+                _target();
+            });
         }
     }
 }

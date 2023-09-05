@@ -14,21 +14,16 @@ namespace GymManager.ViewModels
     public class PassEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private readonly PassEditModel _model = new();
-        private ICommand _passChanged;
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (CheckPass(_model.Pass))
+                    if(CheckPass(_model.Pass))
                     {
                         try
                         {
-                            if (_model.Pass.PassTime.PassTimeID != 99)
+                            if(_model.Pass.PassTime.PassTimeID != 99)
                             {
                                 _model.Pass.PassTimeDays = null;
                             }
@@ -37,9 +32,9 @@ namespace GymManager.ViewModels
 
                             Window.DialogResult = true;
                         }
-                        catch (Exception ex)
+                        catch(Exception ex)
                         {
-                            if (ex?.InnerException != null)
+                            if(ex?.InnerException != null)
                             {
                                 MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
                             }
@@ -55,7 +50,7 @@ namespace GymManager.ViewModels
             _contentRenderedCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (_model.Pass == null)
+                    if(_model.Pass == null)
                     {
                         Title = "DODAWANIE KARNETU";
 
@@ -93,6 +88,11 @@ namespace GymManager.ViewModels
         public List<Tax> Taxes => _model.Taxes;
         public string Title { get; set; }
         public Window Window => Helper.GetWindow(this);
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly PassEditModel _model = new();
+        private ICommand _passChanged;
 
         public void SetEditObject(int passID)
         {
@@ -104,41 +104,41 @@ namespace GymManager.ViewModels
             string filed = null;
             string message = null;
 
-            if (_model.Pass == null)
+            if(_model.Pass == null)
             {
                 return false;
             }
 
-            if (string.IsNullOrEmpty(pass.Name))
+            if(string.IsNullOrEmpty(pass.Name))
             {
                 filed = "NAZWA";
             }
-            else if (string.IsNullOrEmpty(pass.Description))
+            else if(string.IsNullOrEmpty(pass.Description))
             {
                 filed = "OPIS";
             }
-            else if (pass.Tax == null)
+            else if(pass.Tax == null)
             {
                 filed = "STAWKA VAT";
             }
-            else if (pass.PassTime == null)
+            else if(pass.PassTime == null)
             {
                 filed = "OKRES KARNETU";
             }
-            else if (pass.PassTime.PassTimeID == 99 && (pass.PassTimeDays == null || pass.PassTimeDays <= 0))
+            else if(pass.PassTime.PassTimeID == 99 && (pass.PassTimeDays == null || pass.PassTimeDays <= 0))
             {
                 filed = "OKRES DNI MUSI BYĆ ZDEFINIOWANY I WIĘKSZY OD ZERA";
             }
-            else if (pass.AccessTimeFrom == null && pass.AccessTimeTo != null)
+            else if(pass.AccessTimeFrom == null && pass.AccessTimeTo != null)
             {
                 filed = "OBOWIĄZUJE W GODZINACH OD";
             }
-            else if (pass.AccessTimeFrom != null && pass.AccessTimeTo == null)
+            else if(pass.AccessTimeFrom != null && pass.AccessTimeTo == null)
             {
                 filed = "OBOWIĄZUJE W GODZINACH DO";
             }
-            else if (pass.AccessTimeFrom != null && pass.AccessTimeTo != null &&
-                     pass.AccessTimeFrom.Value.TimeOfDay.TotalSeconds > pass.AccessTimeTo.Value.TimeOfDay.TotalSeconds)
+            else if(pass.AccessTimeFrom != null && pass.AccessTimeTo != null &&
+                    pass.AccessTimeFrom.Value.TimeOfDay.TotalSeconds > pass.AccessTimeTo.Value.TimeOfDay.TotalSeconds)
             {
                 message = "CZAS 'OBOWIĄZUJE W GODZINACH OD' JEST WIĘKSZY NIŻ\n'OBOWIĄZUJE W GODZINACH DO'!";
             }

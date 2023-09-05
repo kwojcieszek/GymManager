@@ -17,26 +17,12 @@ namespace GymManager.ViewModels
     public class MemberEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _addCommand;
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private ICommand _deleteCommand;
-        private ICommand _editCommand;
-        private readonly MemberEditModel _model = new();
-        private ICommand _peselCommand;
-        private ICommand _photoCameraCommand;
-        private ICommand _photoFileCommand;
-        private ICommand _photoRemoveCommand;
-        private ICommand _refreshCommand;
-        private ICommand _rfidCommand;
-        private ICommand _rfidRemoveCommand;
 
         public ICommand AddCommand =>
             _addCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (AddPassRegistry())
+                    if(AddPassRegistry())
                     {
                         OnPropertyChange(nameof(PassesRegistry));
                     }
@@ -46,7 +32,7 @@ namespace GymManager.ViewModels
             _applyCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (CheckMember(_model.Member))
+                    if(CheckMember(_model.Member))
                     {
                         try
                         {
@@ -54,7 +40,7 @@ namespace GymManager.ViewModels
 
                             Window.DialogResult = true;
                         }
-                        catch (Exception ex)
+                        catch(Exception ex)
                         {
                             MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
                         }
@@ -69,7 +55,7 @@ namespace GymManager.ViewModels
             _contentRenderedCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (_model.Member == null)
+                    if(_model.Member == null)
                     {
                         Title = "DODAWANIE CZŁONKA SIŁOWNI";
 
@@ -107,7 +93,7 @@ namespace GymManager.ViewModels
             _deleteCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (DeletePassRegistry())
+                    if(DeletePassRegistry())
                     {
                         OnPropertyChange(nameof(PassesRegistry));
                     }
@@ -117,7 +103,7 @@ namespace GymManager.ViewModels
             _editCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (EditPassRegistry())
+                    if(EditPassRegistry())
                     {
                         OnPropertyChange(nameof(PassesRegistry));
                     }
@@ -149,7 +135,7 @@ namespace GymManager.ViewModels
             _peselCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (_model.SetMemberPesel())
+                    if(_model.SetMemberPesel())
                     {
                         OnPropertyChange(nameof(Member));
                     }
@@ -159,7 +145,7 @@ namespace GymManager.ViewModels
         {
             get
             {
-                if (_model.PhotoData == null)
+                if(_model.PhotoData == null)
                 {
                     return new BitmapImage(new Uri($"{Path.ApplicationDirectory}\\Images\\NoPhoto.png"));
                 }
@@ -179,7 +165,7 @@ namespace GymManager.ViewModels
                         }
                         .Start();
 
-                    if (data is { Length: > 0 })
+                    if(data is { Length: > 0 })
                     {
                         _model.PhotoData = data;
 
@@ -197,7 +183,7 @@ namespace GymManager.ViewModels
                         Filter = "JPNG PNG|*.jpg;*.jpeg;*.png|JPEG (*.jpg;*.jpeg)|*.jpg;*.jpeg|PPNG (*.png)|*.png"
                     };
 
-                    if (op.ShowDialog() == true)
+                    if(op.ShowDialog() == true)
                     {
                         _model.PhotoData = Helper.ImageToByteArray(Image.FromFile(op.FileName));
 
@@ -228,9 +214,9 @@ namespace GymManager.ViewModels
                     };
                     view.ShowDialog();
 
-                    if (view.DataContext is RfidViewModel rfidViewModel)
+                    if(view.DataContext is RfidViewModel rfidViewModel)
                     {
-                        if (rfidViewModel.Identifier != null)
+                        if(rfidViewModel.Identifier != null)
                         {
                             IdentifierKey = rfidViewModel.Identifier;
                         }
@@ -252,6 +238,20 @@ namespace GymManager.ViewModels
         public string SummaryOfDaysSubscriptionSuspensionText { get; set; }
         public string Title { get; set; }
         public Window Window => Helper.GetWindow(this);
+        private ICommand _addCommand;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private ICommand _deleteCommand;
+        private ICommand _editCommand;
+        private readonly MemberEditModel _model = new();
+        private ICommand _peselCommand;
+        private ICommand _photoCameraCommand;
+        private ICommand _photoFileCommand;
+        private ICommand _photoRemoveCommand;
+        private ICommand _refreshCommand;
+        private ICommand _rfidCommand;
+        private ICommand _rfidRemoveCommand;
 
         public void SetEditObject(int memberID)
         {
@@ -266,9 +266,10 @@ namespace GymManager.ViewModels
                 var model = passEditView.DataContext as PassesMembersEditViewModel;
                 model.Owner = Window;
                 model.MemberInit = Member;
+
                 return passEditView.ShowDialog().Value;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(Window, ex.Message, true);
 
@@ -281,44 +282,44 @@ namespace GymManager.ViewModels
             string filed = null;
             string message = null;
 
-            if (_model.Member == null)
+            if(_model.Member == null)
             {
                 return false;
             }
 
-            if (string.IsNullOrEmpty(member.Id))
+            if(string.IsNullOrEmpty(member.Id))
             {
                 filed = "ID";
             }
-            else if (string.IsNullOrEmpty(member.FirstName))
+            else if(string.IsNullOrEmpty(member.FirstName))
             {
                 filed = "IMIE";
             }
-            else if (string.IsNullOrEmpty(member.LastName))
+            else if(string.IsNullOrEmpty(member.LastName))
             {
                 filed = "NAZWISKO";
             }
-            else if (member.Gender == null)
+            else if(member.Gender == null)
             {
                 filed = "PŁEĆ";
             }
-            else if (string.IsNullOrEmpty(member.Street1))
+            else if(string.IsNullOrEmpty(member.Street1))
             {
                 filed = "ADRES 1";
             }
-            else if (string.IsNullOrEmpty(member.City))
+            else if(string.IsNullOrEmpty(member.City))
             {
                 filed = "MIASTO";
             }
-            else if (string.IsNullOrEmpty(member.PostCode))
+            else if(string.IsNullOrEmpty(member.PostCode))
             {
                 filed = "KOD POCZTOWY";
             }
-            else if (!string.IsNullOrEmpty(member.Email) && !EmailValidator.EmailIsValid(member.Email))
+            else if(!string.IsNullOrEmpty(member.Email) && !EmailValidator.EmailIsValid(member.Email))
             {
                 message = $"EMAIL '{member.Email}' MA NIEPRAWIDŁOWY FORMAT";
             }
-            else if (!string.IsNullOrEmpty(member.Pesel) && !new Pesel().IsValid(member.Pesel.ToCharArray()))
+            else if(!string.IsNullOrEmpty(member.Pesel) && !new Pesel().IsValid(member.Pesel.ToCharArray()))
             {
                 message = $"PESEL '{member.Pesel}' MA NIEPRAWIDŁOWY FORMAT";
             }
@@ -334,7 +335,7 @@ namespace GymManager.ViewModels
 
         private bool DeletePassRegistry()
         {
-            if (SelectedPassRegistry == null)
+            if(SelectedPassRegistry == null)
             {
                 return false;
             }
@@ -342,13 +343,13 @@ namespace GymManager.ViewModels
             var message =
                 $"CZY NA PEWNO USUNĄĆ WPIS KARNETU\nID {SelectedPassRegistry.PassID} DLA {SelectedPassRegistry.Member.FirstName} {SelectedPassRegistry.Member.LastName} ?";
 
-            if (MessageView.MessageBoxQuestionView(Window, message))
+            if(MessageView.MessageBoxQuestionView(Window, message))
             {
                 try
                 {
                     new PassesMembersModel().Delete(SelectedPassRegistry);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
 
@@ -363,7 +364,7 @@ namespace GymManager.ViewModels
 
         private bool EditPassRegistry()
         {
-            if (SelectedPassRegistry == null)
+            if(SelectedPassRegistry == null)
             {
                 return false;
             }
@@ -374,9 +375,10 @@ namespace GymManager.ViewModels
                 var model = passEditView.DataContext as PassesMembersEditViewModel;
                 model.Owner = Window;
                 model.SetEditObject(SelectedPassRegistry.PassRegistryID);
+
                 return passEditView.ShowDialog().Value;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(Window, ex.Message, true);
 

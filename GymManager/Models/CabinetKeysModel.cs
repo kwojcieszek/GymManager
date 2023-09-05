@@ -8,13 +8,11 @@ namespace GymManager.Models
 {
     public class CabinetKeysModel
     {
-        private List<CabinetKey> _cabinetKeys;
-
         public List<CabinetKey> CabinetKeys
         {
             get
             {
-                if (_cabinetKeys == null)
+                if(_cabinetKeys == null)
                 {
                     GetCabinetKeys(OnlyActives);
                 }
@@ -24,10 +22,11 @@ namespace GymManager.Models
         }
 
         public bool OnlyActives { get; set; } = true;
+        private List<CabinetKey> _cabinetKeys;
 
         public void Delete(CabinetKey cabinetKey)
         {
-            if (cabinetKey == null)
+            if(cabinetKey == null)
             {
                 throw new ArgumentNullException("Element do usunięcia jest pusty.");
             }

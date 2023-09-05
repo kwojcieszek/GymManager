@@ -9,6 +9,15 @@ namespace GymManager.Common
         private readonly Stack<EventHandler<EventArgsIdentifier>> _events = new();
         private readonly IIdentifierDevice _identifierDevice;
 
+        public IdentifierService(IIdentifierDevice identifierDevice)
+        {
+            _identifierDevice = identifierDevice ?? throw new ArgumentNullException();
+
+            _identifierDevice.IdentifierReceived += IdentifierDevice_IdentifierReceived;
+
+            _identifierDevice.StateChanged += StateChangedEvent;
+        }
+
         public void EventPop()
         {
             _events.Pop();
@@ -31,7 +40,7 @@ namespace GymManager.Common
 
         private void IdentifierDevice_IdentifierReceived(object sender, EventArgsIdentifier e)
         {
-            if (_events.Count == 0)
+            if(_events.Count == 0)
             {
                 return;
             }
@@ -44,15 +53,6 @@ namespace GymManager.Common
         private void StateChangedEvent(object sender, EventArgsStatus e)
         {
             StateChanged?.Invoke(this, e);
-        }
-
-        public IdentifierService(IIdentifierDevice identifierDevice)
-        {
-            _identifierDevice = identifierDevice ?? throw new ArgumentNullException();
-
-            _identifierDevice.IdentifierReceived += IdentifierDevice_IdentifierReceived;
-
-            _identifierDevice.StateChanged += StateChangedEvent;
         }
     }
 }

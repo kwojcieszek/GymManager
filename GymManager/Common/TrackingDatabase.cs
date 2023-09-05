@@ -7,21 +7,21 @@ namespace GymManager.Common
 {
     public class TrackingDatabase
     {
-        public List<Tracker> _tracker = new();
         public List<Tracker> Tracker => _tracker;
+        public List<Tracker> _tracker = new();
 
         public void Save()
         {
-            if (_tracker.Count == 0)
+            if(_tracker.Count == 0)
             {
                 return;
             }
 
             var db = new GymManagerContext();
 
-            foreach (var track in _tracker)
+            foreach(var track in _tracker)
             {
-                if (track.TrackerValues.Count == 0)
+                if(track.TrackerValues.Count == 0)
                 {
                     continue;
                 }
@@ -37,7 +37,7 @@ namespace GymManager.Common
 
                 db.DataTrackings.Add(dataTracking);
 
-                foreach (var row in track.TrackerValues)
+                foreach(var row in track.TrackerValues)
                 {
                     db.DataTrackingDefinitions.Add(new DataTrackingDefinition
                     {
@@ -59,9 +59,9 @@ namespace GymManager.Common
             T oldRrow = null;
             var primaryKey = 0;
 
-            foreach (var property in current.Properties)
+            foreach(var property in current.Properties)
             {
-                if (!property.IsPrimaryKey())
+                if(!property.IsPrimaryKey())
                 {
                     continue;
                 }
@@ -69,10 +69,11 @@ namespace GymManager.Common
                 primaryKey = current.GetValue<int>(property);
 
                 oldRrow = db.Set<T>().Find(primaryKey);
+
                 break;
             }
 
-            if (oldRrow == null)
+            if(oldRrow == null)
             {
                 return;
             }
@@ -87,14 +88,14 @@ namespace GymManager.Common
 
             var isChangedData = false;
 
-            foreach (var property in current.Properties)
+            foreach(var property in current.Properties)
             {
                 var p = property.PropertyInfo.PropertyType;
 
-                if (p == typeof(string) || p == typeof(int) || p == typeof(long) || p == typeof(decimal) ||
-                    p == typeof(float) || p == typeof(bool) || p == typeof(double) ||
-                    p == typeof(int?) || p == typeof(long?) || p == typeof(decimal?) || p == typeof(float?) ||
-                    p == typeof(bool?) || p == typeof(double?))
+                if(p == typeof(string) || p == typeof(int) || p == typeof(long) || p == typeof(decimal) ||
+                   p == typeof(float) || p == typeof(bool) || p == typeof(double) ||
+                   p == typeof(int?) || p == typeof(long?) || p == typeof(decimal?) || p == typeof(float?) ||
+                   p == typeof(bool?) || p == typeof(double?))
                 {
                     var newValue = oldRrow.GetType().GetProperty(property.Name).GetValue(obj);
                     var oldValue = oldRrow.GetType().GetProperty(property.Name).GetValue(oldRrow);
@@ -106,14 +107,14 @@ namespace GymManager.Common
                         NewValue = operation == TrackerOperations.Delete ? string.Empty : $"{newValue}"
                     });
 
-                    if ($"{oldValue}" != $"{newValue}" || operation == TrackerOperations.Delete)
+                    if($"{oldValue}" != $"{newValue}" || operation == TrackerOperations.Delete)
                     {
                         isChangedData = true;
                     }
                 }
             }
 
-            if (isChangedData)
+            if(isChangedData)
             {
                 _tracker.Add(track);
             }

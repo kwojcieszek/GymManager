@@ -4,13 +4,13 @@ namespace GymManager.DbModels.Engines
 {
     public class MemoryContext : GymManagerContext
     {
+        public MemoryContext() : base(DatabaseTypes.Memory)
+        {
+        }
+
         public override void Migrate()
         {
             base.Migrate();
-        }
-
-        public MemoryContext() : base(DatabaseTypes.Memory)
-        {
         }
     }
 }

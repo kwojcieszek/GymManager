@@ -76,10 +76,7 @@ namespace GymManager.Migrations.PostgreSql
                             NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>("character varying(50)", maxLength: 50, nullable: false)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DataTrackingOperations", x => x.DataTrackingOperationID);
-                });
+                constraints: table => { table.PrimaryKey("PK_DataTrackingOperations", x => x.DataTrackingOperationID); });
 
             migrationBuilder.CreateTable(
                 "Genders",

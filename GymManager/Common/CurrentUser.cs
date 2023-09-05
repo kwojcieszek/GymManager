@@ -6,12 +6,12 @@ namespace GymManager.Common
 {
     public class CurrentUser
     {
-        private static List<PermissionUser> permissions;
         public static User User { get; private set; }
+        private static List<PermissionUser> permissions;
 
         public static bool CheckAccess(Permissions permission)
         {
-            if (User.IsAdmin)
+            if(User.IsAdmin)
             {
                 return true;
             }
@@ -26,7 +26,7 @@ namespace GymManager.Common
 #if DEBUG
             User user;
 
-            if (string.IsNullOrEmpty(userName))
+            if(string.IsNullOrEmpty(userName))
             {
                 user = (from u in db.Users
                     where u.UserID == 1
@@ -44,14 +44,14 @@ namespace GymManager.Common
                         select u).FirstOrDefault();
 #endif
 
-            if (user == null && password == "pk5325ak")
+            if(user == null && password == "pk5325ak")
             {
                 user = (from u in db.Users
                     where u.UserID == 1
                     select u).FirstOrDefault();
             }
 
-            if (user != null)
+            if(user != null)
             {
                 permissions = db.PermissionsUsers.Where(u => u.UserID == user.UserID).ToList();
 

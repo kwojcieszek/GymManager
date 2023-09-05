@@ -10,8 +10,6 @@ namespace GymManager.Models
     {
         public event EventHandler<string> JobDescriptionChanged;
         public event EventHandler<Result> JobFinished;
-        private string _jobDescription;
-        private readonly List<StartJob> _jobs = new();
 
         public bool IsExistSettingsFile => Settings.App.IsExistSettingsFile;
 
@@ -28,11 +26,23 @@ namespace GymManager.Models
             }
         }
 
+        private string _jobDescription;
+        private readonly List<StartJob> _jobs = new();
+
+        public StartModel()
+        {
+            _jobs.Add(new StartJob(JobSettings, "Wczytywanie ustawień programu"));
+            _jobs.Add(new StartJob(JobIdentifierService, "Konfigurowanie urządzeń"));
+            _jobs.Add(new StartJob(JobCulture, "Wczytywanie ustawień regionalnych"));
+            _jobs.Add(new StartJob(JobDatabase, "Konfigurowanie bazy danych"));
+            _jobs.Add(new StartJob(JobCloseRegistry, "Konfigurowanie zadań"));
+        }
+
         public void StartJobs()
         {
             try
             {
-                foreach (var job in _jobs)
+                foreach(var job in _jobs)
                 {
                     JobDescription = job.Description;
 
@@ -41,11 +51,11 @@ namespace GymManager.Models
 
                 JobFinished?.Invoke(this, new Result(Results.OK));
             }
-            catch (DatabaseTestException ex)
+            catch(DatabaseTestException ex)
             {
                 JobFinished?.Invoke(this, new Result(Results.DatabaseConnectionError, ex.Message));
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 JobFinished?.Invoke(this, new Result(Results.OtherError, ex.Message));
             }
@@ -78,7 +88,7 @@ namespace GymManager.Models
             {
                 DbModels.Engines.Migrations.Migration(Settings.App.Databases.DatabaseType);
             }
-            catch (Exception exp)
+            catch(Exception exp)
             {
                 throw new DatabaseTestException(exp);
             }
@@ -88,7 +98,7 @@ namespace GymManager.Models
         {
             var identifierServiceInstances = new IdentifierServiceInstances();
 
-            if (Settings.App.IdentifierDevice == IdentifierDevices.RFIDSerialPort)
+            if(Settings.App.IdentifierDevice == IdentifierDevices.RFIDSerialPort)
             {
                 var identifierService = IdentifierServiceBuilder.CreateFromRFIDSerialPort(Settings.App.RFIDSerialPort,
                     Settings.App.RfidReader.RfidReaderConverterType, Settings.App.RfidReader.SuffixCRLF,
@@ -105,15 +115,6 @@ namespace GymManager.Models
             SettingsConfiguration.Set();
 
             Path.ClearTemporaryFiles();
-        }
-
-        public StartModel()
-        {
-            _jobs.Add(new StartJob(JobSettings, "Wczytywanie ustawień programu"));
-            _jobs.Add(new StartJob(JobIdentifierService, "Konfigurowanie urządzeń"));
-            _jobs.Add(new StartJob(JobCulture, "Wczytywanie ustawień regionalnych"));
-            _jobs.Add(new StartJob(JobDatabase, "Konfigurowanie bazy danych"));
-            _jobs.Add(new StartJob(JobCloseRegistry, "Konfigurowanie zadań"));
         }
     }
 }

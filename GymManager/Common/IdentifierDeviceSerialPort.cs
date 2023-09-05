@@ -11,6 +11,9 @@ namespace GymManager.Common
     {
         public event EventHandler<EventArgsIdentifier> IdentifierReceived;
         public event EventHandler<EventArgsStatus> StateChanged;
+
+        private const int lastKeyTimeoutMilisecound = 1000;
+        private const int recivedTimeoutMilisecound = 500;
         private bool _isError;
         private bool _isStarted;
         private string _lastKey;
@@ -23,9 +26,19 @@ namespace GymManager.Common
         private long _timeLastKey;
         private long _timeRecivedLastData;
 
+        public IdentifierDeviceSerialPort(string portName, int baudRate, RfidReaderConverter readerConverter,
+            bool suffixCrlf, int maxLenghtData)
+        {
+            _readerConverter = readerConverter;
+            _maxLenghtData = maxLenghtData;
+            _suffixCrlf = suffixCrlf;
+
+            _serialDevice = new GodSerialPort(portName, baudRate, 0);
+        }
+
         public void Start()
         {
-            if (_isStarted)
+            if(_isStarted)
             {
                 return;
             }
@@ -34,15 +47,15 @@ namespace GymManager.Common
 
             _startTask = new Task(() =>
             {
-                while (_isStarted)
+                while(_isStarted)
                 {
                     try
                     {
-                        if (!_serialDevice.IsOpen || _isError)
+                        if(!_serialDevice.IsOpen || _isError)
                         {
                             _serialDevice.Open();
 
-                            if (_serialDevice.IsOpen)
+                            if(_serialDevice.IsOpen)
                             {
                                 StateChanged?.Invoke(this, new EventArgsStatus(new StatusDevice(string.Empty, true)));
 
@@ -57,14 +70,14 @@ namespace GymManager.Common
                             }
                         }
 
-                        if (_serialDevice.IsOpen)
+                        if(_serialDevice.IsOpen)
                         {
                             DataReceived(_serialDevice.Read());
                         }
 
                         Thread.Sleep(50);
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         _isError = true;
 
@@ -89,13 +102,13 @@ namespace GymManager.Common
 
         private void DataReceived(byte[] recivedData)
         {
-            if (recivedData != null && recivedData.Length > 0 && _recivedData.Count > 0 &&
-                new TimeSpan(DateTime.Now.Ticks - _timeRecivedLastData).TotalMilliseconds > recivedTimeoutMilisecound)
+            if(recivedData != null && recivedData.Length > 0 && _recivedData.Count > 0 &&
+               new TimeSpan(DateTime.Now.Ticks - _timeRecivedLastData).TotalMilliseconds > recivedTimeoutMilisecound)
             {
                 _recivedData.Clear();
             }
 
-            if (recivedData != null && recivedData.Length > 0)
+            if(recivedData != null && recivedData.Length > 0)
             {
                 _recivedData.AddRange(recivedData);
                 _timeRecivedLastData = DateTime.Now.Ticks;
@@ -105,17 +118,18 @@ namespace GymManager.Common
                 return;
             }
 
-            if (_recivedData.Count > _maxLenghtData)
+            if(_recivedData.Count > _maxLenghtData)
             {
                 _recivedData.Clear();
+
                 return;
             }
 
             string keyString = null;
 
-            if (_suffixCrlf)
+            if(_suffixCrlf)
             {
-                if (IsCrlf(_recivedData))
+                if(IsCrlf(_recivedData))
                 {
                     keyString = _readerConverter.Convert(_readerConverter.RemoveCrlf(_recivedData.ToArray()));
                 }
@@ -125,15 +139,15 @@ namespace GymManager.Common
                 keyString = _readerConverter.Convert(_recivedData.ToArray());
             }
 
-            if (keyString == null)
+            if(keyString == null)
             {
                 return;
             }
 
             _recivedData.Clear();
 
-            if (keyString == _lastKey && new TimeSpan(DateTime.Now.Ticks - _timeLastKey).TotalMilliseconds <
-                lastKeyTimeoutMilisecound)
+            if(keyString == _lastKey && new TimeSpan(DateTime.Now.Ticks - _timeLastKey).TotalMilliseconds <
+               lastKeyTimeoutMilisecound)
             {
                 return;
             }
@@ -148,19 +162,6 @@ namespace GymManager.Common
         private bool IsCrlf(List<byte> data)
         {
             return data[data.Count - 2] == 0x0d && data[data.Count - 1] == 0x0a ? true : false;
-        }
-
-        private const int lastKeyTimeoutMilisecound = 1000;
-        private const int recivedTimeoutMilisecound = 500;
-
-        public IdentifierDeviceSerialPort(string portName, int baudRate, RfidReaderConverter readerConverter,
-            bool suffixCrlf, int maxLenghtData)
-        {
-            _readerConverter = readerConverter;
-            _maxLenghtData = maxLenghtData;
-            _suffixCrlf = suffixCrlf;
-
-            _serialDevice = new GodSerialPort(portName, baudRate, 0);
         }
     }
 }

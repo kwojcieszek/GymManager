@@ -10,13 +10,11 @@ namespace GymManager.Models
 {
     public class DataTrackingsModel
     {
-        private List<DataTracking> _dataTrackings;
-
         public List<DataTracking> DataTrackings
         {
             get
             {
-                if (_dataTrackings == null)
+                if(_dataTrackings == null)
                 {
                     GetDataTrackings();
                 }
@@ -25,9 +23,11 @@ namespace GymManager.Models
             }
         }
 
+        private List<DataTracking> _dataTrackings;
+
         public List<DataTracking> GetDataTrackings(DateTime? dateFrom = null, DateTime? dateTo = null)
         {
-            if (dateFrom == null || dateTo == null)
+            if(dateFrom == null || dateTo == null)
             {
                 _dataTrackings = new GymManagerContext()
                     .DataTrackings

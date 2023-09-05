@@ -15,13 +15,6 @@ namespace GymManager.ViewModels
     public class DataTrackingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closeCommand;
-        private DateTime _dateFrom = DateTime.Now.Date.AddMonths(-1);
-        private DateTime _dateTo = DateTime.Now.Date;
-        private readonly DataTrackingsModel _model = new();
-        private ICommand _previewCommand;
-        private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
 
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
@@ -60,7 +53,7 @@ namespace GymManager.ViewModels
             _previewCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (SelectedItem == null)
+                    if(SelectedItem == null)
                     {
                         return;
                     }
@@ -73,7 +66,7 @@ namespace GymManager.ViewModels
                         model.DataTracking = SelectedItem;
                         dataTrackingsPreviewView.ShowDialog();
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         MessageView.MessageBoxInfoView(Window, ex.Message, true);
                     }
@@ -101,15 +94,22 @@ namespace GymManager.ViewModels
         public DataTracking SelectedItem { get; set; }
 
         public Window Window => Helper.GetWindow(this);
-
-        private void OnPropertyChange([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        private ICommand _closeCommand;
+        private DateTime _dateFrom = DateTime.Now.Date.AddMonths(-1);
+        private DateTime _dateTo = DateTime.Now.Date;
+        private readonly DataTrackingsModel _model = new();
+        private ICommand _previewCommand;
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
 
         public DataTrackingsViewModel()
         {
             _model.GetDataTrackings(_dateFrom, _dateTo);
+        }
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

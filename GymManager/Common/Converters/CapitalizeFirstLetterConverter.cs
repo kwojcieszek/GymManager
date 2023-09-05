@@ -19,9 +19,10 @@ namespace GymManager.Common.Converters
             // this will be called after the textbox loses focus (in this case) and
             // before its value is passed to the property setter, so we make our
             // change here
-            if (value is string v && v.Length > 0)
+            if(value is string v && v.Length > 0)
             {
                 var castValue = (string)value;
+
                 return char.ToUpper(castValue[0]) + castValue.Substring(1);
             }
 

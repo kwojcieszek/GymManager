@@ -11,6 +11,7 @@ namespace GymManager.Common.Converters
         {
             var myEnum = (Enum)value;
             var display = GetEnumDisplay(myEnum);
+
             return display;
         }
 
@@ -25,12 +26,13 @@ namespace GymManager.Common.Converters
 
             var attribArray = fieldInfo.GetCustomAttributes(false);
 
-            if (attribArray.Length == 0)
+            if(attribArray.Length == 0)
             {
                 return enumObj.ToString();
             }
 
             var attrib = attribArray[0] as DisplayAttribute;
+
             return attrib.Name;
         }
     }

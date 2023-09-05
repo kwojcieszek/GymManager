@@ -8,7 +8,7 @@ namespace GymManager.Common
 
         public static bool EmailIsValid(object emailAddress)
         {
-            if (emailAddress == null || !(emailAddress is string address))
+            if(emailAddress == null || !(emailAddress is string address))
             {
                 return false;
             }
@@ -20,9 +20,9 @@ namespace GymManager.Common
 
         public static bool EmailIsValid(object[] emailAddress)
         {
-            foreach (var emailAddressItem in emailAddress)
+            foreach(var emailAddressItem in emailAddress)
             {
-                if (!EmailIsValid(emailAddressItem))
+                if(!EmailIsValid(emailAddressItem))
                 {
                     return false;
                 }

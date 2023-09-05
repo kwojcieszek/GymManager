@@ -15,27 +15,17 @@ namespace GymManager.ViewModels
     public class PassesMembersViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _addCommand;
-        private ICommand _closeCommand;
-        private DateTime _dateFrom = DateTime.Now.Date;
-        private DateTime _dateTo = DateTime.Now.Date;
-        private ICommand _deleteCommand;
-        private ICommand _editCommand;
-        private readonly PassesMembersModel _model = new();
-        private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
-        private ICommand _searchTextCommand;
 
         public ICommand AddCommand =>
             _addCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddPassesRegistry))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddPassesRegistry))
                     {
                         return;
                     }
 
-                    if (Add())
+                    if(Add())
                     {
                         _model.GetPassRegistry(DateFrom, DateTo);
                         OnPropertyChange(nameof(PassesRegistry));
@@ -72,12 +62,12 @@ namespace GymManager.ViewModels
             _deleteCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeletePassesRegistry))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeletePassesRegistry))
                     {
                         return;
                     }
 
-                    if (Delete())
+                    if(Delete())
                     {
                         _model.GetPassRegistry(DateFrom, DateTo);
                         OnPropertyChange(nameof(PassesRegistry));
@@ -88,12 +78,12 @@ namespace GymManager.ViewModels
             _editCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditPassesRegistry))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditPassesRegistry))
                     {
                         return;
                     }
 
-                    if (Edit())
+                    if(Edit())
                     {
                         _model.GetPassRegistry(DateFrom, DateTo);
                         OnPropertyChange(nameof(PassesRegistry));
@@ -132,6 +122,21 @@ namespace GymManager.ViewModels
         public PassRegistry SelectedItem { get; set; }
 
         public Window Window => Helper.GetWindow(this);
+        private ICommand _addCommand;
+        private ICommand _closeCommand;
+        private DateTime _dateFrom = DateTime.Now.Date;
+        private DateTime _dateTo = DateTime.Now.Date;
+        private ICommand _deleteCommand;
+        private ICommand _editCommand;
+        private readonly PassesMembersModel _model = new();
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
+        private ICommand _searchTextCommand;
+
+        public PassesMembersViewModel()
+        {
+            _model.GetPassRegistry(DateFrom, DateTo);
+        }
 
         public bool Add(Window window = null)
         {
@@ -144,10 +149,10 @@ namespace GymManager.ViewModels
                 model.Owner = window;
                 var result = passEditView.ShowDialog().Value;
 
-                if (result && model.PassRegistry.Pass.AskAddEntry.HasValue && model.PassRegistry.Pass.AskAddEntry.Value)
+                if(result && model.PassRegistry.Pass.AskAddEntry.HasValue && model.PassRegistry.Pass.AskAddEntry.Value)
                 {
-                    if (MessageView.MessageBoxQuestionView(window,
-                            $"CZY CHCESZ DODAĆ WEJŚCIE DLA CZŁONKA\n{model.PassRegistry.Member.FirstName} {model.PassRegistry.Member.LastName} [{model.PassRegistry.Member.Id}]?"))
+                    if(MessageView.MessageBoxQuestionView(window,
+                           $"CZY CHCESZ DODAĆ WEJŚCIE DLA CZŁONKA\n{model.PassRegistry.Member.FirstName} {model.PassRegistry.Member.LastName} [{model.PassRegistry.Member.Id}]?"))
                     {
                         var entryService = EntryService.GetInstance();
 
@@ -157,7 +162,7 @@ namespace GymManager.ViewModels
 
                 return result;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(window, ex.Message, true);
 
@@ -167,7 +172,7 @@ namespace GymManager.ViewModels
 
         private bool Delete()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
@@ -175,13 +180,13 @@ namespace GymManager.ViewModels
             var message =
                 $"CZY NA PEWNO USUNĄĆ WPIS KARNETU\nID {SelectedItem.PassID} DLA {SelectedItem.Member.FirstName} {SelectedItem.Member.LastName} ?";
 
-            if (MessageView.MessageBoxQuestionView(Window, message))
+            if(MessageView.MessageBoxQuestionView(Window, message))
             {
                 try
                 {
                     _model.Delete(SelectedItem);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
 
@@ -196,7 +201,7 @@ namespace GymManager.ViewModels
 
         private bool Edit()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
@@ -207,9 +212,10 @@ namespace GymManager.ViewModels
                 var model = passEditView.DataContext as PassesMembersEditViewModel;
                 model.Owner = Window;
                 model.SetEditObject(SelectedItem.PassRegistryID);
+
                 return passEditView.ShowDialog().Value;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(Window, ex.Message, true);
 
@@ -220,11 +226,6 @@ namespace GymManager.ViewModels
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public PassesMembersViewModel()
-        {
-            _model.GetPassRegistry(DateFrom, DateTo);
         }
     }
 }

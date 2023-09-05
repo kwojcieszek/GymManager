@@ -9,17 +9,13 @@ namespace GymManager.ViewModels
 {
     public class ChangePasswordViewModel
     {
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private readonly UserEditModel _model = new();
-
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
                 x =>
                 {
                     try
                     {
-                        if (CheckUser())
+                        if(CheckUser())
                         {
                             _model.ChangePassword(CurrentUser.User.UserID, Password1);
 
@@ -28,7 +24,7 @@ namespace GymManager.ViewModels
                             Window.DialogResult = true;
                         }
                     }
-                    catch (Exception ex)
+                    catch(Exception ex)
                     {
                         MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
                     }
@@ -49,29 +45,32 @@ namespace GymManager.ViewModels
         public string Password1 { get; set; }
         public string Password2 { get; set; }
         public Window Window => Helper.GetWindow(this);
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private readonly UserEditModel _model = new();
 
         private bool CheckUser()
         {
             string filed = null;
             string message = null;
 
-            if (string.IsNullOrEmpty(CurrentPassword))
+            if(string.IsNullOrEmpty(CurrentPassword))
             {
                 filed = "OBECNE HASŁO";
             }
-            else if (string.IsNullOrEmpty(Password1) || string.IsNullOrEmpty(Password2))
+            else if(string.IsNullOrEmpty(Password1) || string.IsNullOrEmpty(Password2))
             {
                 filed = "NOWE HASŁO";
             }
-            else if (!_model.CheckCorrectPassword(_model.GetUser(CurrentUser.User.UserID), CurrentPassword))
+            else if(!_model.CheckCorrectPassword(_model.GetUser(CurrentUser.User.UserID), CurrentPassword))
             {
                 message = "OBECNE HASŁO JEST NIEPRAWIDŁOWE";
             }
-            else if (Password1 != Password2)
+            else if(Password1 != Password2)
             {
                 message = "POLA HASŁA NIE POSIADJĄ TEGO SAMEGO HASŁA";
             }
-            else if (Password1.Length < _model.PasswordMinLenght)
+            else if(Password1.Length < _model.PasswordMinLenght)
             {
                 message = $"ZBYT KRÓTKIE HASŁO\nMINIMALNA DŁUGOŚĆ HASŁA WYNOSI {_model.PasswordMinLenght} ZNAKÓW";
             }

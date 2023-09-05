@@ -14,7 +14,7 @@ namespace GymManager.Common
 
         public void ChangeCabinetKey(EntryRegistry entryRegistry, CabinetKey cabinetKey)
         {
-            if (entryRegistry == null)
+            if(entryRegistry == null)
             {
                 return;
             }
@@ -36,9 +36,9 @@ namespace GymManager.Common
                 .EntriesRegistry
                 .Where(e => e.IsAcive);
 
-            foreach (var entry in entryRegistry)
+            foreach(var entry in entryRegistry)
             {
-                if (new TimeSpan(DateTime.Now.Ticks - entry.EntryDate.Ticks).TotalMinutes > timeoutTinutes)
+                if(new TimeSpan(DateTime.Now.Ticks - entry.EntryDate.Ticks).TotalMinutes > timeoutTinutes)
                 {
                     entry.IsAcive = false;
                     db.EntriesRegistry.Update(entry);
@@ -58,7 +58,7 @@ namespace GymManager.Common
                 .Identifiers
                 .FirstOrDefault(i => i.IsAcive && i.Key == key);
 
-            if (identifier == null)
+            if(identifier == null)
             {
                 LastIdentifierResult =
                     idresult = new IdentifierResult(IdentifierMessage.NoIdentifier, null, null, null, null, null);
@@ -96,7 +96,7 @@ namespace GymManager.Common
                 .EntriesRegistry
                 .Count(e => e.MemberID == memberID && e.IsAcive);
 
-            if (access && checkAndWrite)
+            if(access && checkAndWrite)
             {
                 LastIdentifierResult =
                     idresult = CreateEntry(identifier, null, passesRegistry.FirstOrDefault(), member);
@@ -104,9 +104,9 @@ namespace GymManager.Common
                 return idresult;
             }
 
-            if (activeEntries > 0)
+            if(activeEntries > 0)
             {
-                if (checkAndWrite)
+                if(checkAndWrite)
                 {
                     LastIdentifierResult =
                         idresult = CreateEntry(identifier, null, passesRegistry.FirstOrDefault(), member);
@@ -120,23 +120,23 @@ namespace GymManager.Common
                 return idresult;
             }
 
-            foreach (var passRegistry in passesRegistry)
+            foreach(var passRegistry in passesRegistry)
             {
-                if (passRegistry.EndDate.HasValue && DateTime.Now.Date >= passRegistry.StartDate.Date &&
-                    DateTime.Now.Date <= passRegistry.EndDate.Value.Date)
+                if(passRegistry.EndDate.HasValue && DateTime.Now.Date >= passRegistry.StartDate.Date &&
+                   DateTime.Now.Date <= passRegistry.EndDate.Value.Date)
                 {
                     var pass = passRegistry.Pass;
 
                     //suspended
-                    if (passRegistry.Suspension && passRegistry.StartSuspensionDate.HasValue &&
-                        passRegistry.EndSuspensionDate.HasValue &&
-                        DateTime.Now.Date >= passRegistry.StartSuspensionDate.Value.Date &&
-                        DateTime.Now.Date <= passRegistry.EndSuspensionDate.Value.Date)
+                    if(passRegistry.Suspension && passRegistry.StartSuspensionDate.HasValue &&
+                       passRegistry.EndSuspensionDate.HasValue &&
+                       DateTime.Now.Date >= passRegistry.StartSuspensionDate.Value.Date &&
+                       DateTime.Now.Date <= passRegistry.EndSuspensionDate.Value.Date)
                     {
                         idresult = new IdentifierResult(IdentifierMessage.SubscriptionSuspension, null, member,
                             passRegistry, null, endOfPassesRegistry.FirstOrDefault());
 
-                        if (checkAndWrite)
+                        if(checkAndWrite)
                         {
                             LastIdentifierResult = idresult;
                         }
@@ -145,15 +145,15 @@ namespace GymManager.Common
                     }
 
                     //Check time
-                    if (pass.AccessTimeFrom.HasValue && pass.AccessTimeTo.HasValue &&
-                        (DateTime.Now.TimeOfDay.TotalSeconds <
-                         pass.AccessTimeFrom.Value.TimeOfDay.TotalSeconds ||
-                         DateTime.Now.TimeOfDay.TotalSeconds > pass.AccessTimeTo.Value.TimeOfDay.TotalSeconds))
+                    if(pass.AccessTimeFrom.HasValue && pass.AccessTimeTo.HasValue &&
+                       (DateTime.Now.TimeOfDay.TotalSeconds <
+                        pass.AccessTimeFrom.Value.TimeOfDay.TotalSeconds ||
+                        DateTime.Now.TimeOfDay.TotalSeconds > pass.AccessTimeTo.Value.TimeOfDay.TotalSeconds))
                     {
                         idresult = new IdentifierResult(IdentifierMessage.OutOfTime, null, member, passRegistry, null,
                             endOfPassesRegistry.FirstOrDefault());
 
-                        if (checkAndWrite)
+                        if(checkAndWrite)
                         {
                             LastIdentifierResult = idresult;
                         }
@@ -161,7 +161,7 @@ namespace GymManager.Common
                         return idresult;
                     }
 
-                    if (checkAndWrite)
+                    if(checkAndWrite)
                     {
                         LastIdentifierResult = idresult =
                             CreateEntry(identifier, passRegistry, passesRegistry.FirstOrDefault(), member);
@@ -180,7 +180,7 @@ namespace GymManager.Common
                 passesRegistry.FirstOrDefault(),
                 null, endOfPassesRegistry.FirstOrDefault());
 
-            if (checkAndWrite)
+            if(checkAndWrite)
             {
                 LastIdentifierResult = idresult;
             }
@@ -201,7 +201,7 @@ namespace GymManager.Common
             var member = db.Members
                 .FirstOrDefault(m => m.MemberID == entryRegistry.MemberID);
 
-            if (entryRegistry!= null && entryRegistry.CabinetKeyID.HasValue)
+            if(entryRegistry != null && entryRegistry.CabinetKeyID.HasValue)
             {
                 cabinetKey = db.CabinetKeys
                     .FirstOrDefault(c => c.CabinetKeyID == entryRegistry.CabinetKeyID);
@@ -216,14 +216,14 @@ namespace GymManager.Common
         {
             var db = new GymManagerContext();
 
-            if (member == null)
+            if(member == null)
             {
                 member = db
                     .Members
                     .FirstOrDefault(m => m.MemberID == identifier.MemberID);
             }
 
-            if (member == null)
+            if(member == null)
             {
                 return new IdentifierResult(IdentifierMessage.UnknowError, null, null, null, null, null);
             }
@@ -234,7 +234,7 @@ namespace GymManager.Common
                 .Include(p => p.Pass)
                 .FirstOrDefault();
 
-            if (entryRegistry != null)
+            if(entryRegistry != null)
             {
                 entryRegistry.ExitDate = DateTime.Now;
                 entryRegistry.IsAcive = false;
@@ -253,7 +253,7 @@ namespace GymManager.Common
 
                 db.EntriesRegistry.Update(entryRegistry);
 
-                if (entryRegistry.CabinetKey != null)
+                if(entryRegistry.CabinetKey != null)
                 {
                     entryRegistry.CabinetKey.LastUsedDate = DateTime.Now;
                     db.CabinetKeys.Update(entryRegistry.CabinetKey);
@@ -269,7 +269,7 @@ namespace GymManager.Common
 
         private CabinetKey GetAvailableCabinetKey(Member member)
         {
-            if (member == null)
+            if(member == null)
             {
                 return null;
             }
@@ -280,7 +280,7 @@ namespace GymManager.Common
                 .Where(er => er.IsAcive && er.CabinetKeyID.HasValue)
                 .Select(s => s.CabinetKeyID);
 
-            if (DefaultCabinetKeyMode == CabinetKeyMode.FirstAvailable)
+            if(DefaultCabinetKeyMode == CabinetKeyMode.FirstAvailable)
             {
                 return db.CabinetKeys
                     .Where(ck => ck.IsAcive && ck.GenderID == member.GenderID && !cabinetKeys.Contains(ck.CabinetKeyID))
@@ -288,7 +288,7 @@ namespace GymManager.Common
                     .FirstOrDefault();
             }
 
-            if (DefaultCabinetKeyMode == CabinetKeyMode.InLoop)
+            if(DefaultCabinetKeyMode == CabinetKeyMode.InLoop)
             {
                 return db.CabinetKeys
                     .Where(ck => ck.IsAcive && ck.GenderID == member.GenderID && !cabinetKeys.Contains(ck.CabinetKeyID))

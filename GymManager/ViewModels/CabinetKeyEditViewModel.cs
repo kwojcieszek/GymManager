@@ -14,16 +14,12 @@ namespace GymManager.ViewModels
     public class CabinetKeyEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private readonly CabinetKeyEditModel _model = new();
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (CheckCabinetKey(_model.CabinetKey))
+                    if(CheckCabinetKey(_model.CabinetKey))
                     {
                         try
                         {
@@ -31,7 +27,7 @@ namespace GymManager.ViewModels
 
                             Window.DialogResult = true;
                         }
-                        catch (Exception ex)
+                        catch(Exception ex)
                         {
                             MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
                         }
@@ -48,7 +44,7 @@ namespace GymManager.ViewModels
             _contentRenderedCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (_model.CabinetKey == null)
+                    if(_model.CabinetKey == null)
                     {
                         Title = "DODAWANIE KLUCZA DO SZAFKI";
 
@@ -73,6 +69,10 @@ namespace GymManager.ViewModels
 
         public string Title { get; set; }
         public Window Window => Helper.GetWindow(this);
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly CabinetKeyEditModel _model = new();
 
         public void SetEditObject(int cabinetKeyID)
         {
@@ -84,16 +84,16 @@ namespace GymManager.ViewModels
             string message = null;
             string filed;
 
-            if (_model.CabinetKey == null)
+            if(_model.CabinetKey == null)
             {
                 return false;
             }
 
-            if (string.IsNullOrEmpty(cabinetKey.Name))
+            if(string.IsNullOrEmpty(cabinetKey.Name))
             {
                 filed = "NAZWA [NUMER KLUCZYKA]";
             }
-            else if (cabinetKey.Gender == null)
+            else if(cabinetKey.Gender == null)
             {
                 filed = "PŁEĆ";
             }

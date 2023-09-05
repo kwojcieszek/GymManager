@@ -10,9 +10,6 @@ namespace GymManager.ViewModels
     public class RfidViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closeCommand;
-        private ICommand _closedCommand;
-        private readonly RfidModel _model = new();
 
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
@@ -26,11 +23,9 @@ namespace GymManager.ViewModels
 
         public string PathGif => $"{Path.ApplicationDirectory}\\Images\\Waiting_circle.gif";
         public Window Window => Helper.GetWindow(this);
-
-        private void OnPropertyChange([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        private ICommand _closeCommand;
+        private ICommand _closedCommand;
+        private readonly RfidModel _model = new();
 
         public RfidViewModel()
         {
@@ -40,6 +35,11 @@ namespace GymManager.ViewModels
 
                 Helper.Invoke(() => Window?.Close());
             };
+        }
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

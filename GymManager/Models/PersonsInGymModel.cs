@@ -8,13 +8,11 @@ namespace GymManager.Models
 {
     public class PersonsInGymModel
     {
-        private List<EntryRegistry> _entriesRegistry;
-
         public List<EntryRegistry> EntriesRegistry
         {
             get
             {
-                if (_entriesRegistry == null)
+                if(_entriesRegistry == null)
                 {
                     GetEntriesRegistry();
                 }
@@ -23,9 +21,11 @@ namespace GymManager.Models
             }
         }
 
+        private List<EntryRegistry> _entriesRegistry;
+
         public void CloseRow(EntryRegistry entryRegistry)
         {
-            if (entryRegistry == null)
+            if(entryRegistry == null)
             {
                 throw new ArgumentNullException("Element do usunięcia jest pusty.");
             }

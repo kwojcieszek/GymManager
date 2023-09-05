@@ -9,13 +9,11 @@ namespace GymManager.Models
 {
     public class MemberEditModel
     {
-        private readonly GymManagerContext _db = new();
-
         public List<EntryRegistry> EntriesRegistry
         {
             get
             {
-                if (Member == null)
+                if(Member == null)
                 {
                     return null;
                 }
@@ -37,7 +35,7 @@ namespace GymManager.Models
             get => Identifier != null ? Identifier.Key : string.Empty;
             set
             {
-                if (Identifier != null)
+                if(Identifier != null)
                 {
                     Identifier.Key = value;
                 }
@@ -68,7 +66,7 @@ namespace GymManager.Models
         {
             get
             {
-                if (Member == null)
+                if(Member == null)
                 {
                     return null;
                 }
@@ -89,7 +87,7 @@ namespace GymManager.Models
             get => Photo != null ? Photo.Data : null;
             set
             {
-                if (Photo != null)
+                if(Photo != null)
                 {
                     Photo.Data = value;
                 }
@@ -113,17 +111,18 @@ namespace GymManager.Models
         private Identifier Identifier { get; set; }
 
         private Photo Photo { get; set; }
+        private readonly GymManagerContext _db = new();
 
         public string GetContinuationText()
         {
-            if (Member == null)
+            if(Member == null)
             {
                 return string.Empty;
             }
 
             var continuation = PassesHelper.ContinuousPass(Member.MemberID);
 
-            if (continuation > 0)
+            if(continuation > 0)
             {
                 return continuation == 1
                     ? $"KONTYNUACJA {continuation} MIESIĄC"
@@ -135,7 +134,7 @@ namespace GymManager.Models
 
         public string GetSummaryOfDaysSubscriptionSuspensionText()
         {
-            if (Member == null)
+            if(Member == null)
             {
                 return string.Empty;
             }
@@ -148,7 +147,7 @@ namespace GymManager.Models
 
         public void RemoveIdentifier()
         {
-            if (Identifier != null)
+            if(Identifier != null)
             {
                 _db.Remove(Identifier);
             }
@@ -158,7 +157,7 @@ namespace GymManager.Models
 
         public void RemovePhoto()
         {
-            if (Photo != null)
+            if(Photo != null)
             {
                 _db.Remove(Photo);
             }
@@ -173,7 +172,7 @@ namespace GymManager.Models
 
         public Member SetEditObject(int memberID)
         {
-            if (Member != null)
+            if(Member != null)
             {
                 throw new Exception("Object is exist!");
             }
@@ -202,14 +201,14 @@ namespace GymManager.Models
 
         public bool SetMemberPesel()
         {
-            if (Member.Pesel.Length != 11)
+            if(Member.Pesel.Length != 11)
             {
                 return false;
             }
 
             var pesel = new Pesel();
 
-            if (pesel.IsValid(Member.Pesel.ToCharArray()))
+            if(pesel.IsValid(Member.Pesel.ToCharArray()))
             {
                 Member.BirthDate = pesel.GetBirthDate(Member.Pesel.ToCharArray()).Value;
 
@@ -224,7 +223,7 @@ namespace GymManager.Models
 
         public Member SetNewObject()
         {
-            if (Member != null)
+            if(Member != null)
             {
                 throw new Exception("Object is exist!");
             }

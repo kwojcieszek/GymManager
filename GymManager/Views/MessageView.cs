@@ -22,6 +22,7 @@ namespace GymManager.Views
             model.Message = message;
             msg.Owner = window;
             var result = msg.ShowDialog();
+
             return result ?? false;
         }
     }

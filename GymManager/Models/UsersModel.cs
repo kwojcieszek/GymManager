@@ -8,25 +8,14 @@ namespace GymManager.Models
 {
     public class UsersModel
     {
-        private List<User> _users;
         public bool OnlyActives { get; set; } = true;
 
-        public List<User> Users
-        {
-            get
-            {
-                if (_users == null)
-                {
-                    GetUsers(OnlyActives);
-                }
-
-                return _users.ToList();
-            }
-        }
+        public List<User> Users => _users ?? GetUsers(OnlyActives);
+        private List<User> _users;
 
         public void Delete(User user)
         {
-            if (user == null)
+            if(user == null)
             {
                 throw new ArgumentNullException("Element do usunięcia jest pusty.");
             }

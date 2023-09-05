@@ -8,13 +8,11 @@ namespace GymManager.Models
 {
     public class MembersModel
     {
-        private List<Member> _members;
-
         public List<Member> Members
         {
             get
             {
-                if (_members == null)
+                if(_members == null)
                 {
                     GetMembers(OnlyActives);
                 }
@@ -24,10 +22,11 @@ namespace GymManager.Models
         }
 
         public bool OnlyActives { get; set; } = true;
+        private List<Member> _members;
 
         public void Delete(Member member)
         {
-            if (member == null)
+            if(member == null)
             {
                 throw new ArgumentNullException("Element do usunięcia jest pusty.");
             }

@@ -79,10 +79,7 @@ namespace GymManager.Migrations.MySql
                         Name = table.Column<string>("varchar(50)", maxLength: 50, nullable: false)
                             .Annotation("MySql:CharSet", "utf8mb4")
                     },
-                    constraints: table =>
-                    {
-                        table.PrimaryKey("PK_DataTrackingOperations", x => x.DataTrackingOperationID);
-                    })
+                    constraints: table => { table.PrimaryKey("PK_DataTrackingOperations", x => x.DataTrackingOperationID); })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(

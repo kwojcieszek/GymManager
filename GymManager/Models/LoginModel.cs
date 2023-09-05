@@ -6,7 +6,7 @@ namespace GymManager.Models
     {
         public bool Login(string userName, string password)
         {
-            if (userName != null && password != null)
+            if(userName != null && password != null)
             {
                 return new CurrentUser().Login(userName, password);
             }

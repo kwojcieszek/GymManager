@@ -13,11 +13,6 @@ namespace GymManager.ViewModels
     public class CabinetKeysAvailableViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _doubleClickCommand;
-        private readonly CabinetKeysAvailableModel _model = new();
-        private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
-        private ICommand _searchTextCommand;
 
         public List<CabinetKey> CabinetKeys =>
             _model.GetCabinetKeys(OnlyActives)
@@ -28,7 +23,7 @@ namespace GymManager.ViewModels
             _doubleClickCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (SelectedItem == null)
+                    if(SelectedItem == null)
                     {
                         return;
                     }
@@ -68,6 +63,11 @@ namespace GymManager.ViewModels
         public CabinetKey SelectedItem { get; set; }
 
         public Window Window => Helper.GetWindow(this);
+        private ICommand _doubleClickCommand;
+        private readonly CabinetKeysAvailableModel _model = new();
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
+        private ICommand _searchTextCommand;
 
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {

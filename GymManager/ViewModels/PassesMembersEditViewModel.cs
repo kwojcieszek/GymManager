@@ -14,21 +14,12 @@ namespace GymManager.ViewModels
     public class PassesMembersEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private ICommand _dateChangedCommand;
-        private ICommand _memberCommand;
-        private ICommand _memberEditCommand;
-        private readonly PassesMembersEditModel _model = new();
-        private ICommand _rfidCommand;
-        private ICommand _selectionChangedCommand;
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (CheckPassRegistry(_model.PassRegistry))
+                    if(CheckPassRegistry(_model.PassRegistry))
                     {
                         try
                         {
@@ -36,9 +27,9 @@ namespace GymManager.ViewModels
 
                             Window.DialogResult = true;
                         }
-                        catch (Exception ex)
+                        catch(Exception ex)
                         {
-                            if (ex?.InnerException != null)
+                            if(ex?.InnerException != null)
                             {
                                 MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
                             }
@@ -54,13 +45,13 @@ namespace GymManager.ViewModels
             _contentRenderedCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (_model.PassRegistry == null)
+                    if(_model.PassRegistry == null)
                     {
                         Title = "DODAWANIE KARNETU DLA CZŁONKA";
 
                         _model.SetNewObject(MemberInit?.MemberID ?? 0);
 
-                        if (MemberInit != null)
+                        if(MemberInit != null)
                         {
                             _model.SetPassRegistry(MemberInit.MemberID);
 
@@ -75,7 +66,7 @@ namespace GymManager.ViewModels
 
                         VisibilityButtonsMember = Visibility.Hidden;
 
-                        if (CurrentUser.CheckAccess(Permissions.EditMembers))
+                        if(CurrentUser.CheckAccess(Permissions.EditMembers))
                         {
                             VisibilityButtonsMemberEdit = Visibility.Visible;
                         }
@@ -98,7 +89,7 @@ namespace GymManager.ViewModels
             _dateChangedCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (_model.PassRegistry.Member != null)
+                    if(_model.PassRegistry.Member != null)
                     {
                         PassesHelper.SetEndDate(_model.PassRegistry);
 
@@ -124,14 +115,14 @@ namespace GymManager.ViewModels
                     model.CloseWhenDoubleClick = true;
                     view.ShowDialog();
 
-                    if (model.SelectedItem != null)
+                    if(model.SelectedItem != null)
                     {
                         _model.SetPassRegistry(model.SelectedItem.MemberID);
 
                         LastPassText = _model.GetLastPassText();
                         ContinuationText = _model.GetContinuationText();
 
-                        if (CurrentUser.CheckAccess(Permissions.EditMembers))
+                        if(CurrentUser.CheckAccess(Permissions.EditMembers))
                         {
                             VisibilityButtonsMemberEdit = Visibility.Visible;
                         }
@@ -147,7 +138,7 @@ namespace GymManager.ViewModels
             _memberEditCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditMembers))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditMembers))
                     {
                         return;
                     }
@@ -189,13 +180,13 @@ namespace GymManager.ViewModels
 
                     view.ShowDialog();
 
-                    if (view.DataContext is RfidViewModel rfidViewModel)
+                    if(view.DataContext is RfidViewModel rfidViewModel)
                     {
-                        if (!string.IsNullOrEmpty(rfidViewModel.Identifier))
+                        if(!string.IsNullOrEmpty(rfidViewModel.Identifier))
                         {
                             var member = _model.GetMember(rfidViewModel.Identifier);
 
-                            if (member != null)
+                            if(member != null)
                             {
                                 var memberID = member.MemberID;
 
@@ -204,7 +195,7 @@ namespace GymManager.ViewModels
                                 LastPassText = _model.GetLastPassText();
                                 ContinuationText = _model.GetContinuationText();
 
-                                if (CurrentUser.CheckAccess(Permissions.EditMembers))
+                                if(CurrentUser.CheckAccess(Permissions.EditMembers))
                                 {
                                     VisibilityButtonsMemberEdit = Visibility.Visible;
                                 }
@@ -222,7 +213,7 @@ namespace GymManager.ViewModels
             _selectionChangedCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (_model.PassRegistry.Pass != null)
+                    if(_model.PassRegistry.Pass != null)
                     {
                         _model.PassRegistry.PassID = _model.PassRegistry.Pass.PassID;
                     }
@@ -238,6 +229,15 @@ namespace GymManager.ViewModels
         public Visibility VisibilityButtonsMember { get; set; } = Visibility.Visible;
         public Visibility VisibilityButtonsMemberEdit { get; set; } = Visibility.Hidden;
         public Window Window => Helper.GetWindow(this);
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private ICommand _dateChangedCommand;
+        private ICommand _memberCommand;
+        private ICommand _memberEditCommand;
+        private readonly PassesMembersEditModel _model = new();
+        private ICommand _rfidCommand;
+        private ICommand _selectionChangedCommand;
 
         public void SetEditObject(int passRegistryID)
         {
@@ -246,7 +246,7 @@ namespace GymManager.ViewModels
 
         private bool CheckPassRegistry(PassRegistry passRegistry)
         {
-            if (passRegistry is null)
+            if(passRegistry is null)
             {
                 throw new ArgumentNullException(nameof(passRegistry));
             }
@@ -254,56 +254,56 @@ namespace GymManager.ViewModels
             string filed = null;
             string message = null;
 
-            if (_model.PassRegistry == null)
+            if(_model.PassRegistry == null)
             {
                 return false;
             }
 
-            if (_model.PassRegistry.Suspension && !_model.PassRegistry.StartSuspensionDate.HasValue)
+            if(_model.PassRegistry.Suspension && !_model.PassRegistry.StartSuspensionDate.HasValue)
             {
                 message = "NALEŻY PODAĆ DATĘ ROZPOCZĘCIA ZAWIESZENIA KARNTU";
             }
-            else if (_model.PassRegistry.Suspension && !_model.PassRegistry.EndSuspensionDate.HasValue)
+            else if(_model.PassRegistry.Suspension && !_model.PassRegistry.EndSuspensionDate.HasValue)
             {
                 message = "NALEŻY PODAĆ DATĘ ZAKOŃCZENIA ZAWIESZENIA KARNETU";
             }
-            else if (_model.PassRegistry.Suspension &&
-                     (_model.PassRegistry.EndSuspensionDate.Value - _model.PassRegistry.StartSuspensionDate.Value)
-                     .TotalDays < 0)
+            else if(_model.PassRegistry.Suspension &&
+                    (_model.PassRegistry.EndSuspensionDate.Value - _model.PassRegistry.StartSuspensionDate.Value)
+                    .TotalDays < 0)
             {
                 message =
                     "DATA ZAKOŃCZENIA ZAWIESZENIA KARNETU NIE MOŻE BYĆ\nMNIEJSZA NIŻ DATA ROZPOCZĘCIA ZAWIESZENIA";
             }
-            else if (_model.PassRegistry.Suspension &&
-                     (_model.PassRegistry.StartSuspensionDate.Value < _model.PassRegistry.StartDate ||
-                      _model.PassRegistry.StartSuspensionDate.Value > _model.PassRegistry.EndDate.Value))
+            else if(_model.PassRegistry.Suspension &&
+                    (_model.PassRegistry.StartSuspensionDate.Value < _model.PassRegistry.StartDate ||
+                     _model.PassRegistry.StartSuspensionDate.Value > _model.PassRegistry.EndDate.Value))
             {
                 message = "DATA ROZPOCZĘCIA ZAWIESZENIA KARNETU MUSI ZAWIERAĆ SIĘ\nW DACIE KARNETU";
             }
-            else if (_model.PassRegistry.Suspension &&
-                     (_model.PassRegistry.EndSuspensionDate.Value < _model.PassRegistry.StartDate ||
-                      _model.PassRegistry.EndSuspensionDate.Value > _model.PassRegistry.EndDate.Value))
+            else if(_model.PassRegistry.Suspension &&
+                    (_model.PassRegistry.EndSuspensionDate.Value < _model.PassRegistry.StartDate ||
+                     _model.PassRegistry.EndSuspensionDate.Value > _model.PassRegistry.EndDate.Value))
             {
                 message = "DATA ZAKOŃCZENIA ZAWIESZENIA KARNETU MUSI ZAWIERAĆ SIĘ\nW DACIE KARNETU";
             }
-            else if (_model.PassRegistry.Suspension && PassesHelper.GetSummaryOfDaysSubscriptionSuspension(
-                         _model.PassRegistry.MemberID, _model.PassRegistry.StartDate.Year,
-                         _model.PassRegistry.PassRegistryID) +
-                     (_model.PassRegistry.EndSuspensionDate.Value - _model.PassRegistry.StartSuspensionDate.Value)
-                     .TotalDays > Settings.App.MaximumDaysSubscriptionSuspension)
+            else if(_model.PassRegistry.Suspension && PassesHelper.GetSummaryOfDaysSubscriptionSuspension(
+                        _model.PassRegistry.MemberID, _model.PassRegistry.StartDate.Year,
+                        _model.PassRegistry.PassRegistryID) +
+                    (_model.PassRegistry.EndSuspensionDate.Value - _model.PassRegistry.StartSuspensionDate.Value)
+                    .TotalDays > Settings.App.MaximumDaysSubscriptionSuspension)
             {
                 message =
                     $"MAKSYMALNA LICZBA DNI ZAWIESZENIA KARNETU\nWYNOSI {Settings.App.MaximumDaysSubscriptionSuspension} W DANYM ROKU KALENDARZOWYM";
             }
-            else if (_model.PassRegistry.Member == null)
+            else if(_model.PassRegistry.Member == null)
             {
                 filed = "CZŁONEK [ID,IMIĘ,NAZWISKO]";
             }
-            else if (_model.PassRegistry.Pass == null)
+            else if(_model.PassRegistry.Pass == null)
             {
                 filed = "KARNET";
             }
-            else if (_model.PassRegistry.PassID == 1)
+            else if(_model.PassRegistry.PassID == 1)
             {
                 message = "NALEŻY WYBRAĆ RODZAJ KARNETU";
             }

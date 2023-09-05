@@ -17,11 +17,12 @@ namespace GymManager.Common.DataGridExtensions
     /// </summary>
     public class ApplyInitialSortingBehavior : Behavior<DataGrid>
     {
+        public IList<KeyValuePair<string, ListSortDirection>> MostRecentDescriptions { get; set; }
+
         private IList<KeyValuePair<string, ListSortDirection>> _lastKnownActiveDescriptions =
             new List<KeyValuePair<string, ListSortDirection>>();
 
         private object _lastSelectedObject;
-        public IList<KeyValuePair<string, ListSortDirection>> MostRecentDescriptions { get; set; }
 
         /// <summary>
         ///     Called after the behavior is attached to an AssociatedObject.
@@ -61,7 +62,7 @@ namespace GymManager.Common.DataGridExtensions
 
         internal static void IsEnabled_Changed(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            if (sender is not DataGrid dataGrid)
+            if(sender is not DataGrid dataGrid)
             {
                 return;
             }
@@ -70,9 +71,9 @@ namespace GymManager.Common.DataGridExtensions
 
             var existing = behaviors.FirstOrDefault(b => b is ApplyInitialSortingBehavior);
 
-            if (true.Equals(e.NewValue))
+            if(true.Equals(e.NewValue))
             {
-                if (existing == null)
+                if(existing == null)
                 {
                     behaviors.Add(new ApplyInitialSortingBehavior());
                 }
@@ -92,17 +93,17 @@ namespace GymManager.Common.DataGridExtensions
                 var dataGrid = AssociatedObject;
                 var dataGridItems = dataGrid.Items;
 
-                if (_lastKnownActiveDescriptions.Count == 0)
+                if(_lastKnownActiveDescriptions.Count == 0)
                 {
                     return;
                 }
 
-                if (_lastKnownActiveDescriptions.Any() && !dataGridItems.SortDescriptions.Any())
+                if(_lastKnownActiveDescriptions.Any() && !dataGridItems.SortDescriptions.Any())
                 {
-                    foreach (var item in _lastKnownActiveDescriptions)
+                    foreach(var item in _lastKnownActiveDescriptions)
                     {
                         var column = dataGrid.Columns.FirstOrDefault(col => col.SortMemberPath == item.Key);
-                        if (column != null)
+                        if(column != null)
                         {
                             column.SortDirection = item.Value;
                         }
@@ -113,14 +114,14 @@ namespace GymManager.Common.DataGridExtensions
 
                 dataGridItems.SortDescriptions.Clear();
 
-                foreach (var groupDescription in groupDescriptions.OfType<PropertyGroupDescription>())
+                foreach(var groupDescription in groupDescriptions.OfType<PropertyGroupDescription>())
                 {
                     dataGridItems.SortDescriptions.Add(new SortDescription(groupDescription.PropertyName,
                         ListSortDirection.Ascending));
                 }
 
-                foreach (var column in dataGrid.Columns.Where(c =>
-                             c?.SortDirection != null && !string.IsNullOrEmpty(c.SortMemberPath)))
+                foreach(var column in dataGrid.Columns.Where(c =>
+                            c?.SortDirection != null && !string.IsNullOrEmpty(c.SortMemberPath)))
                 {
                     dataGridItems.SortDescriptions.Add(new SortDescription(column.SortMemberPath,
                         column.SortDirection.GetValueOrDefault()));
@@ -130,7 +131,7 @@ namespace GymManager.Common.DataGridExtensions
 
                 _lastSelectedObject = null;
             }
-            catch (InvalidOperationException)
+            catch(InvalidOperationException)
             {
                 // in some special cases we may get:
                 // System.InvalidOperationException: 'Sorting' is not allowed during an AddNew or EditItem transaction.
@@ -149,7 +150,7 @@ namespace GymManager.Common.DataGridExtensions
         {
             var dataGrid = AssociatedObject;
 
-            if (_lastSelectedObject == null && e.Action == NotifyCollectionChangedAction.Reset)
+            if(_lastSelectedObject == null && e.Action == NotifyCollectionChangedAction.Reset)
             {
                 _lastSelectedObject = dataGrid.SelectedValue;
             }

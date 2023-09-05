@@ -17,7 +17,7 @@ namespace GymManager.Common.Extensions
 
         public static byte[] ToByteArray(this string hex, int lenght = -1)
         {
-            if (lenght > 0)
+            if(lenght > 0)
             {
                 hex = hex.PadLeft(lenght * 2, '0');
             }

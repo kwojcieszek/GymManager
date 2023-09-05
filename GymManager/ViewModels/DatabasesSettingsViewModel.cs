@@ -13,28 +13,24 @@ namespace GymManager.ViewModels
     public class DatabasesSettingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private readonly DatabaseSettingsModel _model = new();
-        private ICommand _sqliteDirectoryCommand;
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (SqlServer)
+                    if(SqlServer)
                     {
                         _model.DatabaseSettings.DatabaseType = DatabaseTypes.SqlServer;
                     }
-                    else if (Sqlite)
+                    else if(Sqlite)
                     {
                         _model.DatabaseSettings.DatabaseType = DatabaseTypes.Sqlite;
                     }
-                    else if (PostgreSql)
+                    else if(PostgreSql)
                     {
                         _model.DatabaseSettings.DatabaseType = DatabaseTypes.PostgreSql;
                     }
-                    else if (MySql)
+                    else if(MySql)
                     {
                         _model.DatabaseSettings.DatabaseType = DatabaseTypes.MySql;
                     }
@@ -43,7 +39,7 @@ namespace GymManager.ViewModels
                     {
                         DbModels.Engines.Migrations.Migration(Settings.App.Databases.DatabaseType);
                     }
-                    catch (Exception exp)
+                    catch(Exception exp)
                     {
                         MessageView.MessageBoxInfoView(Window, exp.Message, true);
 
@@ -90,7 +86,7 @@ namespace GymManager.ViewModels
                         SelectedPath = DatabasesSettings.Sqlite.Directory
                     };
 
-                    if (dialog.ShowDialog(Window).GetValueOrDefault())
+                    if(dialog.ShowDialog(Window).GetValueOrDefault())
                     {
                         DatabasesSettings.Sqlite.Directory = dialog.SelectedPath;
 
@@ -102,6 +98,10 @@ namespace GymManager.ViewModels
 
         public bool SqlServer { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.SqlServer;
         public Window Window => Helper.GetWindow(this);
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private readonly DatabaseSettingsModel _model = new();
+        private ICommand _sqliteDirectoryCommand;
 
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {

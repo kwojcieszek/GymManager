@@ -9,14 +9,20 @@ namespace GymManager.Common
         private readonly Endianness _endianness;
         private readonly RfidReaderConverterType _rfidReaderConverterType;
 
+        public RfidReaderConverter(RfidReaderConverterType rfidReaderConverterType, Endianness endianness)
+        {
+            _rfidReaderConverterType = rfidReaderConverterType;
+            _endianness = endianness;
+        }
+
         public string Convert(byte[] data)
         {
-            if (_rfidReaderConverterType == RfidReaderConverterType.TextToHexToInt)
+            if(_rfidReaderConverterType == RfidReaderConverterType.TextToHexToInt)
             {
                 return TextToHexToInt(data);
             }
 
-            if (_rfidReaderConverterType == RfidReaderConverterType.HexToInt)
+            if(_rfidReaderConverterType == RfidReaderConverterType.HexToInt)
             {
                 return HexToInt(data);
             }
@@ -26,7 +32,7 @@ namespace GymManager.Common
 
         public byte[] RemoveCrlf(byte[] data)
         {
-            if (data.Length > 1 && data[^2] == 0x0d && data[^1] == 0x0a)
+            if(data.Length > 1 && data[^2] == 0x0d && data[^1] == 0x0a)
             {
                 var newData = new byte[data.Length - 2];
                 Array.Copy(data, newData, data.Length - 2);
@@ -39,7 +45,7 @@ namespace GymManager.Common
 
         private byte[] EndiannessConverter(byte[] data)
         {
-            if (BitConverter.IsLittleEndian && _endianness == Endianness.BigEndian)
+            if(BitConverter.IsLittleEndian && _endianness == Endianness.BigEndian)
             {
                 Array.Reverse(data);
             }
@@ -49,7 +55,7 @@ namespace GymManager.Common
 
         private string HexToInt(byte[] data)
         {
-            if (data.Length > 8)
+            if(data.Length > 8)
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -66,12 +72,6 @@ namespace GymManager.Common
             var bytes = Encoding.ASCII.GetString(data).ToByteArray(8);
 
             return BitConverter.ToInt64(EndiannessConverter(bytes)).ToString();
-        }
-
-        public RfidReaderConverter(RfidReaderConverterType rfidReaderConverterType, Endianness endianness)
-        {
-            _rfidReaderConverterType = rfidReaderConverterType;
-            _endianness = endianness;
         }
     }
 }

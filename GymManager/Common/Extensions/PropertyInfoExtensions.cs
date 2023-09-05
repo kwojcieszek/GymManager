@@ -10,7 +10,7 @@ namespace GymManager.Common.Extensions
             Func<TAttribute, TValue> value)
             where TAttribute : Attribute
         {
-            if (prop.GetCustomAttributes(typeof(TAttribute), true).FirstOrDefault() is TAttribute att)
+            if(prop.GetCustomAttributes(typeof(TAttribute), true).FirstOrDefault() is TAttribute att)
             {
                 return value(att);
             }

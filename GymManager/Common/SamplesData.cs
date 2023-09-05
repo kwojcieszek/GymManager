@@ -3962,7 +3962,7 @@ namespace GymManager.Common
             var users = (from m in db.Users
                 select new { m.UserID }).ToList();
 
-            for (var i = 0; i < quantity; i++)
+            for(var i = 0; i < quantity; i++)
             {
                 var cabinetKey = new CabinetKey
                 {
@@ -3988,7 +3988,7 @@ namespace GymManager.Common
             var cabinetKeys = (from m in db.CabinetKeys
                 select new { m.CabinetKeyID }).ToList();
 
-            for (var i = 0; i < quantity; i++)
+            for(var i = 0; i < quantity; i++)
             {
                 var entryRegistry = new EntryRegistry
                 {
@@ -3997,7 +3997,7 @@ namespace GymManager.Common
                     CabinetKeyID = cabinetKeys[RandomM1(cabinetKeys.Count)].CabinetKeyID
                 };
 
-                if (entryRegistry.EntryDate.AddHours(3) > DateTime.Now)
+                if(entryRegistry.EntryDate.AddHours(3) > DateTime.Now)
                 {
                     entryRegistry.IsAcive = true;
                 }
@@ -4024,7 +4024,7 @@ namespace GymManager.Common
             var users = (from m in db.Users
                 select new { m.UserID }).ToList();
 
-            for (var i = 0; i < quantity; i++)
+            for(var i = 0; i < quantity; i++)
             {
                 var member = new Member
                 {
@@ -4068,7 +4068,7 @@ namespace GymManager.Common
         {
             var db = new GymManagerContext();
 
-            for (var i = 0; i < quantity; i++)
+            for(var i = 0; i < quantity; i++)
             {
                 var user = new User
                 {

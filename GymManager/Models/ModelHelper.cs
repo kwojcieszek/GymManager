@@ -4,7 +4,7 @@
     {
         public static bool OnlyActives(bool value, bool onlyActives)
         {
-            if (!onlyActives)
+            if(!onlyActives)
             {
                 return true;
             }

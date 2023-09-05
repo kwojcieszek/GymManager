@@ -7,14 +7,13 @@ namespace GymManager.Common
 {
     public class CameraService
     {
-        private string _fullPath;
-
         public string MyPicturesLibraryFileName
         {
             set => _fullPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.MyPictures)}\\{value}";
         }
 
         public string PathExecute { get; set; }
+        private string _fullPath;
 
         public byte[] Start()
         {

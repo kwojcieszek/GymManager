@@ -11,7 +11,7 @@ namespace GymManager.Common
 
         public static List<T> Like<T>(this List<T> list, string text, params string[] columns) where T : class
         {
-            if (string.IsNullOrEmpty(text))
+            if(string.IsNullOrEmpty(text))
             {
                 return list;
             }
@@ -20,26 +20,27 @@ namespace GymManager.Common
 
             var result = new List<T>();
 
-            foreach (var item in list)
+            foreach(var item in list)
             {
-                if (result.Contains(item))
+                if(result.Contains(item))
                 {
                     continue;
                 }
 
-                foreach (var column in columns)
+                foreach(var column in columns)
                 {
-                    if (column.Contains('.'))
+                    if(column.Contains('.'))
                     {
                         var split = column.Split('.');
 
-                        if (split.Length > 1)
+                        if(split.Length > 1)
                         {
                             var resultSubTable = LikeSubTable(item, text, split[0], split[1]);
 
-                            if (resultSubTable != null)
+                            if(resultSubTable != null)
                             {
                                 result.Add(resultSubTable);
+
                                 break;
                             }
                         }
@@ -49,9 +50,9 @@ namespace GymManager.Common
 
                     var val = Helper.GetPropValue(item, column);
 
-                    if (val != null && val.ToString().ToLower().Contains(text))
+                    if(val != null && val.ToString().ToLower().Contains(text))
                     {
-                        if (!result.Contains(item))
+                        if(!result.Contains(item))
                         {
                             result.Add(item);
                         }
@@ -66,7 +67,7 @@ namespace GymManager.Common
 
         private static T LikeSubTable<T>(T item, string text, string tableName, string column) where T : class
         {
-            if (string.IsNullOrEmpty(text) || string.IsNullOrEmpty(tableName) || string.IsNullOrEmpty(column))
+            if(string.IsNullOrEmpty(text) || string.IsNullOrEmpty(tableName) || string.IsNullOrEmpty(column))
             {
                 return null;
             }
@@ -75,14 +76,14 @@ namespace GymManager.Common
 
             var table = Helper.GetPropValue(item, tableName);
 
-            if (table == null)
+            if(table == null)
             {
                 return null;
             }
 
             var val = Helper.GetPropValue(table, column);
 
-            if (val != null && val.ToString().ToLower().Contains(text))
+            if(val != null && val.ToString().ToLower().Contains(text))
             {
                 return item;
             }

@@ -8,7 +8,7 @@ namespace GymManager.Common
     {
         public static bool MessageBoxCheckPermissionView(Window window, Permissions permission)
         {
-            if (!CheckAccess(permission))
+            if(!CheckAccess(permission))
             {
                 var msg = new MessageBoxInfoView();
                 var model = msg.DataContext as MessageBoxInfoViewModel;

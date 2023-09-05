@@ -8,12 +8,12 @@ namespace GymManager.Models
 {
     public class UserEditModel
     {
-        public List<PermissionListUser> _permissionsListUser;
-        private readonly GymManagerContext _db = new();
         public int PasswordMinLenght => 8;
         public List<PermissionListUser> PermissionsListUser => GetPermissionListUser();
 
         public User User { get; private set; }
+        public List<PermissionListUser> _permissionsListUser;
+        private readonly GymManagerContext _db = new();
 
         public void ChangePassword(int userID, string password)
         {
@@ -23,7 +23,7 @@ namespace GymManager.Models
                 where u.UserID == userID
                 select u).FirstOrDefault();
 
-            if (user == null)
+            if(user == null)
             {
                 return;
             }
@@ -37,12 +37,12 @@ namespace GymManager.Models
 
         public bool CheckCorrectPassword(User user, string password)
         {
-            if (user == null)
+            if(user == null)
             {
                 return false;
             }
 
-            if (user.Password == Cryptography.MD5Hash(password))
+            if(user.Password == Cryptography.MD5Hash(password))
             {
                 return true;
             }
@@ -68,7 +68,7 @@ namespace GymManager.Models
 
         public User SetEditObject(int userID)
         {
-            if (User != null)
+            if(User != null)
             {
                 throw new Exception("Object is exist!");
             }
@@ -85,7 +85,7 @@ namespace GymManager.Models
 
         public User SetNewObject()
         {
-            if (User != null)
+            if(User != null)
             {
                 throw new Exception("Object is exist!");
             }
@@ -103,7 +103,7 @@ namespace GymManager.Models
 
         private List<PermissionListUser> GetPermissionListUser()
         {
-            if (_permissionsListUser == null)
+            if(_permissionsListUser == null)
             {
                 _permissionsListUser = (from p in _db.PermissionsList
                         select new PermissionListUser
@@ -111,13 +111,13 @@ namespace GymManager.Models
                     .OrderBy(p => p.PermissionListID).ToList();
             }
 
-            if (User != null)
+            if(User != null)
             {
                 var permissions = _db.PermissionsUsers
                     .Where(u => u.UserID == User.UserID)
                     .ToList();
 
-                foreach (var permission in _permissionsListUser)
+                foreach(var permission in _permissionsListUser)
                 {
                     permission.IsGranted =
                         permissions.FirstOrDefault(p => p.PermissionListID == permission.PermissionListID) != null;
@@ -133,18 +133,18 @@ namespace GymManager.Models
                 .Where(u => u.UserID == User.UserID)
                 .ToList();
 
-            foreach (var permissionListUser in _permissionsListUser)
+            foreach(var permissionListUser in _permissionsListUser)
             {
                 var permissionUsers = permissionsUsers
                     .Where(p => p.PermissionListID == permissionListUser.PermissionListID)
                     .FirstOrDefault();
 
-                if (permissionListUser.IsGranted && permissionUsers != null)
+                if(permissionListUser.IsGranted && permissionUsers != null)
                 {
                     continue;
                 }
 
-                if (permissionListUser.IsGranted && permissionUsers == null)
+                if(permissionListUser.IsGranted && permissionUsers == null)
                 {
                     _db.PermissionsUsers.Add(new PermissionUser
                     {
@@ -154,10 +154,10 @@ namespace GymManager.Models
                         AddedBy = CurrentUser.User.UserID
                     });
                 }
-                else if (!permissionListUser.IsGranted && permissionUsers == null)
+                else if(!permissionListUser.IsGranted && permissionUsers == null)
                 {
                 }
-                else if (!permissionListUser.IsGranted && permissionUsers != null)
+                else if(!permissionListUser.IsGranted && permissionUsers != null)
                 {
                     _db.PermissionsUsers.Remove(permissionUsers);
                 }

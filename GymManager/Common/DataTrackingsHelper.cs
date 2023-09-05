@@ -7,7 +7,7 @@ namespace GymManager.Common
     {
         public static void ChangeDisplayTableName(IEnumerable<DataTracking> dataTracking)
         {
-            foreach (var dataTrackingItem in dataTracking)
+            foreach(var dataTrackingItem in dataTracking)
             {
                 dataTrackingItem.TableName = TableNameList(dataTrackingItem.TableName);
             }

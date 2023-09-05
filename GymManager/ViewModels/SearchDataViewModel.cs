@@ -10,9 +10,7 @@ namespace GymManager.ViewModels
     public class SearchDataViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closeCommand;
-        private ICommand _searchCommand;
-        private string _description;
+
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
                 x => { Window.Close(); });
@@ -23,7 +21,7 @@ namespace GymManager.ViewModels
             set
             {
                 _description = value;
-                OnPropertyChange(nameof(Description));
+                OnPropertyChange();
             }
         }
 
@@ -33,7 +31,7 @@ namespace GymManager.ViewModels
             _searchCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (Execute(SearchText))
+                    if(Execute(SearchText))
                     {
                         Window.Close();
                     }
@@ -43,6 +41,9 @@ namespace GymManager.ViewModels
 
         public string Title { get; set; }
         public Window Window => Helper.GetWindow(this);
+        private ICommand _closeCommand;
+        private string _description;
+        private ICommand _searchCommand;
 
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {

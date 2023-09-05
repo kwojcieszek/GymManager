@@ -14,25 +14,17 @@ namespace GymManager.ViewModels
     public class UsersViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _addCommand;
-        private ICommand _closeCommand;
-        private ICommand _deleteCommand;
-        private ICommand _editCommand;
-        private readonly UsersModel _model = new();
-        private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
-        private ICommand _searchTextCommand;
 
         public ICommand AddCommand =>
             _addCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddUsers))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddUsers))
                     {
                         return;
                     }
 
-                    if (Add())
+                    if(Add())
                     {
                         OnPropertyChange(nameof(Users));
                     }
@@ -46,12 +38,12 @@ namespace GymManager.ViewModels
             _deleteCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeleteUsers))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeleteUsers))
                     {
                         return;
                     }
 
-                    if (Delete())
+                    if(Delete())
                     {
                         _model.GetUsers(OnlyActives);
                         OnPropertyChange(nameof(Users));
@@ -62,13 +54,13 @@ namespace GymManager.ViewModels
             _editCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditUsers))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditUsers))
 
                     {
                         return;
                     }
 
-                    if (Edit())
+                    if(Edit())
                     {
                         _model.GetUsers(OnlyActives);
                         OnPropertyChange(nameof(Users));
@@ -105,11 +97,20 @@ namespace GymManager.ViewModels
 
         public User SelectedItem { get; set; }
 
-        public List<User> Users => _model.GetUsers(OnlyActives)
-            .Like(_searchText, "UserName", "FirstName", "LastName", "Email", "Phone",
-                "AddedByUser.FirstName", "AddedByUser.LastName", "ModifiedBy.FirstName", "ModifiedBy.LastName");
+        public List<User> Users =>
+            _model.GetUsers(OnlyActives)
+                .Like(_searchText, "UserName", "FirstName", "LastName", "Email", "Phone",
+                    "AddedByUser.FirstName", "AddedByUser.LastName", "ModifiedBy.FirstName", "ModifiedBy.LastName");
 
         public Window Window => Helper.GetWindow(this);
+        private ICommand _addCommand;
+        private ICommand _closeCommand;
+        private ICommand _deleteCommand;
+        private ICommand _editCommand;
+        private readonly UsersModel _model = new();
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
+        private ICommand _searchTextCommand;
 
         public bool Add(Window window = null)
         {
@@ -120,9 +121,10 @@ namespace GymManager.ViewModels
                 var userEditView = new UsersEditView();
                 var model = userEditView.DataContext as UserEditViewModel;
                 model.Owner = window;
+
                 return userEditView.ShowDialog().Value;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(window, ex.Message, true);
 
@@ -132,7 +134,7 @@ namespace GymManager.ViewModels
 
         private bool Delete()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
@@ -140,13 +142,13 @@ namespace GymManager.ViewModels
             var message =
                 $"CZY NA PEWNO USUNĄĆ UŻYTKOWNIKA\n{SelectedItem.FirstName} {SelectedItem.LastName} [{SelectedItem.UserName}] ?";
 
-            if (MessageView.MessageBoxQuestionView(Window, message))
+            if(MessageView.MessageBoxQuestionView(Window, message))
             {
                 try
                 {
                     _model.Delete(SelectedItem);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
 
@@ -161,7 +163,7 @@ namespace GymManager.ViewModels
 
         private bool Edit()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
@@ -172,9 +174,10 @@ namespace GymManager.ViewModels
                 var model = userEditView.DataContext as UserEditViewModel;
                 model.Owner = Window;
                 model.SetEditObject(SelectedItem.UserID);
+
                 return userEditView.ShowDialog().Value;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(Window, ex.Message, true);
 

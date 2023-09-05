@@ -13,12 +13,6 @@ namespace GymManager.ViewModels
     public class EntryMessageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closeCommand;
-        private ICommand _contentRenderedCommand;
-        private bool _isClosed;
-        private readonly EntryMessageModel _model = new();
-        private readonly DispatcherTimer _timer = new();
-        private readonly int _timeVisibilityMessageSeconds = 10;
 
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
@@ -44,15 +38,34 @@ namespace GymManager.ViewModels
         public string Message4 { get; set; }
 
         public Window Window => Helper.GetWindow(this);
+        private ICommand _closeCommand;
+        private ICommand _contentRenderedCommand;
+        private bool _isClosed;
+        private readonly EntryMessageModel _model = new();
+        private readonly DispatcherTimer _timer = new();
+        private readonly int _timeVisibilityMessageSeconds = 10;
+
+        public EntryMessageViewModel()
+        {
+            _timer.Interval = new TimeSpan(0, 0, _timeVisibilityMessageSeconds);
+            _timer.Tick += (o, e) =>
+            {
+                if(!_isClosed)
+                {
+                    Helper.Invoke(() => Window?.Close());
+                }
+            };
+            _timer.Start();
+        }
 
         private void Message(EventArgsResult e)
         {
-            if (e.Result == null)
+            if(e.Result == null)
             {
                 return;
             }
 
-            if (e.Result.Message == IdentifierMessage.AccessEntry)
+            if(e.Result.Message == IdentifierMessage.AccessEntry)
             {
                 EntryOK = Visibility.Visible;
                 ExitOK = Visibility.Hidden;
@@ -70,7 +83,7 @@ namespace GymManager.ViewModels
 
                 new Audio().Play("beep", "entry");
             }
-            else if (e.Result.Message == IdentifierMessage.AccessExit)
+            else if(e.Result.Message == IdentifierMessage.AccessExit)
             {
                 EntryOK = Visibility.Hidden;
                 ExitOK = Visibility.Visible;
@@ -88,34 +101,34 @@ namespace GymManager.ViewModels
                 ExitOK = Visibility.Hidden;
                 EntryStop = Visibility.Visible;
 
-                if (e.Result.Message == IdentifierMessage.NoIdentifier)
+                if(e.Result.Message == IdentifierMessage.NoIdentifier)
                 {
                     Message1 = "BRAK DOSTĘPU";
                     Message2 = "NIEZNANY IDENTYFIKATOR";
                     Message3 = "";
                     Message4 = "";
                 }
-                else if (e.Result.Message == IdentifierMessage.PassExpiration ||
-                         e.Result.Message == IdentifierMessage.OutOfTime)
+                else if(e.Result.Message == IdentifierMessage.PassExpiration ||
+                        e.Result.Message == IdentifierMessage.OutOfTime)
                 {
                     Message1 = "BRAK DOSTĘPU";
                     Message3 =
                         $"CZŁONEK: {e.Result.Member.FirstName} {e.Result.Member.LastName} [{e.Result.Member.Id}]";
                     Message4 = "UWAGI:";
 
-                    if (e.Result.Message == IdentifierMessage.PassExpiration)
+                    if(e.Result.Message == IdentifierMessage.PassExpiration)
                     {
                         Message2 = e.Result.PassRegistry != null
                             ? $"KARNET STACIŁ WAŻNOŚĆ W DNIU: {e.Result.PassRegistry.EndDate:dd-MM-yyyy}"
                             : "BRAK KARNETU";
                     }
-                    else if (e.Result.Message == IdentifierMessage.OutOfTime)
+                    else if(e.Result.Message == IdentifierMessage.OutOfTime)
                     {
                         Message2 =
                             $"KARNET '{e.Result.PassRegistry.Pass.Name}' WAŻNY W GODZINACH OD {e.Result.PassRegistry.Pass.AccessTimeFrom:HH:mm} DO {e.Result.PassRegistry.Pass.AccessTimeTo:HH:mm}";
                     }
                 }
-                else if (e.Result.Message == IdentifierMessage.SubscriptionSuspension)
+                else if(e.Result.Message == IdentifierMessage.SubscriptionSuspension)
                 {
                     Message1 = "BRAK DOSTĘPU";
                     Message3 =
@@ -126,7 +139,7 @@ namespace GymManager.ViewModels
                         ? $"KARNET ZAWIESZONO DO DNIA: {e.Result.PassRegistry.EndSuspensionDate:dd-MM-yyyy}"
                         : "BRAK KARNETU";
                 }
-                else if (e.Result.Message == IdentifierMessage.UnknowError)
+                else if(e.Result.Message == IdentifierMessage.UnknowError)
                 {
                     Message1 = "BRAK DOSTĘPU";
                     Message2 = "NIEZNANY BŁĄD";
@@ -135,7 +148,7 @@ namespace GymManager.ViewModels
                 }
             }
 
-            if (e.Result.Member != null)
+            if(e.Result.Member != null)
             {
                 MemberPhoto = _model.GetPhoto(e.Result.Member.MemberID);
             }
@@ -154,19 +167,6 @@ namespace GymManager.ViewModels
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public EntryMessageViewModel()
-        {
-            _timer.Interval = new TimeSpan(0, 0, _timeVisibilityMessageSeconds);
-            _timer.Tick += (o, e) =>
-            {
-                if (!_isClosed)
-                {
-                    Helper.Invoke(() => Window?.Close());
-                }
-            };
-            _timer.Start();
         }
     }
 }

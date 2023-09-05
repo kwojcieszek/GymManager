@@ -9,13 +9,11 @@ namespace GymManager.Models
 {
     public class EntriesRegistryModel
     {
-        private List<EntryRegistry> _entriesRegistry;
-
         public List<EntryRegistry> EntriesRegistry
         {
             get
             {
-                if (_entriesRegistry == null)
+                if(_entriesRegistry == null)
                 {
                     GetEntriesRegistry();
                 }
@@ -24,9 +22,11 @@ namespace GymManager.Models
             }
         }
 
+        private List<EntryRegistry> _entriesRegistry;
+
         public List<EntryRegistry> GetEntriesRegistry(DateTime? dateFrom = null, DateTime? dateTo = null)
         {
-            if (dateFrom == null || dateTo == null)
+            if(dateFrom == null || dateTo == null)
             {
                 _entriesRegistry = new GymManagerContext()
                     .EntriesRegistry

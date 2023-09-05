@@ -16,7 +16,7 @@ namespace GymManager.Common
         public static string ByteArrayToString(byte[] ba)
         {
             var hex = new StringBuilder(ba.Length * 2);
-            foreach (var b in ba)
+            foreach(var b in ba)
             {
                 hex.AppendFormat("{0:x2}", b);
             }
@@ -45,16 +45,16 @@ namespace GymManager.Common
         {
             var taskBarLocation = TaskBarLocation.BOTTOM;
             var taskBarOnTopOrBottom = Screen.PrimaryScreen.WorkingArea.Width == Screen.PrimaryScreen.Bounds.Width;
-            if (taskBarOnTopOrBottom)
+            if(taskBarOnTopOrBottom)
             {
-                if (Screen.PrimaryScreen.WorkingArea.Top > 0)
+                if(Screen.PrimaryScreen.WorkingArea.Top > 0)
                 {
                     taskBarLocation = TaskBarLocation.TOP;
                 }
             }
             else
             {
-                if (Screen.PrimaryScreen.WorkingArea.Left > 0)
+                if(Screen.PrimaryScreen.WorkingArea.Left > 0)
                 {
                     taskBarLocation = TaskBarLocation.LEFT;
                 }
@@ -79,14 +79,14 @@ namespace GymManager.Common
 
         public static Window GetWindow(object dataContext)
         {
-            if (Application.Current == null)
+            if(Application.Current == null)
             {
                 return null;
             }
 
-            foreach (Window window in Application.Current.Windows)
+            foreach(Window window in Application.Current.Windows)
             {
-                if (window.DataContext == dataContext)
+                if(window.DataContext == dataContext)
                 {
                     return window;
                 }
@@ -103,6 +103,7 @@ namespace GymManager.Common
             image.CacheOption = BitmapCacheOption.OnLoad;
             image.StreamSource = ms;
             image.EndInit();
+
             return image;
         }
 
@@ -110,6 +111,7 @@ namespace GymManager.Common
         {
             using var ms = new MemoryStream();
             imageIn.Save(ms, imageIn.RawFormat);
+
             return ms.ToArray();
         }
 

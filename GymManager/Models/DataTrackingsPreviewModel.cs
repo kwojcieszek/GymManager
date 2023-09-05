@@ -12,7 +12,7 @@ namespace GymManager.Models
         {
             get
             {
-                if (DataTracking == null)
+                if(DataTracking == null)
                 {
                     return null;
                 }

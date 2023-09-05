@@ -240,7 +240,7 @@ namespace GymManager.DbModels
         {
             List<PermissionList> list = new();
 
-            foreach (var p in (Permissions[])Enum.GetValues(typeof(Permissions)))
+            foreach(var p in (Permissions[])Enum.GetValues(typeof(Permissions)))
             {
                 list.Add(new PermissionList { PermissionListID = (int)p, Name = p.GetDisplayName() });
             }

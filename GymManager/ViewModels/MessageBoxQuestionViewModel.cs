@@ -10,9 +10,6 @@ namespace GymManager.ViewModels
     public class MessageBoxQuestionViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private readonly MessageBoxQuestionModel _model = new();
-        private ICommand _noCommand;
-        private ICommand _yesCommand;
 
         public string Message
         {
@@ -34,9 +31,13 @@ namespace GymManager.ViewModels
             _yesCommand ??= new RelayCommand(
                 x => { Window.DialogResult = true; });
 
+        private readonly MessageBoxQuestionModel _model = new();
+        private ICommand _noCommand;
+        private ICommand _yesCommand;
+
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {
-            if (PropertyChanged != null)
+            if(PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }

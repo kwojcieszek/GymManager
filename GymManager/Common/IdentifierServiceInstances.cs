@@ -13,7 +13,7 @@ namespace GymManager.Common
             if (instances.ContainsKey(name))
                 throw new Exception($"Nazwa usługi {name} już występuje.");
 #else
-            if (instances.ContainsKey(name))
+            if(instances.ContainsKey(name))
             {
                 return;
             }
@@ -24,7 +24,7 @@ namespace GymManager.Common
 
         public IdentifierService GetIdentifierService(string name)
         {
-            if (!instances.ContainsKey(name))
+            if(!instances.ContainsKey(name))
             {
                 throw new Exception($"Wybrana usługa {name} nie występuje.");
             }

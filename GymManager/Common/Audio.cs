@@ -9,11 +9,19 @@ namespace GymManager.Common
     {
         private readonly Dictionary<string, string> _audioDirectory = new();
 
+        public Audio()
+        {
+            _audioDirectory.Add("beep", $"{Path.ApplicationDirectory}\\Sounds\\Beep.wav");
+            _audioDirectory.Add("entry", $"{Path.ApplicationDirectory}\\Sounds\\Entry.wav");
+            _audioDirectory.Add("exit", $"{Path.ApplicationDirectory}\\Sounds\\Exit.wav");
+            _audioDirectory.Add("warning", $"{Path.ApplicationDirectory}\\Sounds\\Warning.wav");
+        }
+
         public void Play(params string[] wavesName)
         {
             Task.Factory.StartNew(() =>
             {
-                foreach (var wave in wavesName)
+                foreach(var wave in wavesName)
                 {
                     Play(wave, true);
                 }
@@ -28,7 +36,7 @@ namespace GymManager.Common
                 {
                     var fileName = _audioDirectory.GetValueOrDefault(waveName);
 
-                    if (fileName == null)
+                    if(fileName == null)
                     {
                         return;
                     }
@@ -38,24 +46,16 @@ namespace GymManager.Common
                     audio.Filename = fileName;
                     audio.Play();
 
-                    if (wait)
+                    if(wait)
                     {
                         Task.Delay(audio.Milliseconds).Wait();
                     }
                 });
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Logger.Log.Error(ex);
             }
-        }
-
-        public Audio()
-        {
-            _audioDirectory.Add("beep", $"{Path.ApplicationDirectory}\\Sounds\\Beep.wav");
-            _audioDirectory.Add("entry", $"{Path.ApplicationDirectory}\\Sounds\\Entry.wav");
-            _audioDirectory.Add("exit", $"{Path.ApplicationDirectory}\\Sounds\\Exit.wav");
-            _audioDirectory.Add("warning", $"{Path.ApplicationDirectory}\\Sounds\\Warning.wav");
         }
     }
 }

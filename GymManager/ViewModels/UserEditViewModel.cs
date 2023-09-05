@@ -14,23 +14,16 @@ namespace GymManager.ViewModels
     public class UserEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public bool _passwordChanged;
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private readonly UserEditModel _model = new();
-        private string _password1;
-        private string _password2;
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (CheckUser(_model.User))
+                    if(CheckUser(_model.User))
                     {
                         try
                         {
-                            if (_passwordChanged)
+                            if(_passwordChanged)
                             {
                                 User.Password = Cryptography.MD5Hash(_password1);
                             }
@@ -39,7 +32,7 @@ namespace GymManager.ViewModels
 
                             Window.DialogResult = true;
                         }
-                        catch (Exception ex)
+                        catch(Exception ex)
                         {
                             MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
                         }
@@ -54,7 +47,7 @@ namespace GymManager.ViewModels
             _contentRenderedCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (_model.User == null)
+                    if(_model.User == null)
                     {
                         Title = "DODAWANIE UŻYTKOWNIKA";
 
@@ -104,6 +97,13 @@ namespace GymManager.ViewModels
         public User User => _model.User;
 
         public Window Window => Helper.GetWindow(this);
+        public bool _passwordChanged;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly UserEditModel _model = new();
+        private string _password1;
+        private string _password2;
 
         public void SetEditObject(int userID)
         {
@@ -115,44 +115,44 @@ namespace GymManager.ViewModels
             string filed = null;
             string message = null;
 
-            if (user == null)
+            if(user == null)
             {
                 return false;
             }
 
-            if (string.IsNullOrEmpty(user.UserName))
+            if(string.IsNullOrEmpty(user.UserName))
             {
                 filed = "LOGIN";
             }
-            else if (string.IsNullOrEmpty(user.FirstName))
+            else if(string.IsNullOrEmpty(user.FirstName))
             {
                 filed = "IMIE";
             }
-            else if (string.IsNullOrEmpty(user.LastName))
+            else if(string.IsNullOrEmpty(user.LastName))
             {
                 filed = "NAZWISKO";
             }
-            else if (string.IsNullOrEmpty(user.Email))
+            else if(string.IsNullOrEmpty(user.Email))
             {
                 filed = "EMAIL";
             }
-            else if (string.IsNullOrEmpty(user.Phone))
+            else if(string.IsNullOrEmpty(user.Phone))
             {
                 filed = "TELEFON";
             }
-            else if (string.IsNullOrEmpty(_password1) || string.IsNullOrEmpty(_password2))
+            else if(string.IsNullOrEmpty(_password1) || string.IsNullOrEmpty(_password2))
             {
                 filed = "HASŁO";
             }
-            else if (_password1 != _password2)
+            else if(_password1 != _password2)
             {
                 message = "POLA HASŁA NIE POSIADJĄ TEGO SAMEGO HASŁA";
             }
-            else if (_password1.Length < _model.PasswordMinLenght)
+            else if(_password1.Length < _model.PasswordMinLenght)
             {
                 message = $"ZBYT KRÓTKIE HASŁO\nMINIMALNA DŁUGOŚĆ HASŁA WYNOSI {_model.PasswordMinLenght} ZNAKÓW";
             }
-            else if (!string.IsNullOrEmpty(user.Email) && !EmailValidator.EmailIsValid(user.Email))
+            else if(!string.IsNullOrEmpty(user.Email) && !EmailValidator.EmailIsValid(user.Email))
             {
                 message = $"EMAIL '{user.Email}' MA NIEPRAWIDŁOWY FORMAT";
             }

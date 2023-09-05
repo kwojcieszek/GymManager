@@ -26,7 +26,7 @@ namespace GymManager.Common
                 new("{EMAIL}", member.Email)
             };
 
-            foreach (var file in Directory.GetFiles($"{Path.ApplicationDirectory}\\Reports", "member*.htm"))
+            foreach(var file in Directory.GetFiles($"{Path.ApplicationDirectory}\\Reports", "member*.htm"))
             {
                 yield return _pdfHtml.CreateFile(file, formatTexts);
             }

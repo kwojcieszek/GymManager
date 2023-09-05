@@ -12,12 +12,6 @@ namespace GymManager.ViewModels
     public class SettingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _adobeApplicationPathCommand;
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _logoImagePathCommand;
-        private readonly SettingsModel _model = new();
-        private ICommand _samplesDataCommand;
 
         public ICommand AdobeApplicationPathCommand =>
             _adobeApplicationPathCommand ??= new RelayCommand(
@@ -29,7 +23,7 @@ namespace GymManager.ViewModels
                         Filter = "exe|*.exe"
                     };
 
-                    if (op.ShowDialog() == true)
+                    if(op.ShowDialog() == true)
                     {
                         _model.AppSettings.Reports.AdobeApplicationPath = op.FileName;
 
@@ -68,7 +62,7 @@ namespace GymManager.ViewModels
                         Filter = "png|*.png"
                     };
 
-                    if (op.ShowDialog() == true)
+                    if(op.ShowDialog() == true)
                     {
                         _model.AppSettings.LogoImagePath = op.FileName;
 
@@ -94,11 +88,12 @@ namespace GymManager.ViewModels
 
         public Visibility VisibleButtonSamplesData { get; }
         public Window Window => Helper.GetWindow(this);
-
-        private void OnPropertyChange([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        private ICommand _adobeApplicationPathCommand;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _logoImagePathCommand;
+        private readonly SettingsModel _model = new();
+        private ICommand _samplesDataCommand;
 
         public SettingsViewModel()
         {
@@ -107,6 +102,11 @@ namespace GymManager.ViewModels
 #else
             this.VisibleButtonSamplesData = Visibility.Hidden;
 #endif
+        }
+
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

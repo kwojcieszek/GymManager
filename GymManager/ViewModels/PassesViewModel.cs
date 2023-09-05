@@ -15,25 +15,17 @@ namespace GymManager.ViewModels
     public class PassesViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _addCommand;
-        private ICommand _closeCommand;
-        private ICommand _deleteCommand;
-        private ICommand _editCommand;
-        private readonly PassesModel _model = new();
-        private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
-        private ICommand _searchTextCommand;
 
         public ICommand AddCommand =>
             _addCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddPasses))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddPasses))
                     {
                         return;
                     }
 
-                    if (Add())
+                    if(Add())
                     {
                         _model.GetPasses(OnlyActives);
 
@@ -49,12 +41,12 @@ namespace GymManager.ViewModels
             _deleteCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeletePasses))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeletePasses))
                     {
                         return;
                     }
 
-                    if (Delete())
+                    if(Delete())
                     {
                         _model.GetPasses(OnlyActives);
 
@@ -66,12 +58,12 @@ namespace GymManager.ViewModels
             _editCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditPasses))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditPasses))
                     {
                         return;
                     }
 
-                    if (Edit())
+                    if(Edit())
                     {
                         _model.GetPasses(OnlyActives);
 
@@ -117,6 +109,14 @@ namespace GymManager.ViewModels
         public Pass SelectedItem { get; set; }
 
         public Window Window => Helper.GetWindow(this);
+        private ICommand _addCommand;
+        private ICommand _closeCommand;
+        private ICommand _deleteCommand;
+        private ICommand _editCommand;
+        private readonly PassesModel _model = new();
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
+        private ICommand _searchTextCommand;
 
         public bool Add(Window window = null)
         {
@@ -127,9 +127,10 @@ namespace GymManager.ViewModels
                 var passEditView = new PassEditView();
                 var model = passEditView.DataContext as PassEditViewModel;
                 model.Owner = window;
+
                 return passEditView.ShowDialog().Value;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(window, ex.Message, true);
 
@@ -139,22 +140,22 @@ namespace GymManager.ViewModels
 
         private bool Delete()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
 
             var message = $"CZY NA PEWNO USUNĄĆ KARNET\n{SelectedItem.Name} ?";
 
-            if (MessageView.MessageBoxQuestionView(Window, message))
+            if(MessageView.MessageBoxQuestionView(Window, message))
             {
                 try
                 {
                     _model.Delete(SelectedItem);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    if (ex?.InnerException != null)
+                    if(ex?.InnerException != null)
                     {
                         MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
                     }
@@ -170,7 +171,7 @@ namespace GymManager.ViewModels
 
         private bool Edit()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
@@ -181,9 +182,10 @@ namespace GymManager.ViewModels
                 var model = passEditView.DataContext as PassEditViewModel;
                 model.Owner = Window;
                 model.SetEditObject(SelectedItem.PassID);
+
                 return passEditView.ShowDialog().Value;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(Window, ex.Message, true);
 

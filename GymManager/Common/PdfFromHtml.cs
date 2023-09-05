@@ -18,9 +18,9 @@ namespace GymManager.Common
 
             var html = File.ReadAllText(sourceFilePath, Encoding.UTF8);
 
-            if (formatTexts != null)
+            if(formatTexts != null)
             {
-                foreach (var formatText in formatTexts)
+                foreach(var formatText in formatTexts)
                 {
                     html = html.Replace(formatText.Parameter, formatText.Value);
                 }
@@ -47,7 +47,7 @@ namespace GymManager.Common
                 };
                 var process = Process.Start(psInfo);
                 process.WaitForExit(10000);
-                if (!process.HasExited)
+                if(!process.HasExited)
                 {
                 }
 
