@@ -10,7 +10,7 @@
                  xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                  xmlns:dataGridExtensions="clr-namespace:GymManager.Common.DataGridExtensions"
                  mc:Ignorable="d"
-                 Title="CZŁONKOWIE" Height="730" Width="1216" WindowStartupLocation="CenterOwner"
+                 Title="CZŁONKOWIE" Height="730" Width="1334" WindowStartupLocation="CenterOwner"
                  WindowState="Maximized">
     <Window.DataContext>
         <mw:MembersViewModel />
@@ -27,7 +27,8 @@
     </Window.Resources>
     <Grid Grid.IsSharedSizeScope="True" d:DataContext="{d:DesignInstance DataGrid}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="502*" />
+            <ColumnDefinition Width="165*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -35,7 +36,7 @@
             <RowDefinition Height="30" />
         </Grid.RowDefinitions>
 
-        <WrapPanel Grid.Row="0">
+        <WrapPanel Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,50">
             <WrapPanel Margin="1,0,1,0" Height="50" Width="auto" HorizontalAlignment="Center">
                 <Button Name="ButtonAdd" HorizontalAlignment="Left" Background="White" Height="50" Width="120"
                         BorderThickness="0" FontSize="14"
@@ -73,6 +74,15 @@
                                Source="{iconPacks:CodiconsImage Kind=Refresh, Brush=DarkOrange}" />
                     </WrapPanel>
                 </Button>
+                <Button Name="ButtonPrintMembershipDocuments" Margin="1,0,1,0" HorizontalAlignment="Left" Background="White" Height="50"
+                        Width="180" BorderThickness="0" FontSize="14"
+                        Command="{Binding PrintMembershipDocumentsCommand}">
+                    <WrapPanel>
+                        <TextBlock VerticalAlignment="Center">DRUKUJ DOKUMENTY</TextBlock>
+                        <Image Stretch="Fill" Margin="10,0,0,0" Height="30" Width="30"
+                               Source="{iconPacks:ForkAwesomeImage Kind=Print, Brush=DarkSlateGray}" />
+                    </WrapPanel>
+                </Button>
             </WrapPanel>
             <WrapPanel VerticalAlignment="Center" Margin="20,0,0,0">
                 <TextBlock FontSize="16" Margin="5,5,5,5">SZUKAJ</TextBlock>
@@ -84,8 +94,8 @@
             </WrapPanel>
         </WrapPanel>
 
-        <DataGrid Grid.Row="1" x:Name="DataGridMembers"
-                  Margin="5,10,5,5"
+        <DataGrid x:Name="DataGridMembers"
+                  Margin="5,60,5,5"
                   dataGridExtensions:Tools.ApplyInitialSorting="True"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
@@ -102,7 +112,7 @@
                   TextOptions.TextFormattingMode="Display"
                   ItemsSource="{Binding Source={StaticResource cvsMain}}"
                   SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                  SelectedValuePath="MemberID">
+                  SelectedValuePath="MemberID" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=DoubleClickCommand}" />
@@ -145,7 +155,7 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <StatusBar Grid.Row="2" Margin="0,0,0,0" VerticalAlignment="Center" Height="30" Width="Auto">
+        <StatusBar Grid.Row="2" VerticalAlignment="Center" Height="30" Width="Auto" Grid.ColumnSpan="2">
             <WrapPanel>
                 <Image Height="20" Width="20" Margin="0,0,5,0"
                        Source="{iconPacks:PicolIconsImage Kind=ListNumbered, Brush=LightGreen}" />

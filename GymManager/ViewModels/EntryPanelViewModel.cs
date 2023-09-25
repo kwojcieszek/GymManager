@@ -20,6 +20,10 @@ namespace GymManager.ViewModels
         public static string Time => DateTime.Now.ToLongTimeString();
         public static int UnreadMessages => 0;
 
+        public ICommand AddEntryWithoutIdentifierCommand =>
+            _addEntryWithoutIdentifierCommand ??= new RelayCommand(
+                x => CommonViewModel.AddEntryWithoutIdentifierCommand());
+
         public ICommand ChangeCabinetKeyCommand =>
             _changeCabinetKeyCommand ??= new RelayCommand(
                 x =>
@@ -112,6 +116,7 @@ namespace GymManager.ViewModels
 #pragma warning restore IDE0051
 #pragma warning restore CS0169
         private readonly int _timeVisibilityMessage = 10000;
+        private ICommand _addEntryWithoutIdentifierCommand;
 
         public EntryPanelViewModel()
         {

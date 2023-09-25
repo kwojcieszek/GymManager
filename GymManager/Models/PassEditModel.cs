@@ -43,8 +43,7 @@ namespace GymManager.Models
             }
 
             Pass = _db.Passes
-                .Where(p => p.PassID == passID)
-                .FirstOrDefault();
+                .FirstOrDefault(p => p.PassID == passID);
 
             Pass.DateModified = DateTime.Now;
             Pass.ModifiedBy = CurrentUser.User.UserID;

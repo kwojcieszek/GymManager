@@ -42,8 +42,7 @@ namespace GymManager.Models
         {
             var member = new GymManagerContext()
                 .Members
-                .Where(m => m.Id == id)
-                .FirstOrDefault();
+                .FirstOrDefault(m => m.Id == id);
 
             return member;
         }

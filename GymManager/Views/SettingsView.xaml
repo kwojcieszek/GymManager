@@ -50,7 +50,7 @@
             <TabItem Header="USTAWIENIA GŁÓWNE" mah:HeaderedControlHelper.HeaderFontSize="20">
                 <Grid Margin="10,10,10,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="380" />
+                        <ColumnDefinition Width="450" />
                         <ColumnDefinition Width="10" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
@@ -93,7 +93,7 @@
                     <TextBlock Grid.Row="3" Text="SCIEŻKA LOGO FIRMY" Margin="0,10,0,0" FontSize="16"
                                TextAlignment="Right" VerticalAlignment="Center" />
                     <WrapPanel Grid.Column="2" Grid.Row="3" VerticalAlignment="Center">
-                        <TextBox Width="500" Margin="0,10,0,0" Text="{Binding AppSettings.LogoImagePath}" FontSize="14"
+                        <TextBox Width="450" Margin="0,10,0,0" Text="{Binding AppSettings.LogoImagePath}" FontSize="14"
                                  HorizontalAlignment="Left" IsReadOnly="True" />
                         <Button HorizontalAlignment="Left" VerticalAlignment="Bottom" Height="30" Width="30"
                                 Margin="10,0,0,0"
@@ -109,6 +109,16 @@
                                        Value="{Binding AppSettings.MaximumDaysSubscriptionSuspension}"
                                        Margin="0,10,0,0" FontSize="16" TextAlignment="Right" VerticalAlignment="Center"
                                        HorizontalAlignment="Left" />
+                    <TextBlock Grid.Row="5" Text="DEZAKTYWUJ CZŁONKÓW, GDY NIE SĄ AKTYWNI W CIĄGU" Margin="0,10,0,0"
+                               FontSize="16" TextAlignment="Right" VerticalAlignment="Center" />
+                    <WrapPanel Grid.Row="5" Grid.Column="2" >
+                    <mah:NumericUpDown Width="250"
+                                       Value="{Binding AppSettings.DeactivateMembersWhenNonActiveSpecifiedDuringDays}"
+                                       Margin="0,10,0,0" FontSize="16" TextAlignment="Right" VerticalAlignment="Center"
+                                       HorizontalAlignment="Left" />
+                    <TextBlock Text="DNI" Margin="10,10,0,0"
+                               FontSize="16" TextAlignment="Left" VerticalAlignment="Center" />
+                    </WrapPanel>
                 </Grid>
             </TabItem>
             <TabItem Header="IDENTYFIKACJA" mah:HeaderedControlHelper.HeaderFontSize="20">

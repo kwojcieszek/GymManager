@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using GymManager.Common;
 using GymManager.DbModels;
@@ -24,7 +25,7 @@ namespace GymManager.ViewModels
             _closeRowCommand ??= new RelayCommand(
                 x =>
                 {
-                    if(CloseRow())
+                    if (CloseRow())
                     {
                         _model.GetEntriesRegistry();
                         OnPropertyChange(nameof(EntriesRegistry));
@@ -35,12 +36,34 @@ namespace GymManager.ViewModels
             _editCommand ??= new RelayCommand(
                 x =>
                 {
-                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditMembers))
+                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditMembers))
                     {
                         return;
                     }
 
                     Edit();
+                });
+
+        public ICommand ChangeCabinetKeyCommand =>
+            _changeCabinetKeyCommand ??= new RelayCommand(
+                x =>
+                {
+                    if (SelectedItem == null)
+                    {
+                        return;
+                    }
+
+                    var view = new CabinetKeysAvailableView();
+                    var dx = view.DataContext as CabinetKeysAvailableViewModel;
+
+                    var result = view.ShowDialog();
+
+                    if (result.HasValue && result.Value && dx?.SelectedItem != null)
+                    {
+                        _model.ChangeCabinetKey(SelectedItem, dx.SelectedItem);
+                        _model.GetEntriesRegistry();
+                        OnPropertyChange(nameof(EntriesRegistry));
+                    }
                 });
 
         public List<EntryRegistry> EntriesRegistry =>
@@ -52,7 +75,7 @@ namespace GymManager.ViewModels
             _previewCommand ??= new RelayCommand(
                 x =>
                 {
-                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.PreviewMembers))
+                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.PreviewMembers))
                     {
                         return;
                     }
@@ -93,10 +116,11 @@ namespace GymManager.ViewModels
         private ICommand _refreshCommand;
         private string _searchText = string.Empty;
         private ICommand _searchTextCommand;
+        private ICommand _changeCabinetKeyCommand;
 
         private bool CloseRow()
         {
-            if(SelectedItem == null)
+            if (SelectedItem == null)
             {
                 return false;
             }
@@ -104,15 +128,15 @@ namespace GymManager.ViewModels
             var message =
                 $"CZY NA PEWNO ZAMKNĄĆ REKORD OSOBY\n{SelectedItem.Member.FirstName} {SelectedItem.Member.LastName} [{SelectedItem.Member.Id}] ?";
 
-            if(MessageView.MessageBoxQuestionView(Window, message))
+            if (MessageView.MessageBoxQuestionView(Window, message))
             {
                 try
                 {
                     _model.CloseRow(SelectedItem);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    if(ex?.InnerException != null)
+                    if (ex?.InnerException != null)
                     {
                         MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
                     }
@@ -128,7 +152,7 @@ namespace GymManager.ViewModels
 
         private bool Edit()
         {
-            if(SelectedItem == null)
+            if (SelectedItem == null)
             {
                 return false;
             }
@@ -142,10 +166,10 @@ namespace GymManager.ViewModels
 
                 var result = memberEditView.ShowDialog()!.Value;
 
-                if(result && model.Member.PassID != null &&
+                if (result && model.Member.PassID != null &&
                    PassesHelper.GetCurrentPassRegistry(model.Member.MemberID) == null)
                 {
-                    if(MessageView.MessageBoxQuestionView(Window,
+                    if (MessageView.MessageBoxQuestionView(Window,
                            $"CZY CHCESZ DODAĆ NOWY KARNET DLA CZŁONKA\n{model.Member.FirstName} {model.Member.LastName} [{model.Member.Id}]?"))
                     {
                         var passEditView = new PassesMembersEditView();
@@ -158,7 +182,7 @@ namespace GymManager.ViewModels
 
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageView.MessageBoxInfoView(Window, ex.Message, true);
 
@@ -173,7 +197,7 @@ namespace GymManager.ViewModels
 
         private bool Preview()
         {
-            if(SelectedItem == null)
+            if (SelectedItem == null)
             {
                 return false;
             }
@@ -189,7 +213,7 @@ namespace GymManager.ViewModels
 
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageView.MessageBoxInfoView(Window, ex.Message, true);
 

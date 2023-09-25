@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GymManager.Common;
 using GymManager.DbModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -50,6 +51,11 @@ namespace GymManager.Models
                 .ToList();
 
             return _entriesRegistry;
+        }
+
+        public void ChangeCabinetKey(EntryRegistry entryRegistry, CabinetKey cabinetKey)
+        {
+            new IdentifiersService().ChangeCabinetKey(entryRegistry, cabinetKey);
         }
     }
 }

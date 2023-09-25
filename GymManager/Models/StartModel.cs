@@ -36,6 +36,7 @@ namespace GymManager.Models
             _jobs.Add(new StartJob(JobCulture, "Wczytywanie ustawień regionalnych"));
             _jobs.Add(new StartJob(JobDatabase, "Konfigurowanie bazy danych"));
             _jobs.Add(new StartJob(JobCloseRegistry, "Konfigurowanie zadań"));
+            _jobs.Add(new StartJob(JobConfigurationData, "Konfiguracja danych"));
         }
 
         public void StartJobs()
@@ -64,6 +65,11 @@ namespace GymManager.Models
         private void JobCloseRegistry()
         {
             new IdentifiersService().CloseRegistry(Settings.App.TimeToCloseEntranceMembersMinutes);
+        }
+
+        private void JobConfigurationData()
+        {
+            new MembersService().DeactivateMembersWhenNonActiveSpecifiedDuringDays(Settings.App.DeactivateMembersWhenNonActiveSpecifiedDuringDays);
         }
 
         private void JobCulture()

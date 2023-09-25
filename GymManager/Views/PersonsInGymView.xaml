@@ -55,6 +55,15 @@
                                Source="{iconPacks:CodiconsImage Kind=Edit, Brush=DarkBlue}" />
                     </WrapPanel>
                 </Button>
+                <Button Name="ButtonEdit1" Margin="1,0,1,0" HorizontalAlignment="Left" Background="White" Height="50"
+                        Width="190" BorderThickness="0" FontSize="14"
+                        Command="{Binding ChangeCabinetKeyCommand}">
+                    <WrapPanel>
+                        <TextBlock VerticalAlignment="Center">ZMIEŃ KLUCZYK</TextBlock>
+                        <Image Stretch="Fill" Margin="10,0,0,0" Height="30" Width="30"
+                               Source="{iconPacks:UniconsImage Kind=KeySkeleton, Brush=DarkGreen}" />
+                    </WrapPanel>
+                </Button>
                 <TextBlock FontSize="16" Margin="5,5,5,5" VerticalAlignment="Center">SZUKAJ</TextBlock>
                 <TextBox Name="TextSearch" VerticalAlignment="Center" Width="250" Margin="5,5,5,5"
                          mah:TextBoxHelper.Watermark="WPROWADŻ SZUKANY TEKST"

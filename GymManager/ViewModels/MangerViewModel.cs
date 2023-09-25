@@ -38,48 +38,7 @@ namespace GymManager.ViewModels
 
         public ICommand AddEntryWithoutIdentifierCommand =>
             _addEntryWithoutIdentifierCommand ??= new RelayCommand(
-                x =>
-                {
-                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddEntryWithoutIdentifier))
-                    {
-                        return;
-                    }
-
-                    var view = new MembersView
-                    {
-                        Owner = Window
-                    };
-
-                    var dx = view.DataContext as MembersViewModel;
-                    dx.CloseWhenDoubleClick = true;
-
-                    var result = view.ShowDialog();
-
-                    if(result.HasValue & result.Value && dx.SelectedItem != null)
-                    {
-                        var entryRegistry = PassesHelper.GetActiveEntryRegistry(dx.SelectedItem);
-
-                        if(entryRegistry == null &&
-                           new IdentifiersService().Identifier(dx.SelectedItem.MemberID, checkAndWrite: false)
-                               .Message !=
-                           IdentifierMessage.AccessEntry)
-                        {
-                            if(MessageView.MessageBoxQuestionView(Window,
-                                   $"BRAK WAŻNEGO KARNETU!\nMIMO TO CZY CHCESZ DODAĆ 'WEJŚCIE' DLA\n{dx.SelectedItem.FirstName} {dx.SelectedItem.LastName} [{dx.SelectedItem.Id}] ?"))
-                            {
-                                EntryService.GetInstance().Entry(dx.SelectedItem, true);
-                            }
-                        }
-                        else
-                        {
-                            if(MessageView.MessageBoxQuestionView(Window,
-                                   $"CZY CHCESZ DODAĆ '{(entryRegistry == null ? "WEJŚCIE" : "WYJŚCIE")}' DLA\n{dx.SelectedItem.FirstName} {dx.SelectedItem.LastName} [{dx.SelectedItem.Id}] ?"))
-                            {
-                                EntryService.GetInstance().Entry(dx.SelectedItem);
-                            }
-                        }
-                    }
-                });
+                x => CommonViewModel.AddEntryWithoutIdentifierCommand(Window));
 
         public ICommand AddMembersViewCommand =>
             _addMembersViewCommand ??= new RelayCommand(

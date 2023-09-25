@@ -12,5 +12,6 @@
         public SerialPortSettings RFIDSerialPort { get; set; } = new();
         public bool SendMessagesFromThisComputer { get; set; } = true;
         public int TimeToCloseEntranceMembersMinutes { get; set; } = 300;
+        public int DeactivateMembersWhenNonActiveSpecifiedDuringDays { get; set; } = 60;
     }
 }

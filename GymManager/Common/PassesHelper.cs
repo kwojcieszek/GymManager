@@ -14,7 +14,7 @@ namespace GymManager.Common
             var continuation = 0;
 
             var passes = db.PassesRegistry
-                .Where(m => m.MemberID == memberID)
+                .Where(m => m.MemberID == memberID && m.Pass.Continuation)
                 .OrderByDescending(p => p.EndDate.Value.Date);
 
             foreach(var pass in passes)
