@@ -1,6 +1,6 @@
-﻿using GymManager.DbModels;
-using System;
+﻿using System;
 using System.Linq;
+using GymManager.DbModels;
 
 namespace GymManager.Common
 {
@@ -8,7 +8,7 @@ namespace GymManager.Common
     {
         public void DeactivateMembersWhenNonActiveSpecifiedDuringDays(int days)
         {
-            if(days<=0)
+            if(days <= 0)
                 return;
 
             var db = new GymManagerContext();
@@ -21,7 +21,7 @@ namespace GymManager.Common
 
             var members = db.Members.Where(m => m.IsAcive);
 
-            foreach (var member in members)
+            foreach(var member in members)
             {
                 member.IsAcive = passesRegistry.Contains(member.MemberID);
             }

@@ -16,6 +16,7 @@ namespace GymManager.Common
         public static string ByteArrayToString(byte[] ba)
         {
             var hex = new StringBuilder(ba.Length * 2);
+
             foreach(var b in ba)
             {
                 hex.AppendFormat("{0:x2}", b);
@@ -45,6 +46,7 @@ namespace GymManager.Common
         {
             var taskBarLocation = TaskBarLocation.BOTTOM;
             var taskBarOnTopOrBottom = Screen.PrimaryScreen.WorkingArea.Width == Screen.PrimaryScreen.Bounds.Width;
+
             if(taskBarOnTopOrBottom)
             {
                 if(Screen.PrimaryScreen.WorkingArea.Top > 0)

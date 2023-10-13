@@ -122,6 +122,7 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserID);
+
                     table.ForeignKey(
                         "FK_Users_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -145,11 +146,13 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CabinetKeys", x => x.CabinetKeyID);
+
                     table.ForeignKey(
                         "FK_CabinetKeys_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_CabinetKeys_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -171,12 +174,14 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DataTrackings", x => x.DataTrackingID);
+
                     table.ForeignKey(
                         "FK_DataTrackings_DataTrackingOperations_DataTrackingOperationID",
                         x => x.DataTrackingOperationID,
                         "DataTrackingOperations",
                         "DataTrackingOperationID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_DataTrackings_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -210,23 +215,27 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Passes", x => x.PassID);
+
                     table.ForeignKey(
                         "FK_Passes_PassTimes_PassTimeID",
                         x => x.PassTimeID,
                         "PassTimes",
                         "PassTimeID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_Passes_Taxes_TaxID",
                         x => x.TaxID,
                         "Taxes",
                         "TaxID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_Passes_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_Passes_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -247,6 +256,7 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DataTrackingDefinitions", x => x.DataTrackingDefinitionID);
+
                     table.ForeignKey(
                         "FK_DataTrackingDefinitions_DataTrackings_DataTrackingID",
                         x => x.DataTrackingID,
@@ -281,16 +291,19 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Members", x => x.MemberID);
+
                     table.ForeignKey(
                         "FK_Members_Passes_PassID",
                         x => x.PassID,
                         "Passes",
                         "PassID");
+
                     table.ForeignKey(
                         "FK_Members_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_Members_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -315,17 +328,20 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EntriesRegistry", x => x.EntryRegisterID);
+
                     table.ForeignKey(
                         "FK_EntriesRegistry_CabinetKeys_CabinetKeyID",
                         x => x.CabinetKeyID,
                         "CabinetKeys",
                         "CabinetKeyID");
+
                     table.ForeignKey(
                         "FK_EntriesRegistry_Members_MemberID",
                         x => x.MemberID,
                         "Members",
                         "MemberID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_EntriesRegistry_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -351,23 +367,27 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Identifiers", x => x.IdentifierID);
+
                     table.ForeignKey(
                         "FK_Identifiers_MediaCarriers_MediaCarrierID",
                         x => x.MediaCarrierID,
                         "MediaCarriers",
                         "MediaCarrierID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_Identifiers_Members_MemberID",
                         x => x.MemberID,
                         "Members",
                         "MemberID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_Identifiers_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_Identifiers_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -393,6 +413,7 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.MessageID);
+
                     table.ForeignKey(
                         "FK_Messages_Members_MemberID",
                         x => x.MemberID,
@@ -422,23 +443,27 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PassesRegistry", x => x.PassRegistryID);
+
                     table.ForeignKey(
                         "FK_PassesRegistry_Members_MemberID",
                         x => x.MemberID,
                         "Members",
                         "MemberID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_PassesRegistry_Passes_PassID",
                         x => x.PassID,
                         "Passes",
                         "PassID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_PassesRegistry_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_PassesRegistry_Users_ModifiedBy",
                         x => x.ModifiedBy,

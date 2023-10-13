@@ -45,11 +45,11 @@ namespace GymManager.Common
                     CreateNoWindow = true,
                     UseShellExecute = true
                 };
+
                 var process = Process.Start(psInfo);
                 process.WaitForExit(10000);
-                if(!process.HasExited)
-                {
-                }
+
+                if(!process.HasExited) { }
 
                 ;
             });

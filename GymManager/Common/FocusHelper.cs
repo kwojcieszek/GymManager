@@ -24,6 +24,7 @@ namespace GymManager.Common
             DependencyPropertyChangedEventArgs e)
         {
             var ctrl = (UIElement)d;
+
             if((bool)e.NewValue)
             {
                 ctrl.Focus(); // Don't care about false values.

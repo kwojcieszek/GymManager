@@ -48,6 +48,7 @@ namespace GymManager.ViewModels
         public EntryMessageViewModel()
         {
             _timer.Interval = new TimeSpan(0, 0, _timeVisibilityMessageSeconds);
+
             _timer.Tick += (o, e) =>
             {
                 if(!_isClosed)
@@ -55,6 +56,7 @@ namespace GymManager.ViewModels
                     Helper.Invoke(() => Window?.Close());
                 }
             };
+
             _timer.Start();
         }
 
@@ -75,9 +77,12 @@ namespace GymManager.ViewModels
 
                 Message1 = $"WEJŚCIE: {e.Result.Member.FirstName} {e.Result.Member.LastName} [{e.Result.Member.Id}]" +
                            (age.HasValue ? $" [{age} LATA]" : string.Empty);
+
                 Message2 = $"NUMER KLUCZYKA: {e.Result.CabinetKey?.Name}";
+
                 Message3 =
                     $"KARNET '{e.Result.PassRegistry?.Pass.Name}' WAŻNY DO: {e.Result.PassRegistry?.EndDate:dd-MM-yyyy}";
+
                 Message3 =
                     $"OSTATNI KARNET '{e.Result.EndOfPassRegistry?.Pass.Name}' WAŻNY DO: {e.Result.EndOfPassRegistry?.EndDate:dd-MM-yyyy}";
 
@@ -92,6 +97,7 @@ namespace GymManager.ViewModels
                 Message1 = $"WYJŚCIE: {e.Result.Member.FirstName} {e.Result.Member.LastName} [{e.Result.Member.Id}]";
                 Message2 = $"NUMER KLUCZYKA: {e.Result.CabinetKey?.Name}";
                 Message3 = $"CZAS POBYTU: {EntityMethodsHelper.GetHourFromMinutes(e.Result.EntryRegistry.VisitTime)}";
+
                 Message4 =
                     $"OSTATNI KARNET '{e.Result.EndOfPassRegistry.Pass.Name}' WAŻNY DO: {e.Result.EndOfPassRegistry.EndDate:dd-MM-yyyy}";
             }
@@ -112,8 +118,10 @@ namespace GymManager.ViewModels
                         e.Result.Message == IdentifierMessage.OutOfTime)
                 {
                     Message1 = "BRAK DOSTĘPU";
+
                     Message3 =
                         $"CZŁONEK: {e.Result.Member.FirstName} {e.Result.Member.LastName} [{e.Result.Member.Id}]";
+
                     Message4 = "UWAGI:";
 
                     if(e.Result.Message == IdentifierMessage.PassExpiration)
@@ -131,8 +139,10 @@ namespace GymManager.ViewModels
                 else if(e.Result.Message == IdentifierMessage.SubscriptionSuspension)
                 {
                     Message1 = "BRAK DOSTĘPU";
+
                     Message3 =
                         $"CZŁONEK: {e.Result.Member.FirstName} {e.Result.Member.LastName} [{e.Result.Member.Id}]";
+
                     Message4 = "UWAGI:";
 
                     Message2 = e.Result.PassRegistry != null

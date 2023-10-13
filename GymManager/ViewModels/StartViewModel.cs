@@ -113,13 +113,14 @@ namespace GymManager.ViewModels
             {
                 Interval = new TimeSpan(0, 0, 0, 0, 10)
             };
-            _timerStartMain.Tick += (o, e) => StartMainWiwndow();
 
+            _timerStartMain.Tick += (o, e) => StartMainWiwndow();
 
             _timerStartDatabasesSettings = new DispatcherTimer
             {
                 Interval = new TimeSpan(0, 0, 0, 0, 10)
             };
+
             _timerStartDatabasesSettings.Tick += (o, e) => StartDatabasesSettingsWiwndow();
 
             if(databasesSettings)

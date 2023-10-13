@@ -211,17 +211,20 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Photos", x => x.PhotoID);
+
                     table.ForeignKey(
                         "FK_Photos_Members_MemberID",
                         x => x.MemberID,
                         "Members",
                         "MemberID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_Photos_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_Photos_Users_ModifiedBy",
                         x => x.ModifiedBy,

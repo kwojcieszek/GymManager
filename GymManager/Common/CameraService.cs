@@ -36,9 +36,7 @@ namespace GymManager.Common
             {
                 File.Delete(_fullPath);
             }
-            catch
-            {
-            }
+            catch { }
         }
 
         private byte[] GetData()

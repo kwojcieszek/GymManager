@@ -18,9 +18,7 @@ namespace GymManager.Common
         [JsonIgnore]
         public bool IsExistSettingsFile => File.Exists(FilePath);
 
-        private Settings()
-        {
-        }
+        private Settings() { }
 
         public static void Read()
         {

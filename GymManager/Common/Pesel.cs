@@ -37,6 +37,7 @@ namespace GymManager.Common
             }
 
             var sum = 0;
+
             for(var i = 0; i < 10; i++)
             {
                 sum += pesel[i].ToInt() * (1 + i % 2 * 2 + i / 2 % 2 * 6);

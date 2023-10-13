@@ -119,17 +119,20 @@ namespace GymManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PermissionsUsers", x => x.PermissionUserID);
+
                     table.ForeignKey(
                         "FK_PermissionsUsers_PermissionsList_PermissionListID",
                         x => x.PermissionListID,
                         "PermissionsList",
                         "PermissionListID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_PermissionsUsers_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_PermissionsUsers_Users_UserID",
                         x => x.UserID,

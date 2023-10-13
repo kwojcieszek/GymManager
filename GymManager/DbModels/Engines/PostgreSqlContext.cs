@@ -4,9 +4,7 @@ namespace GymManager.DbModels.Engines
 {
     public class PostgreSqlContext : GymManagerContext
     {
-        public PostgreSqlContext() : base(DatabaseTypes.PostgreSql)
-        {
-        }
+        public PostgreSqlContext() : base(DatabaseTypes.PostgreSql) { }
 
         public override void Migrate()
         {

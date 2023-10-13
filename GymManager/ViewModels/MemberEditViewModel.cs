@@ -212,6 +212,7 @@ namespace GymManager.ViewModels
                     {
                         Owner = Window
                     };
+
                     view.ShowDialog();
 
                     if(view.DataContext is RfidViewModel rfidViewModel)

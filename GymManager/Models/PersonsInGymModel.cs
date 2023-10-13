@@ -24,6 +24,11 @@ namespace GymManager.Models
 
         private List<EntryRegistry> _entriesRegistry;
 
+        public void ChangeCabinetKey(EntryRegistry entryRegistry, CabinetKey cabinetKey)
+        {
+            new IdentifiersService().ChangeCabinetKey(entryRegistry, cabinetKey);
+        }
+
         public void CloseRow(EntryRegistry entryRegistry)
         {
             if(entryRegistry == null)
@@ -51,11 +56,6 @@ namespace GymManager.Models
                 .ToList();
 
             return _entriesRegistry;
-        }
-
-        public void ChangeCabinetKey(EntryRegistry entryRegistry, CabinetKey cabinetKey)
-        {
-            new IdentifiersService().ChangeCabinetKey(entryRegistry, cabinetKey);
         }
     }
 }

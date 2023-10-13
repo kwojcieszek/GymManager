@@ -38,6 +38,7 @@ namespace GymManager.Common.DataGridExtensions
 
             ((INotifyCollectionChanged)dataGrid.Items.SortDescriptions).CollectionChanged +=
                 SortDescriptions_CollectionChanged;
+
             DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid))
                 .AddValueChanged(dataGrid, ItemsSource_Changed);
         }
@@ -56,6 +57,7 @@ namespace GymManager.Common.DataGridExtensions
 
             ((INotifyCollectionChanged)dataGrid.Items.SortDescriptions).CollectionChanged -=
                 SortDescriptions_CollectionChanged;
+
             DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, typeof(DataGrid))
                 .RemoveValueChanged(dataGrid, ItemsSource_Changed);
         }
@@ -103,6 +105,7 @@ namespace GymManager.Common.DataGridExtensions
                     foreach(var item in _lastKnownActiveDescriptions)
                     {
                         var column = dataGrid.Columns.FirstOrDefault(col => col.SortMemberPath == item.Key);
+
                         if(column != null)
                         {
                             column.SortDirection = item.Value;

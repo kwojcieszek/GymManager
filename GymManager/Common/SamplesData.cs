@@ -4005,11 +4005,12 @@ namespace GymManager.Common
                 {
                     entryRegistry.ExitDate = entryRegistry.EntryDate.AddHours(Random(1, 4))
                         .AddMinutes((int)(RandomDecimal() * 10));
+
                     entryRegistry.VisitTime =
                         (int)(entryRegistry.ExitDate.Value - entryRegistry.EntryDate).TotalMinutes;
+
                     entryRegistry.IsAcive = false;
                 }
-
 
                 db.EntriesRegistry.Add(entryRegistry);
             }
@@ -4075,6 +4076,7 @@ namespace GymManager.Common
                     FirstName = _firstNames[RandomM1(_firstNames.Count)].FirstCharToUpper(),
                     LastName = _lastNames[RandomM1(_lastNames.Count)].FirstCharToUpper()
                 };
+
                 user.UserName = $"{user.FirstName[..1].ToLower()}{user.LastName.ToLower()}";
                 user.Email = $"{_firstNames[RandomM1(_firstNames.Count)].ToLower()}@op.pl";
                 user.IsAcive = true;

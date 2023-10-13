@@ -154,9 +154,7 @@ namespace GymManager.Models
                         AddedBy = CurrentUser.User.UserID
                     });
                 }
-                else if(!permissionListUser.IsGranted && permissionUsers == null)
-                {
-                }
+                else if(!permissionListUser.IsGranted && permissionUsers == null) { }
                 else if(!permissionListUser.IsGranted && permissionUsers != null)
                 {
                     _db.PermissionsUsers.Remove(permissionUsers);

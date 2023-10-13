@@ -9,7 +9,7 @@
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <StartupObject>GymManager.Common.MainClass</StartupObject>
-    <AssemblyVersion>2023.09.25</AssemblyVersion>
+    <AssemblyVersion>2023.10.03</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,27 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GymManager.Common;
 using GymManager.DbModels;
+using GymManager.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymManager.Models
 {
     public class MembersModel
     {
+        public List<MembersStatus> ListOfStatus =>
+            new()
+            {
+                new() { Id = 1, Name = "WSZYSCY" },
+                new() { Id = 2, Name = "AKTYWNI" },
+                new() { Id = 3, Name = "NIEAKTYWNI" }
+            };
+
         public List<Member> Members
         {
             get
             {
                 if(_members == null)
                 {
-                    GetMembers(OnlyActives);
+                    GetMembers(SelectedStatus);
                 }
 
-                return _members.ToList();
+                return _members!.ToList();
             }
         }
 
-        public bool OnlyActives { get; set; } = true;
+        public int SelectedStatus { get; set; } = 2;
+
         private List<Member> _members;
 
         public void Delete(Member member)
@@ -47,11 +58,14 @@ namespace GymManager.Models
             return member;
         }
 
-        public List<Member> GetMembers(bool onlyActives)
+        public List<Member> GetMembers(int status)
         {
+            var isActive = status is 1 or 2;
+            var isNonActive = status is 1 or 3;
+
             _members = new GymManagerContext()
                 .Members
-                .Where(m => m.IsAcive == true || m.IsAcive == onlyActives)
+                .Where(m => m.IsAcive == isActive || m.IsAcive == !isNonActive)
                 .Include(p => p.Pass)
                 .Include(g => g.Gender)
                 .Include(u => u.AddedByUser)

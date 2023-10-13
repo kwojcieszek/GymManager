@@ -4,6 +4,7 @@
     {
         public CabinetKeyMode CabinetkeysAlgorithm { get; set; } = CabinetKeyMode.InLoop;
         public DatabasesSettings Databases { get; set; } = new();
+        public int DeactivateMembersWhenNonActiveSpecifiedDuringDays { get; set; } = 60;
         public IdentifierDevices IdentifierDevice { get; set; } = IdentifierDevices.None;
         public string LogoImagePath { get; set; } = null;
         public int MaximumDaysSubscriptionSuspension { get; set; } = 20;
@@ -12,6 +13,5 @@
         public SerialPortSettings RFIDSerialPort { get; set; } = new();
         public bool SendMessagesFromThisComputer { get; set; } = true;
         public int TimeToCloseEntranceMembersMinutes { get; set; } = 300;
-        public int DeactivateMembersWhenNonActiveSpecifiedDuringDays { get; set; } = 60;
     }
 }

@@ -326,11 +326,13 @@ namespace GymManager.Migrations.PostgreSql
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Companies", x => x.CompanyID);
+
                     table.ForeignKey(
                         "FK_Companies_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_Companies_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -366,16 +368,19 @@ namespace GymManager.Migrations.PostgreSql
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Employees", x => x.EmployeeID);
+
                     table.ForeignKey(
                         "FK_Employees_Genders_GenderID",
                         x => x.GenderID,
                         "Genders",
                         "GenderID");
+
                     table.ForeignKey(
                         "FK_Employees_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_Employees_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -406,11 +411,13 @@ namespace GymManager.Migrations.PostgreSql
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_GymObjects", x => x.GymObjectID);
+
                     table.ForeignKey(
                         "FK_GymObjects_Users_AddedBy",
                         x => x.AddedBy,
                         "Users",
                         "UserID");
+
                     table.ForeignKey(
                         "FK_GymObjects_Users_ModifiedBy",
                         x => x.ModifiedBy,
@@ -440,12 +447,14 @@ namespace GymManager.Migrations.PostgreSql
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MessagesRegistry", x => x.MessageRegistryID);
+
                     table.ForeignKey(
                         "FK_MessagesRegistry_Members_MemberID",
                         x => x.MemberID,
                         "Members",
                         "MemberID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_MessagesRegistry_Messages_MessageID",
                         x => x.MessageID,

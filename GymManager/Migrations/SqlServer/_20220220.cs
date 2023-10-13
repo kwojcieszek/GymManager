@@ -234,12 +234,14 @@ namespace GymManager.Migrations.SqlServer
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MessagesRegistry", x => x.MessageRegistryID);
+
                     table.ForeignKey(
                         "FK_MessagesRegistry_Members_MemberID",
                         x => x.MemberID,
                         "Members",
                         "MemberID",
                         onDelete: ReferentialAction.Cascade);
+
                     table.ForeignKey(
                         "FK_MessagesRegistry_Messages_MessageID",
                         x => x.MessageID,

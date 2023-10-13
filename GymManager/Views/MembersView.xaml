@@ -28,7 +28,7 @@
     <Grid Grid.IsSharedSizeScope="True" d:DataContext="{d:DesignInstance DataGrid}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="502*" />
-            <ColumnDefinition Width="165*"/>
+            <ColumnDefinition Width="165*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -74,7 +74,8 @@
                                Source="{iconPacks:CodiconsImage Kind=Refresh, Brush=DarkOrange}" />
                     </WrapPanel>
                 </Button>
-                <Button Name="ButtonPrintMembershipDocuments" Margin="1,0,1,0" HorizontalAlignment="Left" Background="White" Height="50"
+                <Button Name="ButtonPrintMembershipDocuments" Margin="1,0,1,0" HorizontalAlignment="Left"
+                        Background="White" Height="50"
                         Width="180" BorderThickness="0" FontSize="14"
                         Command="{Binding PrintMembershipDocumentsCommand}">
                     <WrapPanel>
@@ -84,13 +85,29 @@
                     </WrapPanel>
                 </Button>
             </WrapPanel>
-            <WrapPanel VerticalAlignment="Center" Margin="20,0,0,0">
-                <TextBlock FontSize="16" Margin="5,5,5,5">SZUKAJ</TextBlock>
+            <WrapPanel VerticalAlignment="Center" Margin="0,0,0,0">
+
+                <mah:SplitButton Margin="10,0,0,0" Width="140" FontSize="14"
+                                 BorderThickness="0"
+                                 HorizontalContentAlignment="Left"
+                                 DisplayMemberPath="Name"
+                                 SelectedValuePath="Id"
+                                 ItemsSource="{Binding Path=ListOfStatus}"
+                                 SelectedValue="{Binding Path=SelectedStatus}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding RefreshCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <mah:SplitButton.Icon>
+                        <iconPacks:PackIconMaterial Margin="6" Kind="SelectSearch" />
+                    </mah:SplitButton.Icon>
+                </mah:SplitButton>
+
+                <TextBlock FontSize="16" Margin="10,5,5,5">SZUKAJ</TextBlock>
                 <TextBox Width="250" Margin="5,5,5,5" mah:TextBoxHelper.Watermark="WPROWADŻ SZUKANY TEKST"
                          Text="{Binding Path=SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged,Delay=500}" />
-                <mah:ToggleSwitch Margin="10,0,0,0" Width="250" OffContent="AKTYWNE I NIEAKTYWNE"
-                                  OnContent="TYLKO AKTYWNE" Command="{Binding RefreshCommand}"
-                                  IsOn="{Binding OnlyActives,UpdateSourceTrigger=PropertyChanged}" />
+
             </WrapPanel>
         </WrapPanel>
 

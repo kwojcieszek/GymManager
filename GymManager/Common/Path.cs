@@ -33,9 +33,7 @@ namespace GymManager.Common
                 {
                     File.Delete(file);
                 }
-                catch
-                {
-                }
+                catch { }
             }
         }
     }

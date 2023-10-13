@@ -18,6 +18,7 @@ namespace GymManager.Common
 
             // step 2, convert byte array to hex string
             var sb = new StringBuilder();
+
             for(var i = 0; i < hash.Length; i++)
             {
                 sb.Append(hash[i].ToString("X2"));
@@ -40,6 +41,7 @@ namespace GymManager.Common
 
             // step 2, convert byte array to hex string
             var sb = new StringBuilder();
+
             for(var i = 0; i < hash.Length; i++)
             {
                 sb.Append(hash[i].ToString("x2"));
@@ -53,6 +55,7 @@ namespace GymManager.Common
             var inputStringBuild = new StringBuilder(plainText);
             var outStringBuild = new StringBuilder(plainText.Length);
             char Textch;
+
             for(var iCount = 0; iCount < plainText.Length; iCount++)
             {
                 Textch = inputStringBuild[iCount];

@@ -10,8 +10,6 @@ namespace GymManager.Views
             InitializeComponent();
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
     }
 }

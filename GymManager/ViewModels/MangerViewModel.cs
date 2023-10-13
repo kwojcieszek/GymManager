@@ -328,6 +328,7 @@ namespace GymManager.ViewModels
                     var dx = view.DataContext as SearchDataViewModel;
                     dx.Title = "WYSZUKAJ CZŁONKA DO EDYCJI";
                     dx.Description = "WPROWADŹ KOD";
+
                     dx.Execute = id =>
                     {
                         if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditMembers))
@@ -358,6 +359,7 @@ namespace GymManager.ViewModels
 
                         return true;
                     };
+
                     view.Owner = Window;
                     view.ShowDialog();
                 });

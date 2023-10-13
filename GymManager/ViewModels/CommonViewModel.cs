@@ -1,12 +1,6 @@
-﻿using GymManager.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows;
+using GymManager.Common;
 using GymManager.Views;
-using System.Windows;
 
 namespace GymManager.ViewModels
 {
@@ -14,7 +8,7 @@ namespace GymManager.ViewModels
     {
         public static void AddEntryWithoutIdentifierCommand(Window window = null)
         {
-            if (!PermissionView.MessageBoxCheckPermissionView(window, Permissions.AddEntryWithoutIdentifier))
+            if(!PermissionView.MessageBoxCheckPermissionView(window, Permissions.AddEntryWithoutIdentifier))
             {
                 return;
             }
@@ -29,16 +23,16 @@ namespace GymManager.ViewModels
 
             var result = view.ShowDialog();
 
-            if (result.HasValue & result.Value && dx.SelectedItem != null)
+            if(result.HasValue & result.Value && dx.SelectedItem != null)
             {
                 var entryRegistry = PassesHelper.GetActiveEntryRegistry(dx.SelectedItem);
 
-                if (entryRegistry == null &&
+                if(entryRegistry == null &&
                    new IdentifiersService().Identifier(dx.SelectedItem.MemberID, checkAndWrite: false)
                        .Message !=
                    IdentifierMessage.AccessEntry)
                 {
-                    if (MessageView.MessageBoxQuestionView(window,
+                    if(MessageView.MessageBoxQuestionView(window,
                            $"BRAK WAŻNEGO KARNETU!\nMIMO TO CZY CHCESZ DODAĆ 'WEJŚCIE' DLA\n{dx.SelectedItem.FirstName} {dx.SelectedItem.LastName} [{dx.SelectedItem.Id}] ?"))
                     {
                         EntryService.GetInstance().Entry(dx.SelectedItem, true);
@@ -46,7 +40,7 @@ namespace GymManager.ViewModels
                 }
                 else
                 {
-                    if (MessageView.MessageBoxQuestionView(window,
+                    if(MessageView.MessageBoxQuestionView(window,
                            $"CZY CHCESZ DODAĆ '{(entryRegistry == null ? "WEJŚCIE" : "WYJŚCIE")}' DLA\n{dx.SelectedItem.FirstName} {dx.SelectedItem.LastName} [{dx.SelectedItem.Id}] ?"))
                     {
                         EntryService.GetInstance().Entry(dx.SelectedItem);

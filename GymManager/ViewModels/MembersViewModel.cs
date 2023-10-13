@@ -19,14 +19,14 @@ namespace GymManager.ViewModels
             _addCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddMembers))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.AddMembers))
                     {
                         return;
                     }
 
-                    if (Add())
+                    if(Add())
                     {
-                        _model.GetMembers(OnlyActives);
+                        _model.GetMembers(SelectedStatus);
 
                         OnPropertyChange(nameof(Members));
                     }
@@ -42,14 +42,14 @@ namespace GymManager.ViewModels
             _deleteCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeleteMembers))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.DeleteMembers))
                     {
                         return;
                     }
 
-                    if (Delete())
+                    if(Delete())
                     {
-                        _model.GetMembers(OnlyActives);
+                        _model.GetMembers(SelectedStatus);
 
                         OnPropertyChange(nameof(Members));
                     }
@@ -59,7 +59,7 @@ namespace GymManager.ViewModels
             _doubleClickCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (CloseWhenDoubleClick)
+                    if(CloseWhenDoubleClick)
                     {
                         Window.DialogResult = true;
                     }
@@ -67,7 +67,7 @@ namespace GymManager.ViewModels
                     {
                         Edit();
 
-                        _model.GetMembers(OnlyActives);
+                        _model.GetMembers(SelectedStatus);
 
                         OnPropertyChange(nameof(Members));
                     }
@@ -77,30 +77,20 @@ namespace GymManager.ViewModels
             _editCommand ??= new RelayCommand(
                 x =>
                 {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditMembers))
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.EditMembers))
                     {
                         return;
                     }
 
-                    if (Edit())
+                    if(Edit())
                     {
-                        _model.GetMembers(OnlyActives);
+                        _model.GetMembers(SelectedStatus);
 
                         OnPropertyChange(nameof(Members));
                     }
                 });
 
-        public ICommand PrintMembershipDocumentsCommand =>
-            _printMembershipDocumentsCommand ??= new RelayCommand(
-                x =>
-                {
-                    if (!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.PreviewMembers))
-                    {
-                        return;
-                    }
-
-                    PrintMembershipDocuments(Window, SelectedItem);
-                });
+        public List<MembersStatus> ListOfStatus => _model.ListOfStatus;
 
         public List<Member> Members =>
             _model.Members
@@ -110,17 +100,23 @@ namespace GymManager.ViewModels
                     "Pass.Name", "AddedByUser.FirstName", "AddedByUser.LastName", "ModifiedBy.FirstName",
                     "ModifiedBy.LastName");
 
-        public bool OnlyActives
-        {
-            get => _model.OnlyActives;
-            set => _model.OnlyActives = value;
-        }
+        public ICommand PrintMembershipDocumentsCommand =>
+            _printMembershipDocumentsCommand ??= new RelayCommand(
+                x =>
+                {
+                    if(!PermissionView.MessageBoxCheckPermissionView(Window, Permissions.PreviewMembers))
+                    {
+                        return;
+                    }
+
+                    PrintMembershipDocuments(Window, SelectedItem);
+                });
 
         public ICommand RefreshCommand =>
             _refreshCommand ??= new RelayCommand(
                 x =>
                 {
-                    _model.GetMembers(OnlyActives);
+                    _model.GetMembers(SelectedStatus);
 
                     OnPropertyChange(nameof(Members));
                 });
@@ -137,14 +133,20 @@ namespace GymManager.ViewModels
 
         public Member SelectedItem { get; set; }
 
+        public int SelectedStatus
+        {
+            get => _model.SelectedStatus;
+            set => _model.SelectedStatus = value;
+        }
+
         public Window Window => Helper.GetWindow(this);
         private ICommand _addCommand;
         private ICommand _closeCommand;
         private ICommand _deleteCommand;
         private ICommand _doubleClickCommand;
         private ICommand _editCommand;
-        private ICommand _printMembershipDocumentsCommand;
         private readonly MembersModel _model = new();
+        private ICommand _printMembershipDocumentsCommand;
         private ICommand _refreshCommand;
         private string _searchText = string.Empty;
 
@@ -159,9 +161,9 @@ namespace GymManager.ViewModels
                 model.Owner = window;
                 var result = memberEditView.ShowDialog().Value;
 
-                if (result && model.Member.Pass != null)
+                if(result && model.Member.Pass != null)
                 {
-                    if (MessageView.MessageBoxQuestionView(window,
+                    if(MessageView.MessageBoxQuestionView(window,
                            $"CZY CHCESZ DODAĆ NOWY KARNET DLA CZŁONKA\n{model.Member.FirstName} {model.Member.LastName} [{model.Member.Id}]?"))
                     {
                         var passEditView = new PassesMembersEditView();
@@ -172,14 +174,14 @@ namespace GymManager.ViewModels
                     }
                 }
 
-                if (result && Settings.App.Reports.ShowPrintDialogAfterAddingMember)
+                if(result && Settings.App.Reports.ShowPrintDialogAfterAddingMember)
                 {
-                    PrintMembershipDocuments(window,model.Member);
+                    PrintMembershipDocuments(window, model.Member);
                 }
 
                 return result;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(window, ex.Message, true);
 
@@ -189,7 +191,7 @@ namespace GymManager.ViewModels
 
         private bool Delete()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
@@ -197,15 +199,15 @@ namespace GymManager.ViewModels
             var message =
                 $"CZY NA PEWNO USUNĄĆ OSOBĘ\n{SelectedItem.FirstName} {SelectedItem.LastName} [{SelectedItem.Id}] ?";
 
-            if (MessageView.MessageBoxQuestionView(Window, message))
+            if(MessageView.MessageBoxQuestionView(Window, message))
             {
                 try
                 {
                     _model.Delete(SelectedItem);
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
-                    if (ex?.InnerException != null)
+                    if(ex?.InnerException != null)
                     {
                         MessageView.MessageBoxInfoView(Window, ex?.InnerException.Message, true);
                     }
@@ -221,7 +223,7 @@ namespace GymManager.ViewModels
 
         private bool Edit()
         {
-            if (SelectedItem == null)
+            if(SelectedItem == null)
             {
                 return false;
             }
@@ -235,10 +237,10 @@ namespace GymManager.ViewModels
 
                 var result = memberEditView.ShowDialog().Value;
 
-                if (result && model.Member.PassID != null &&
+                if(result && model.Member.PassID != null &&
                    PassesHelper.GetCurrentPassRegistry(model.Member.MemberID) == null)
                 {
-                    if (MessageView.MessageBoxQuestionView(Window,
+                    if(MessageView.MessageBoxQuestionView(Window,
                            $"CZY CHCESZ DODAĆ NOWY KARNET DLA CZŁONKA\n{model.Member.FirstName} {model.Member.LastName} [{model.Member.Id}]?"))
                     {
                         var passEditView = new PassesMembersEditView();
@@ -251,7 +253,7 @@ namespace GymManager.ViewModels
 
                 return result;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 MessageView.MessageBoxInfoView(Window, ex.Message, true);
 
@@ -259,25 +261,28 @@ namespace GymManager.ViewModels
             }
         }
 
-        private void PrintMembershipDocuments(Window window,Member member)
+        private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void PrintMembershipDocuments(Window window, Member member)
+        {
+            if(member == null)
+                return;
+
             var dialogResult =
                 MessageView.MessageBoxQuestionView(window, $"CZY CHCESZ WYDRUKOWAĆ DOKUMENTY CZŁONKOWSKIE\nDLA {member.FirstName} {member.LastName}?");
 
-            if (Settings.App.Reports.PrintDocumentsAfterAddingMember && dialogResult)
+            if(dialogResult)
             {
                 var pdf = new ReportsPdf();
 
-                foreach (var report in pdf.MemberDocuemnts(member))
+                foreach(var report in pdf.MemberDocuemnts(member))
                 {
                     pdf.Print(report);
                 }
             }
-        }
-
-        private void OnPropertyChange([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
