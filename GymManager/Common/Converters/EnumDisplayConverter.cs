@@ -9,10 +9,7 @@ namespace GymManager.Common.Converters
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var myEnum = (Enum)value;
-            var display = GetEnumDisplay(myEnum);
-
-            return display;
+            return GetEnumDisplay((Enum)value);
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

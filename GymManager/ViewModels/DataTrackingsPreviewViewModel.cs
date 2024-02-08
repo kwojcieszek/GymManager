@@ -12,6 +12,9 @@ namespace GymManager.ViewModels
     public class DataTrackingsPreviewViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _closeCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly DataTrackingsPreviewModel _model = new();
 
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
@@ -47,9 +50,6 @@ namespace GymManager.ViewModels
         }
 
         public Window Window => Helper.GetWindow(this);
-        private ICommand _closeCommand;
-        private ICommand _contentRenderedCommand;
-        private readonly DataTrackingsPreviewModel _model = new();
 
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {

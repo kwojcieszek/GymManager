@@ -8,10 +8,10 @@ namespace GymManager.Models
 {
     public class UsersModel
     {
+        private List<User> _users;
         public bool OnlyActives { get; set; } = true;
 
         public List<User> Users => _users ?? GetUsers(OnlyActives);
-        private List<User> _users;
 
         public void Delete(User user)
         {

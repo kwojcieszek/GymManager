@@ -8,12 +8,12 @@ namespace GymManager.Models
 {
     public class UserEditModel
     {
+        public List<PermissionListUser> _permissionsListUser;
+        private readonly GymManagerContext _db = new();
         public int PasswordMinLenght => 8;
         public List<PermissionListUser> PermissionsListUser => GetPermissionListUser();
 
         public User User { get; private set; }
-        public List<PermissionListUser> _permissionsListUser;
-        private readonly GymManagerContext _db = new();
 
         public void ChangePassword(int userID, string password)
         {

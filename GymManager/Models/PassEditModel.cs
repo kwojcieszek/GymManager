@@ -8,11 +8,11 @@ namespace GymManager.Models
 {
     public class PassEditModel
     {
+        private readonly GymManagerContext _db = new();
         public Pass Pass { get; private set; }
         public List<PassTime> PassTimes => _db.PassTimes.OrderBy(p => p.PassTimeID).ToList();
 
         public List<Tax> Taxes => _db.Taxes.OrderBy(p => p.TaxID).ToList();
-        private readonly GymManagerContext _db = new();
 
         public void CalculatePriceFromBrutto(Pass pass)
         {

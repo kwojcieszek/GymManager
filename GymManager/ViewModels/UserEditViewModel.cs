@@ -14,6 +14,13 @@ namespace GymManager.ViewModels
     public class UserEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        public bool _passwordChanged;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly UserEditModel _model = new();
+        private string _password1;
+        private string _password2;
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
@@ -97,13 +104,6 @@ namespace GymManager.ViewModels
         public User User => _model.User;
 
         public Window Window => Helper.GetWindow(this);
-        public bool _passwordChanged;
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private readonly UserEditModel _model = new();
-        private string _password1;
-        private string _password2;
 
         public void SetEditObject(int userID)
         {

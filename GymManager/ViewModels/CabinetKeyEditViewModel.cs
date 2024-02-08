@@ -14,6 +14,10 @@ namespace GymManager.ViewModels
     public class CabinetKeyEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly CabinetKeyEditModel _model = new();
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
@@ -69,10 +73,6 @@ namespace GymManager.ViewModels
 
         public string Title { get; set; }
         public Window Window => Helper.GetWindow(this);
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private readonly CabinetKeyEditModel _model = new();
 
         public void SetEditObject(int cabinetKeyID)
         {

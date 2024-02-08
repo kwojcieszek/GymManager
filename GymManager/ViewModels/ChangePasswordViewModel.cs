@@ -9,6 +9,10 @@ namespace GymManager.ViewModels
 {
     public class ChangePasswordViewModel
     {
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private readonly UserEditModel _model = new();
+
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
                 x =>
@@ -45,9 +49,6 @@ namespace GymManager.ViewModels
         public string Password1 { get; set; }
         public string Password2 { get; set; }
         public Window Window => Helper.GetWindow(this);
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private readonly UserEditModel _model = new();
 
         private bool CheckUser()
         {

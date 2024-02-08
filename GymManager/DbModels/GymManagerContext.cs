@@ -10,6 +10,7 @@ namespace GymManager.DbModels
     public class GymManagerContext : DbContext
     {
         public static DatabaseTypes DefaultDatabaseType { get; set; }
+        private readonly DatabaseTypes _databaseType;
 
         public DbSet<CabinetKey> CabinetKeys { get; set; }
         public DbSet<Company> Companies { get; set; }
@@ -34,7 +35,6 @@ namespace GymManager.DbModels
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Tax> Taxes { get; set; }
         public DbSet<User> Users { get; set; }
-        private readonly DatabaseTypes _databaseType;
 
         public GymManagerContext(DatabaseTypes databaseType)
         {

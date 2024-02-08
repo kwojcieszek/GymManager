@@ -15,6 +15,11 @@ namespace GymManager.ViewModels
     public class StartViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _closingCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly StartModel _model = new();
+        private DispatcherTimer _timerStartDatabasesSettings;
+        private DispatcherTimer _timerStartMain;
 
         public ICommand ClosingCommand =>
             _closingCommand ??= new RelayCommand(
@@ -39,11 +44,6 @@ namespace GymManager.ViewModels
         public string Title => "GYM MANGER";
 
         public Window Window => Helper.GetWindow(this);
-        private ICommand _closingCommand;
-        private ICommand _contentRenderedCommand;
-        private readonly StartModel _model = new();
-        private DispatcherTimer _timerStartDatabasesSettings;
-        private DispatcherTimer _timerStartMain;
 
         public StartViewModel()
         {

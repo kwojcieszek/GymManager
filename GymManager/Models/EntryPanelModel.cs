@@ -11,6 +11,8 @@ namespace GymManager.Models
         public event EventHandler<EventArgsResult> EventResult;
         public event EventHandler<EventArgsStatus> EventStateChanged;
 
+        private readonly EntryService _entryService = EntryService.GetInstance();
+
         public bool IsIdentifierDevice => EntryService.DefaultIdentifierDevices != IdentifierDevices.None;
 
         public EntryRegistry LastEntryRegistry =>
@@ -26,8 +28,6 @@ namespace GymManager.Models
             new GymManagerContext()
                 .EntriesRegistry
                 .Count(r => r.IsAcive);
-
-        private readonly EntryService _entryService = EntryService.GetInstance();
 
         public EntryPanelModel(bool isDesignMode = false)
         {

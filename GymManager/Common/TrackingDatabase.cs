@@ -7,8 +7,8 @@ namespace GymManager.Common
 {
     public class TrackingDatabase
     {
-        public List<Tracker> Tracker => _tracker;
         public List<Tracker> _tracker = new();
+        public List<Tracker> Tracker => _tracker;
 
         public void Save()
         {

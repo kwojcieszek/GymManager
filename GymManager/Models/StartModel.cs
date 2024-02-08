@@ -11,6 +11,9 @@ namespace GymManager.Models
         public event EventHandler<string> JobDescriptionChanged;
         public event EventHandler<Result> JobFinished;
 
+        private string _jobDescription;
+        private readonly List<StartJob> _jobs = new();
+
         public bool IsExistSettingsFile => Settings.App.IsExistSettingsFile;
 
         public bool IsRunning { get; set; } = true;
@@ -25,9 +28,6 @@ namespace GymManager.Models
                 JobDescriptionChanged?.Invoke(this, _jobDescription);
             }
         }
-
-        private string _jobDescription;
-        private readonly List<StartJob> _jobs = new();
 
         public StartModel()
         {

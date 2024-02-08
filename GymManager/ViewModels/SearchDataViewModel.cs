@@ -10,6 +10,9 @@ namespace GymManager.ViewModels
     public class SearchDataViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _closeCommand;
+        private string _description;
+        private ICommand _searchCommand;
 
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
@@ -41,9 +44,6 @@ namespace GymManager.ViewModels
 
         public string Title { get; set; }
         public Window Window => Helper.GetWindow(this);
-        private ICommand _closeCommand;
-        private string _description;
-        private ICommand _searchCommand;
 
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {

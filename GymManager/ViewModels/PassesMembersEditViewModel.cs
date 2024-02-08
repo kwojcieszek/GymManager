@@ -14,6 +14,15 @@ namespace GymManager.ViewModels
     public class PassesMembersEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private ICommand _dateChangedCommand;
+        private ICommand _memberCommand;
+        private ICommand _memberEditCommand;
+        private readonly PassesMembersEditModel _model = new();
+        private ICommand _rfidCommand;
+        private ICommand _selectionChangedCommand;
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
@@ -229,15 +238,6 @@ namespace GymManager.ViewModels
         public Visibility VisibilityButtonsMember { get; set; } = Visibility.Visible;
         public Visibility VisibilityButtonsMemberEdit { get; set; } = Visibility.Hidden;
         public Window Window => Helper.GetWindow(this);
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private ICommand _dateChangedCommand;
-        private ICommand _memberCommand;
-        private ICommand _memberEditCommand;
-        private readonly PassesMembersEditModel _model = new();
-        private ICommand _rfidCommand;
-        private ICommand _selectionChangedCommand;
 
         public void SetEditObject(int passRegistryID)
         {

@@ -19,6 +19,20 @@ namespace GymManager.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         public static string Time => DateTime.Now.ToLongTimeString();
         public static int UnreadMessages => 0;
+        private ICommand _addEntryWithoutIdentifierCommand;
+        private ICommand _changeCabinetKeyCommand;
+        private ICommand _contentRenderedCommand;
+
+        private readonly EntryPanelModel _model =
+            new((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue);
+
+        private int _taskStackMessage;
+#pragma warning disable CS0169
+#pragma warning disable IDE0051
+        private readonly DispatcherTimer _timer;
+#pragma warning restore IDE0051
+#pragma warning restore CS0169
+        private readonly int _timeVisibilityMessage = 10000;
 
         public ICommand AddEntryWithoutIdentifierCommand =>
             _addEntryWithoutIdentifierCommand ??= new RelayCommand(
@@ -103,20 +117,6 @@ namespace GymManager.ViewModels
         public int NumersOfPeopeInGym => _model.NumersOfPeopeInGym;
 
         public Visibility VisibleMemberPhoto { get; set; }
-        private ICommand _addEntryWithoutIdentifierCommand;
-        private ICommand _changeCabinetKeyCommand;
-        private ICommand _contentRenderedCommand;
-
-        private readonly EntryPanelModel _model =
-            new((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue);
-
-        private int _taskStackMessage;
-#pragma warning disable CS0169
-#pragma warning disable IDE0051
-        private readonly DispatcherTimer _timer;
-#pragma warning restore IDE0051
-#pragma warning restore CS0169
-        private readonly int _timeVisibilityMessage = 10000;
 
         public EntryPanelViewModel()
         {

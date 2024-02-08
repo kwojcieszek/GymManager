@@ -11,6 +11,8 @@ namespace GymManager.ViewModels
     public class LoginViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _cancelCommand;
+        private readonly LoginModel _model = new();
 
         public ICommand CancelCommand =>
             _cancelCommand ??= new RelayCommand(
@@ -21,8 +23,6 @@ namespace GymManager.ViewModels
         public string UserName { get; set; }
 
         public Window Window => Helper.GetWindow(this);
-        private ICommand _cancelCommand;
-        private readonly LoginModel _model = new();
 
         public LoginViewModel()
         {

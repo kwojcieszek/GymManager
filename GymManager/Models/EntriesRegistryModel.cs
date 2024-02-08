@@ -9,6 +9,8 @@ namespace GymManager.Models
 {
     public class EntriesRegistryModel
     {
+        private List<EntryRegistry> _entriesRegistry;
+
         public List<EntryRegistry> EntriesRegistry
         {
             get
@@ -21,8 +23,6 @@ namespace GymManager.Models
                 return _entriesRegistry.ToList();
             }
         }
-
-        private List<EntryRegistry> _entriesRegistry;
 
         public List<EntryRegistry> GetEntriesRegistry(DateTime? dateFrom = null, DateTime? dateTo = null)
         {

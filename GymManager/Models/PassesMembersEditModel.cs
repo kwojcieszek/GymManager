@@ -9,9 +9,9 @@ namespace GymManager.Models
 {
     public class PassesMembersEditModel
     {
+        private readonly GymManagerContext _db = new();
         public List<Pass> Passes => _db.Passes.ToList();
         public PassRegistry PassRegistry { get; private set; }
-        private readonly GymManagerContext _db = new();
 
         public string GetContinuationText()
         {
@@ -82,7 +82,10 @@ namespace GymManager.Models
                 PassesHelper.SetEndDate(PassRegistry);
             }
 
+            SetMemberAciveIfNewPass(PassRegistry);
+
             _db.SaveChanges<PassRegistry>();
+            _db.SaveChanges<Member>();
         }
 
         public PassRegistry SetEditObject(int passRegistryID)
@@ -97,6 +100,14 @@ namespace GymManager.Models
             PassRegistry = passRegistry;
 
             return passRegistry;
+        }
+
+        public void SetMemberAciveIfNewPass(PassRegistry passRegistry)
+        {
+            if(passRegistry.Member == null || passRegistry.Pass.PassTimeID == 1)
+                return;
+
+            passRegistry.Member.IsAcive = true;
         }
 
         public PassRegistry SetNewObject(int memberID = 0)

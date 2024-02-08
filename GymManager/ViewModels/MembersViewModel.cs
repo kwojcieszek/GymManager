@@ -14,6 +14,15 @@ namespace GymManager.ViewModels
     public class MembersViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _addCommand;
+        private ICommand _closeCommand;
+        private ICommand _deleteCommand;
+        private ICommand _doubleClickCommand;
+        private ICommand _editCommand;
+        private readonly MembersModel _model = new();
+        private ICommand _printMembershipDocumentsCommand;
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
 
         public ICommand AddCommand =>
             _addCommand ??= new RelayCommand(
@@ -140,15 +149,6 @@ namespace GymManager.ViewModels
         }
 
         public Window Window => Helper.GetWindow(this);
-        private ICommand _addCommand;
-        private ICommand _closeCommand;
-        private ICommand _deleteCommand;
-        private ICommand _doubleClickCommand;
-        private ICommand _editCommand;
-        private readonly MembersModel _model = new();
-        private ICommand _printMembershipDocumentsCommand;
-        private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
 
         public bool Add(Window window = null)
         {

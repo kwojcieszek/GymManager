@@ -9,6 +9,8 @@ namespace GymManager.Models
 {
     public class MemberEditModel
     {
+        private readonly GymManagerContext _db = new();
+
         public List<EntryRegistry> EntriesRegistry
         {
             get
@@ -84,7 +86,7 @@ namespace GymManager.Models
 
         public byte[] PhotoData
         {
-            get => Photo != null ? Photo.Data : null;
+            get => Photo?.Data;
             set
             {
                 if(Photo != null)
@@ -111,7 +113,6 @@ namespace GymManager.Models
         private Identifier Identifier { get; set; }
 
         private Photo Photo { get; set; }
-        private readonly GymManagerContext _db = new();
 
         public string GetContinuationText()
         {
@@ -185,13 +186,11 @@ namespace GymManager.Models
 
             Identifier = _db
                 .Identifiers
-                .Where(i => i.MemberID == Member.MemberID)
-                .FirstOrDefault();
+                .FirstOrDefault(i => i.MemberID == Member.MemberID);
 
             Photo = _db
                 .Photos
-                .Where(i => i.MemberID == Member.MemberID)
-                .FirstOrDefault();
+                .FirstOrDefault(i => i.MemberID == Member.MemberID);
 
             Member.DateModified = DateTime.Now;
             Member.ModifiedBy = CurrentUser.User.UserID;
@@ -213,7 +212,7 @@ namespace GymManager.Models
                 Member.BirthDate = pesel.GetBirthDate(Member.Pesel.ToCharArray()).Value;
 
                 Member.GenderID = (int)pesel.GetGender(Member.Pesel.ToCharArray()).Value;
-                Member.Gender = Genders.Where(g => g.GenderID == Member.GenderID).FirstOrDefault();
+                Member.Gender = Genders.FirstOrDefault(g => g.GenderID == Member.GenderID);
 
                 return true;
             }

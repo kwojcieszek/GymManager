@@ -12,6 +12,36 @@ namespace GymManager.ViewModels
     public class MangerViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _aboutCommand;
+        private ICommand _addCabinetKeysCommand;
+        private ICommand _addEntryWithoutIdentifierCommand;
+        private ICommand _addMembersViewCommand;
+        private ICommand _addPassesCommand;
+        private ICommand _addPassesMembersCommand;
+        private ICommand _addUsersViewCommand;
+        private ICommand _cabinetKeysCommand;
+        private ICommand _changePasswordCommand;
+        private ICommand _closePersonInGymCommand;
+        private ICommand _contentRenderedCommand;
+        private ICommand _databasesSettingsCommand;
+        private ICommand _dataTrackingsCommand;
+        private ICommand _entriesRegistryCommand;
+        private bool _expanderOthersIsExpanded;
+        private bool _expanderRecordsIsExpanded = true;
+        private bool _expanderRegistersIsExpanded;
+        private ICommand _gotFocusCommand;
+        private ICommand _logoutCommand;
+        private ICommand _lostFocusCommand;
+        private ICommand _membersViewCommand;
+        private readonly MangerModel _model = new();
+        private ICommand _passesCommand;
+        private ICommand _passesMembersCommand;
+        private ICommand _personInGymCommand;
+        private ICommand _searchMemberViewCommand;
+        private ICommand _settingsCommand;
+        private ICommand _teamViewerCommand;
+        private ICommand _usersViewCommand;
+        private ICommand _windowClosedCommand;
 
         public ICommand AboutCommand =>
             _aboutCommand ??= new RelayCommand(
@@ -412,36 +442,6 @@ namespace GymManager.ViewModels
                 x => { Application.Current.Shutdown(); });
 
         public ICommand WindowClosingCommand { get; set; }
-        private ICommand _aboutCommand;
-        private ICommand _addCabinetKeysCommand;
-        private ICommand _addEntryWithoutIdentifierCommand;
-        private ICommand _addMembersViewCommand;
-        private ICommand _addPassesCommand;
-        private ICommand _addPassesMembersCommand;
-        private ICommand _addUsersViewCommand;
-        private ICommand _cabinetKeysCommand;
-        private ICommand _changePasswordCommand;
-        private ICommand _closePersonInGymCommand;
-        private ICommand _contentRenderedCommand;
-        private ICommand _databasesSettingsCommand;
-        private ICommand _dataTrackingsCommand;
-        private ICommand _entriesRegistryCommand;
-        private bool _expanderOthersIsExpanded;
-        private bool _expanderRecordsIsExpanded = true;
-        private bool _expanderRegistersIsExpanded;
-        private ICommand _gotFocusCommand;
-        private ICommand _logoutCommand;
-        private ICommand _lostFocusCommand;
-        private ICommand _membersViewCommand;
-        private readonly MangerModel _model = new();
-        private ICommand _passesCommand;
-        private ICommand _passesMembersCommand;
-        private ICommand _personInGymCommand;
-        private ICommand _searchMemberViewCommand;
-        private ICommand _settingsCommand;
-        private ICommand _teamViewerCommand;
-        private ICommand _usersViewCommand;
-        private ICommand _windowClosedCommand;
 
         public MangerViewModel()
         {

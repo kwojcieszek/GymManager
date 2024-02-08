@@ -14,6 +14,11 @@ namespace GymManager.ViewModels
     public class PassEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private readonly PassEditModel _model = new();
+        private ICommand _passChanged;
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
@@ -88,11 +93,6 @@ namespace GymManager.ViewModels
         public List<Tax> Taxes => _model.Taxes;
         public string Title { get; set; }
         public Window Window => Helper.GetWindow(this);
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private readonly PassEditModel _model = new();
-        private ICommand _passChanged;
 
         public void SetEditObject(int passID)
         {

@@ -15,6 +15,16 @@ namespace GymManager.ViewModels
     public class PassesMembersViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _addCommand;
+        private ICommand _closeCommand;
+        private DateTime _dateFrom = DateTime.Now.Date;
+        private DateTime _dateTo = DateTime.Now.Date;
+        private ICommand _deleteCommand;
+        private ICommand _editCommand;
+        private readonly PassesMembersModel _model = new();
+        private ICommand _refreshCommand;
+        private string _searchText = string.Empty;
+        private ICommand _searchTextCommand;
 
         public ICommand AddCommand =>
             _addCommand ??= new RelayCommand(
@@ -122,16 +132,6 @@ namespace GymManager.ViewModels
         public PassRegistry SelectedItem { get; set; }
 
         public Window Window => Helper.GetWindow(this);
-        private ICommand _addCommand;
-        private ICommand _closeCommand;
-        private DateTime _dateFrom = DateTime.Now.Date;
-        private DateTime _dateTo = DateTime.Now.Date;
-        private ICommand _deleteCommand;
-        private ICommand _editCommand;
-        private readonly PassesMembersModel _model = new();
-        private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
-        private ICommand _searchTextCommand;
 
         public PassesMembersViewModel()
         {

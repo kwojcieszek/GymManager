@@ -9,6 +9,8 @@ namespace GymManager.Models
 {
     public class PassesMembersModel
     {
+        private List<PassRegistry> _passRegistry;
+
         public List<PassRegistry> PassRegistry
         {
             get
@@ -21,8 +23,6 @@ namespace GymManager.Models
                 return _passRegistry.ToList();
             }
         }
-
-        private List<PassRegistry> _passRegistry;
 
         public void Delete(PassRegistry pass)
         {

@@ -8,10 +8,10 @@ namespace GymManager.Models
 {
     public class PassesModel
     {
+        private List<Pass> _passes;
         public bool OnlyActives { get; set; } = true;
 
         public List<Pass> Passes => _passes ?? GetPasses(OnlyActives);
-        private List<Pass> _passes;
 
         public void Delete(Pass pass)
         {

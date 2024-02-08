@@ -11,9 +11,6 @@ namespace GymManager.Common
     {
         public event EventHandler<EventArgsIdentifier> IdentifierReceived;
         public event EventHandler<EventArgsStatus> StateChanged;
-
-        private const int lastKeyTimeoutMilisecound = 1000;
-        private const int recivedTimeoutMilisecound = 500;
         private bool _isError;
         private bool _isStarted;
         private string _lastKey;
@@ -25,6 +22,9 @@ namespace GymManager.Common
         private readonly bool _suffixCrlf;
         private long _timeLastKey;
         private long _timeRecivedLastData;
+
+        private const int lastKeyTimeoutMilisecound = 1000;
+        private const int recivedTimeoutMilisecound = 500;
 
         public IdentifierDeviceSerialPort(string portName, int baudRate, RfidReaderConverter readerConverter,
             bool suffixCrlf, int maxLenghtData)

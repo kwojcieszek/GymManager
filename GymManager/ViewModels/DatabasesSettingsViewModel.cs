@@ -13,6 +13,10 @@ namespace GymManager.ViewModels
     public class DatabasesSettingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private readonly DatabaseSettingsModel _model = new();
+        private ICommand _sqliteDirectoryCommand;
 
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
@@ -98,10 +102,6 @@ namespace GymManager.ViewModels
 
         public bool SqlServer { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.SqlServer;
         public Window Window => Helper.GetWindow(this);
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private readonly DatabaseSettingsModel _model = new();
-        private ICommand _sqliteDirectoryCommand;
 
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {

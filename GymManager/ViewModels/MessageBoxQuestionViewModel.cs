@@ -11,6 +11,10 @@ namespace GymManager.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private readonly MessageBoxQuestionModel _model = new();
+        private ICommand _noCommand;
+        private ICommand _yesCommand;
+
         public string Message
         {
             get => _model.Message;
@@ -30,10 +34,6 @@ namespace GymManager.ViewModels
         public ICommand YesCommand =>
             _yesCommand ??= new RelayCommand(
                 x => { Window.DialogResult = true; });
-
-        private readonly MessageBoxQuestionModel _model = new();
-        private ICommand _noCommand;
-        private ICommand _yesCommand;
 
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {

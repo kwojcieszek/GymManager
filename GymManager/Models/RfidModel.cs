@@ -6,10 +6,10 @@ namespace GymManager.Models
     public class RfidModel
     {
         public event EventHandler EventNewIdentifier;
-
-        public string Identifier { get; set; }
         private readonly EventHandler<EventArgsIdentifier> _eventArgsIdentifier;
         private readonly IdentifierService _identifierService;
+
+        public string Identifier { get; set; }
 
         public RfidModel()
         {

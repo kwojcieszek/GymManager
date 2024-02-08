@@ -5,11 +5,6 @@ namespace GymManager.Common
 {
     public class Cryptography
     {
-        /// <summary>
-        ///     Calculate MD5 hash sum.
-        /// </summary>
-        /// <param name="inputBytes"></param>
-        /// <returns></returns>
         public static string MD5Hash(byte[] inputBytes)
         {
             // step 1, calculate MD5 hash from input
@@ -27,11 +22,6 @@ namespace GymManager.Common
             return sb.ToString();
         }
 
-        /// <summary>
-        ///     Calculate MD5 Hash.
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public static string MD5Hash(string input)
         {
             // step 1, calculate MD5 hash from input

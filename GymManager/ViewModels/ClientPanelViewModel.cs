@@ -9,6 +9,8 @@ namespace GymManager.ViewModels
     public class ClientPanelViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _contentRenderedCommand;
+        private ICommand test;
 
         public ICommand ContentRenderedCommand =>
             _contentRenderedCommand ??= new RelayCommand(
@@ -34,8 +36,6 @@ namespace GymManager.ViewModels
                 });
 
         public Window Window => Helper.GetWindow(this);
-        private ICommand _contentRenderedCommand;
-        private ICommand test;
 
         private void OnPropertyChange([CallerMemberName] string propertyName = null)
         {

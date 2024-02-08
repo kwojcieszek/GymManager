@@ -7,6 +7,8 @@ namespace GymManager.Models
 {
     public class CabinetKeysAvailableModel
     {
+        private List<CabinetKey> _cabinetKeys;
+
         public List<CabinetKey> CabinetKeys
         {
             get
@@ -21,7 +23,6 @@ namespace GymManager.Models
         }
 
         public bool OnlyActives { get; set; } = true;
-        private List<CabinetKey> _cabinetKeys;
 
         public List<CabinetKey> GetCabinetKeys(bool onlyActives)
         {

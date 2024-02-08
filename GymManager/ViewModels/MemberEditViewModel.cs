@@ -17,6 +17,20 @@ namespace GymManager.ViewModels
     public class MemberEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private ICommand _addCommand;
+        private ICommand _applyCommand;
+        private ICommand _cancelCommand;
+        private ICommand _contentRenderedCommand;
+        private ICommand _deleteCommand;
+        private ICommand _editCommand;
+        private readonly MemberEditModel _model = new();
+        private ICommand _peselCommand;
+        private ICommand _photoCameraCommand;
+        private ICommand _photoFileCommand;
+        private ICommand _photoRemoveCommand;
+        private ICommand _refreshCommand;
+        private ICommand _rfidCommand;
+        private ICommand _rfidRemoveCommand;
 
         public ICommand AddCommand =>
             _addCommand ??= new RelayCommand(
@@ -239,20 +253,6 @@ namespace GymManager.ViewModels
         public string SummaryOfDaysSubscriptionSuspensionText { get; set; }
         public string Title { get; set; }
         public Window Window => Helper.GetWindow(this);
-        private ICommand _addCommand;
-        private ICommand _applyCommand;
-        private ICommand _cancelCommand;
-        private ICommand _contentRenderedCommand;
-        private ICommand _deleteCommand;
-        private ICommand _editCommand;
-        private readonly MemberEditModel _model = new();
-        private ICommand _peselCommand;
-        private ICommand _photoCameraCommand;
-        private ICommand _photoFileCommand;
-        private ICommand _photoRemoveCommand;
-        private ICommand _refreshCommand;
-        private ICommand _rfidCommand;
-        private ICommand _rfidRemoveCommand;
 
         public void SetEditObject(int memberID)
         {

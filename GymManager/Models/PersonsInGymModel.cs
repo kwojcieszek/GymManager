@@ -9,6 +9,8 @@ namespace GymManager.Models
 {
     public class PersonsInGymModel
     {
+        private List<EntryRegistry> _entriesRegistry;
+
         public List<EntryRegistry> EntriesRegistry
         {
             get
@@ -21,8 +23,6 @@ namespace GymManager.Models
                 return _entriesRegistry;
             }
         }
-
-        private List<EntryRegistry> _entriesRegistry;
 
         public void ChangeCabinetKey(EntryRegistry entryRegistry, CabinetKey cabinetKey)
         {

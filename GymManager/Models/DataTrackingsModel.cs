@@ -10,6 +10,8 @@ namespace GymManager.Models
 {
     public class DataTrackingsModel
     {
+        private List<DataTracking> _dataTrackings;
+
         public List<DataTracking> DataTrackings
         {
             get
@@ -22,8 +24,6 @@ namespace GymManager.Models
                 return _dataTrackings.ToList();
             }
         }
-
-        private List<DataTracking> _dataTrackings;
 
         public List<DataTracking> GetDataTrackings(DateTime? dateFrom = null, DateTime? dateTo = null)
         {

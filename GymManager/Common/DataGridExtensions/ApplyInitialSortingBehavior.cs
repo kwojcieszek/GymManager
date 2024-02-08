@@ -17,12 +17,11 @@ namespace GymManager.Common.DataGridExtensions
     /// </summary>
     public class ApplyInitialSortingBehavior : Behavior<DataGrid>
     {
-        public IList<KeyValuePair<string, ListSortDirection>> MostRecentDescriptions { get; set; }
-
         private IList<KeyValuePair<string, ListSortDirection>> _lastKnownActiveDescriptions =
             new List<KeyValuePair<string, ListSortDirection>>();
 
         private object _lastSelectedObject;
+        public IList<KeyValuePair<string, ListSortDirection>> MostRecentDescriptions { get; set; }
 
         /// <summary>
         ///     Called after the behavior is attached to an AssociatedObject.

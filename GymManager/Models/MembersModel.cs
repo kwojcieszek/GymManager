@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using GymManager.Common;
 using GymManager.DbModels;
-using GymManager.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymManager.Models
 {
     public class MembersModel
     {
+        private List<Member> _members;
+
         public List<MembersStatus> ListOfStatus =>
             new()
             {
-                new() { Id = 1, Name = "WSZYSCY" },
-                new() { Id = 2, Name = "AKTYWNI" },
-                new() { Id = 3, Name = "NIEAKTYWNI" }
+                new MembersStatus { Id = 1, Name = "WSZYSCY" },
+                new MembersStatus { Id = 2, Name = "AKTYWNI" },
+                new MembersStatus { Id = 3, Name = "NIEAKTYWNI" }
             };
 
         public List<Member> Members
@@ -32,8 +33,6 @@ namespace GymManager.Models
         }
 
         public int SelectedStatus { get; set; } = 2;
-
-        private List<Member> _members;
 
         public void Delete(Member member)
         {
