@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 using GymManager.Views;
 
@@ -15,14 +15,14 @@ namespace GymManager.ViewModels
     public class DataTrackingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closeCommand;
+        private readonly DataTrackingsModel _model = new();
         private DateTime _dateFrom = DateTime.Now.Date.AddMonths(-1);
         private DateTime _dateTo = DateTime.Now.Date;
-        private readonly DataTrackingsModel _model = new();
+        private string _searchText = string.Empty;
+        private ICommand _closeCommand;
         private ICommand _previewCommand;
         private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
-
+        
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
                 x => { Window.DialogResult = false; });

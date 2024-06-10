@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 using GymManager.Views;
 
@@ -14,10 +14,10 @@ namespace GymManager.ViewModels
     public class PassEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly PassEditModel _model = new();
         private ICommand _applyCommand;
         private ICommand _cancelCommand;
         private ICommand _contentRenderedCommand;
-        private readonly PassEditModel _model = new();
         private ICommand _passChanged;
 
         public ICommand ApplyCommand =>

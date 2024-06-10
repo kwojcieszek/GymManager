@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 
 namespace GymManager.Common
 {

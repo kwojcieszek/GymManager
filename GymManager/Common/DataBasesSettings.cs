@@ -1,4 +1,6 @@
-﻿namespace GymManager.Common
+﻿using GymManager.DataService.Common;
+
+namespace GymManager.Common
 {
     public class DatabasesSettings
     {

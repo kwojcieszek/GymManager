@@ -1,4 +1,4 @@
-﻿using GymManager.DbModels;
+﻿using GymManager.DataModel.Models;
 
 namespace GymManager.Common
 {

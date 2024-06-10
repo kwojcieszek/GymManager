@@ -10,9 +10,9 @@ namespace GymManager.ViewModels
     public class MessageBoxInfoViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closeCommand;
-        private bool _isWarrning;
         private readonly MessageBoxInfoModel _model = new();
+        private bool _isWarrning;
+        private ICommand _closeCommand;
 
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(

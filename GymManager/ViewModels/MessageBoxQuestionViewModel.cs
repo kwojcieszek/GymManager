@@ -10,7 +10,6 @@ namespace GymManager.ViewModels
     public class MessageBoxQuestionViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
         private readonly MessageBoxQuestionModel _model = new();
         private ICommand _noCommand;
         private ICommand _yesCommand;

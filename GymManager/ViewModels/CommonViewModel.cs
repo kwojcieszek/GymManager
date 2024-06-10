@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using GymManager.Common;
+using GymManager.DataService.Common;
 using GymManager.Views;
 
 namespace GymManager.ViewModels

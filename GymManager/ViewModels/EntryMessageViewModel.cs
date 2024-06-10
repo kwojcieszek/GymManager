@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 
 namespace GymManager.ViewModels
@@ -13,12 +13,12 @@ namespace GymManager.ViewModels
     public class EntryMessageViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closeCommand;
-        private ICommand _contentRenderedCommand;
-        private bool _isClosed;
         private readonly EntryMessageModel _model = new();
         private readonly DispatcherTimer _timer = new();
+        private bool _isClosed;
         private readonly int _timeVisibilityMessageSeconds = 10;
+        private ICommand _closeCommand;
+        private ICommand _contentRenderedCommand;
 
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(

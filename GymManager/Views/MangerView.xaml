@@ -230,15 +230,6 @@
                             </TextBlock>
                         </StackPanel>
                     </Button>
-                    <Button Background="White" BorderThickness="0" FontSize="12" Focusable="False">
-                        <StackPanel>
-                            <Image Height="60" Width="60"
-                                   Source="{iconPacks:UniconsImage Kind=Envelopes, Brush=DarkBlue}" />
-                            <TextBlock TextAlignment="Center">
-                                <Run Text="WIADOMOŚCI" />
-                            </TextBlock>
-                        </StackPanel>
-                    </Button>
                     <Button Background="White" BorderThickness="0" FontSize="12" Focusable="False"
                             Command="{Binding EntriesRegistryCommand}">
                         <StackPanel>
@@ -256,6 +247,15 @@
                                    Source="{iconPacks:VaadinIconsImage Kind=Records, Brush=DarkRed}" />
                             <TextBlock TextAlignment="Center">
                                 <Run Text="REJESTR OPERACJI" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Background="White" BorderThickness="0" FontSize="12" Focusable="False" Visibility="Collapsed">
+                        <StackPanel>
+                            <Image Height="60" Width="60"
+                                   Source="{iconPacks:UniconsImage Kind=Envelopes, Brush=DarkBlue}" />
+                            <TextBlock TextAlignment="Center">
+                                <Run Text="WIADOMOŚCI" />
                             </TextBlock>
                         </StackPanel>
                     </Button>

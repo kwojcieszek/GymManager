@@ -7,6 +7,7 @@ namespace GymManager.Common
     {
         public static NLog.Logger Log => LogManager.GetCurrentClassLogger();
 
+        [System.Obsolete]
         static Logger()
         {
             LayoutRenderer.Register("startupdir", logEvent => Path.ApplicationData);

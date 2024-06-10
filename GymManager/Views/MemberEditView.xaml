@@ -9,7 +9,7 @@
                  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                  xmlns:converters="clr-namespace:GymManager.Common.Converters"
-                 xmlns:dataGridExtensions="clr-namespace:GymManager.Common.DataGridExtensions"
+                 xmlns:extensions="clr-namespace:GymManager.Common.Extensions"
                  mc:Ignorable="d"
                  Title="{Binding Title}" Height="640" Width="1068" ResizeMode="NoResize"
                  WindowStartupLocation="CenterOwner" ShowInTaskbar="False" ShowMinButton="False"
@@ -192,8 +192,11 @@
                             </Button>
                         </WrapPanel>
                         <CheckBox Grid.Column="5" Grid.Row="9"
-                                  IsChecked="{Binding Member.IsAcive,UpdateSourceTrigger=PropertyChanged}"
-                                  Margin="0,10,0,0" FontSize="14" HorizontalAlignment="Left" />
+                                  IsChecked="{Binding Member.IsAcive,UpdateSourceTrigger=PropertyChanged}" 
+                                  Margin="0,10,0,0" FontSize="14" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" />
+                        <CheckBox Grid.Column="3" Grid.Row="3"
+                            IsChecked="{Binding Member.NoPeselNumber, UpdateSourceTrigger=PropertyChanged}" Content="BRAK PESEL-U"
+                            Margin="10,9,0,1" FontSize="14" HorizontalAlignment="Left" />
                     </Grid>
                     <Image HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,20,20" Height="250"
                            Width="250" Stretch="Uniform" Source="{Binding Photo,Mode=OneWay}" />
@@ -264,7 +267,7 @@
                         <DataGrid Grid.Row="1" x:Name="DataGridPasses"
                                   Margin="5,10,5,5"
                                   Height="440"
-                                  dataGridExtensions:Tools.ApplyInitialSorting="True"
+                                  extensions:DataGridExtensions.ApplyInitialSorting="True"
                                   AutoGenerateColumns="False"
                                   CanUserAddRows="False"
                                   CanUserReorderColumns="True"
@@ -327,7 +330,7 @@
                 <DataGrid x:Name="DataGridEntriesRegistry"
                           Margin="5,10,5,5"
                           Height="500"
-                          dataGridExtensions:Tools.ApplyInitialSorting="True"
+                          extensions:DataGridExtensions.ApplyInitialSorting="True"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False"
                           CanUserReorderColumns="True"

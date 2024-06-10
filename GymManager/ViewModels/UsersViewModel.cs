@@ -5,22 +5,23 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 using GymManager.Views;
+using GymManager.DataService.Common;
 
 namespace GymManager.ViewModels
 {
     public class UsersViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly UsersModel _model = new();
+        private string _searchText = string.Empty;
         private ICommand _addCommand;
         private ICommand _closeCommand;
         private ICommand _deleteCommand;
         private ICommand _editCommand;
-        private readonly UsersModel _model = new();
         private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
         private ICommand _searchTextCommand;
 
         public ICommand AddCommand =>
@@ -107,8 +108,7 @@ namespace GymManager.ViewModels
 
         public List<User> Users =>
             _model.GetUsers(OnlyActives)
-                .Like(_searchText, "UserName", "FirstName", "LastName", "Email", "Phone",
-                    "AddedByUser.FirstName", "AddedByUser.LastName", "ModifiedBy.FirstName", "ModifiedBy.LastName");
+                .Like(_searchText, "UserName", "FirstName", "LastName", "Email", "Phone");
 
         public Window Window => Helper.GetWindow(this);
 

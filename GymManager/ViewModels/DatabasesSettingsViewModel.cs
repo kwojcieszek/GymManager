@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
+using GymManager.DataService.Common;
 using GymManager.Models;
 using GymManager.Views;
 using Ookii.Dialogs.Wpf;
@@ -13,9 +14,9 @@ namespace GymManager.ViewModels
     public class DatabasesSettingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly DatabaseSettingsModel _model = new();
         private ICommand _applyCommand;
         private ICommand _cancelCommand;
-        private readonly DatabaseSettingsModel _model = new();
         private ICommand _sqliteDirectoryCommand;
 
         public ICommand ApplyCommand =>
@@ -41,7 +42,7 @@ namespace GymManager.ViewModels
 
                     try
                     {
-                        DbModels.Engines.Migrations.Migration(Settings.App.Databases.DatabaseType);
+                        DataService.Engines.Migrations.Migration(Settings.App.Databases.DatabaseType);
                     }
                     catch(Exception exp)
                     {

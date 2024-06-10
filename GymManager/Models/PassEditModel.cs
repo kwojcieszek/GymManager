@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
+using GymManager.DataService;
 
 namespace GymManager.Models
 {

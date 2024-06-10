@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 using GymManager.Views;
 

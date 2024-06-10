@@ -5,22 +5,23 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 using GymManager.Views;
+using GymManager.DataService.Common;
 
 namespace GymManager.ViewModels
 {
     public class PassesMembersEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly PassesMembersEditModel _model = new();
         private ICommand _applyCommand;
         private ICommand _cancelCommand;
         private ICommand _contentRenderedCommand;
         private ICommand _dateChangedCommand;
         private ICommand _memberCommand;
         private ICommand _memberEditCommand;
-        private readonly PassesMembersEditModel _model = new();
         private ICommand _rfidCommand;
         private ICommand _selectionChangedCommand;
 

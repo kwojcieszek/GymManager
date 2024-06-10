@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
+using GymManager.DataService;
 
 namespace GymManager.Common
 {
@@ -13,11 +14,11 @@ namespace GymManager.Common
 
             var db = new GymManagerContext();
 
-            var passesRegistry = from passRegistry in db.PassesRegistry
+            var passesRegistry = (from passRegistry in db.PassesRegistry
                 where passRegistry.EndDate.HasValue && passRegistry.EndDate.Value.Date > DateTime.Now.AddDays(-days)
                 group passRegistry by passRegistry.MemberID
                 into g
-                select g.Key;
+                select g.Key).ToList();
 
             var members = db.Members.Where(m => m.IsAcive);
 

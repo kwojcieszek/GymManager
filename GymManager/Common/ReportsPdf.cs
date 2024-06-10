@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 
 namespace GymManager.Common
 {

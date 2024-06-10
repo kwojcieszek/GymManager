@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using GymManager.DataService.Common;
 using GymManager.ViewModels;
 using GymManager.Views;
 

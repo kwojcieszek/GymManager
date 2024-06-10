@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using GymManager.Common;
 using GymManager.Common.Extensions;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
+using GymManager.DataService;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymManager.Models

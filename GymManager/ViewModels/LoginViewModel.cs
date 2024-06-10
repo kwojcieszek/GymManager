@@ -11,16 +11,16 @@ namespace GymManager.ViewModels
     public class LoginViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _cancelCommand;
         private readonly LoginModel _model = new();
+        public string Password { get; set; }
+        public string UserName { get; set; }
+
+        private ICommand _cancelCommand;
+        public ICommand LoginCommand { get; set; }
 
         public ICommand CancelCommand =>
             _cancelCommand ??= new RelayCommand(
                 x => { Application.Current.Shutdown(); });
-
-        public ICommand LoginCommand { get; set; }
-        public string Password { get; set; }
-        public string UserName { get; set; }
 
         public Window Window => Helper.GetWindow(this);
 
@@ -33,6 +33,8 @@ namespace GymManager.ViewModels
         {
             if(_model.Login(username, password ?? string.Empty))
             {
+                GymManager.DataService.Common.TrackingDatabase.SetCurrentUser(CurrentUser.User.UserID);
+
                 Window?.Close();
             }
             else

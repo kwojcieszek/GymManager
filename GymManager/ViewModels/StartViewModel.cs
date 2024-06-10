@@ -15,12 +15,12 @@ namespace GymManager.ViewModels
     public class StartViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closingCommand;
-        private ICommand _contentRenderedCommand;
         private readonly StartModel _model = new();
         private DispatcherTimer _timerStartDatabasesSettings;
         private DispatcherTimer _timerStartMain;
-
+        private ICommand _closingCommand;
+        private ICommand _contentRenderedCommand;
+        
         public ICommand ClosingCommand =>
             _closingCommand ??= new RelayCommand(
                 x => { _model.IsRunning = false; });
@@ -42,7 +42,6 @@ namespace GymManager.ViewModels
         public string JobDescription { get; private set; }
         public string PathGif => $"{Path.ApplicationDirectory}\\Images\\Waiting_circle.gif";
         public string Title => "GYM MANGER";
-
         public Window Window => Helper.GetWindow(this);
 
         public StartViewModel()

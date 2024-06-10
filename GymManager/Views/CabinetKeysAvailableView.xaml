@@ -7,7 +7,7 @@
                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
                  xmlns:mw="clr-namespace:GymManager.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-                 xmlns:dataGridExtensions="clr-namespace:GymManager.Common.DataGridExtensions"
+                 xmlns:extensions="clr-namespace:GymManager.Common.Extensions"
                  mc:Ignorable="d"
                  Title="DOSTĘPNE KLUCZE DO SZAFEK" Height="730" Width="590" WindowStartupLocation="CenterScreen"
                  WindowState="Normal">
@@ -44,7 +44,7 @@
 
         <DataGrid Grid.Row="1" x:Name="DataGridCabinetKeys"
                   Margin="5,10,5,5"
-                  dataGridExtensions:Tools.ApplyInitialSorting="True"
+                  extensions:DataGridExtensions.ApplyInitialSorting="True"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserReorderColumns="True"

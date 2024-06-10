@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 
 namespace GymManager.ViewModels
@@ -12,10 +12,10 @@ namespace GymManager.ViewModels
     public class DataTrackingsPreviewViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly DataTrackingsPreviewModel _model = new();
         private ICommand _closeCommand;
         private ICommand _contentRenderedCommand;
-        private readonly DataTrackingsPreviewModel _model = new();
-
+        
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
                 x => { Window.DialogResult = true; });

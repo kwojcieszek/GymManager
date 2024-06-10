@@ -3,7 +3,8 @@ using System.Reflection;
 using System.Threading.Tasks;
 using GymManager.Common;
 using GymManager.Common.Extensions;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
+using GymManager.DataService;
 
 namespace GymManager.Models
 {

@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
+using GymManager.DataService.Common;
 using GymManager.Models;
 using GymManager.Views;
 
@@ -12,6 +13,10 @@ namespace GymManager.ViewModels
     public class MangerViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly MangerModel _model = new();
+        private bool _expanderOthersIsExpanded;
+        private bool _expanderRecordsIsExpanded = true;
+        private bool _expanderRegistersIsExpanded;
         private ICommand _aboutCommand;
         private ICommand _addCabinetKeysCommand;
         private ICommand _addEntryWithoutIdentifierCommand;
@@ -26,14 +31,10 @@ namespace GymManager.ViewModels
         private ICommand _databasesSettingsCommand;
         private ICommand _dataTrackingsCommand;
         private ICommand _entriesRegistryCommand;
-        private bool _expanderOthersIsExpanded;
-        private bool _expanderRecordsIsExpanded = true;
-        private bool _expanderRegistersIsExpanded;
         private ICommand _gotFocusCommand;
         private ICommand _logoutCommand;
         private ICommand _lostFocusCommand;
         private ICommand _membersViewCommand;
-        private readonly MangerModel _model = new();
         private ICommand _passesCommand;
         private ICommand _passesMembersCommand;
         private ICommand _personInGymCommand;
@@ -42,7 +43,7 @@ namespace GymManager.ViewModels
         private ICommand _teamViewerCommand;
         private ICommand _usersViewCommand;
         private ICommand _windowClosedCommand;
-
+        
         public ICommand AboutCommand =>
             _aboutCommand ??= new RelayCommand(
                 x =>
@@ -271,7 +272,7 @@ namespace GymManager.ViewModels
 
         public ICommand GotFocusCommand =>
             _gotFocusCommand ??= new RelayCommand(
-                x => { App.ApplicationMainWindowIsActive = true; });
+                x => { AppView.ApplicationMainWindowIsActive = true; });
 
         public ICommand LogoutCommand =>
             _logoutCommand ??= new RelayCommand(
@@ -279,7 +280,7 @@ namespace GymManager.ViewModels
 
         public ICommand LostFocusCommand =>
             _lostFocusCommand ??= new RelayCommand(
-                x => { App.ApplicationMainWindowIsActive = false; });
+                x => { AppView.ApplicationMainWindowIsActive = false; });
 
         public ICommand MembersViewCommand =>
             _membersViewCommand ??= new RelayCommand(

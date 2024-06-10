@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 
 namespace GymManager.ViewModels
@@ -13,12 +13,12 @@ namespace GymManager.ViewModels
     public class CabinetKeysAvailableViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _doubleClickCommand;
         private readonly CabinetKeysAvailableModel _model = new();
-        private ICommand _refreshCommand;
         private string _searchText = string.Empty;
+        private ICommand _doubleClickCommand;
+        private ICommand _refreshCommand;
         private ICommand _searchTextCommand;
-
+        
         public List<CabinetKey> CabinetKeys =>
             _model.GetCabinetKeys(OnlyActives)
                 .Like(_searchText, "Name", "Gender.Name")

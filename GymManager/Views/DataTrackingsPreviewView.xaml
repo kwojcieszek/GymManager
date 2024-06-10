@@ -8,7 +8,7 @@
                  xmlns:mw="clr-namespace:GymManager.ViewModels" xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
                  xmlns:converters="clr-namespace:GymManager.Common.Converters"
                  mc:Ignorable="d"
-                 Title="PODGLĄD OPERACJI" Height="635" Width="860" ResizeMode="NoResize"
+                 Title="PODGLĄD OPERACJI" Height="700" Width="860" ResizeMode="NoResize"
                  WindowStartupLocation="CenterOwner" WindowState="Normal" ShowInTaskbar="False" ShowMinButton="False"
                  ShowCloseButton="False"
                  FocusManager.FocusedElement="{Binding ElementName=ButtonClose}">
@@ -71,8 +71,8 @@
         </StackPanel>
         <DataGrid x:Name="DataGridDataTrackings"
                   Visibility="{Binding Path=IsViewNewData,Converter={StaticResource BoolToVisibilityConverter},Mode=OneWay}"
-                  Margin="5,110,30,5"
-                  Width="600"
+                  Margin="5,110,5,60"
+                  Width="700"
                   Height="Auto"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"

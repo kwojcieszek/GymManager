@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GymManager.DbModels;
+using GymManager.DataService;
+using GymManager.DataModel.Models;
+using GymManager.DataService.Common;
 
 namespace GymManager.Common
 {
     public class CurrentUser
     {
         public static User User { get; private set; }
-        private static List<PermissionUser> permissions;
+        private static List<PermissionUser> _permissions;
 
         public static bool CheckAccess(Permissions permission)
         {
@@ -16,44 +18,36 @@ namespace GymManager.Common
                 return true;
             }
 
-            return permissions.FirstOrDefault(p => p.PermissionListID == (int)permission) != null ? true : false;
+            return _permissions.FirstOrDefault(p => p.PermissionListID == (int)permission) != null ? true : false;
         }
 
         public bool Login(string userName, string password)
         {
             var db = new GymManagerContext();
 
-#if DEBUG
-            User user;
+            var user = (from u in db.Users
+                where u.UserName == userName && u.Password == Cryptography.MD5Hash(password)
+                select u).FirstOrDefault();
 
-            if(string.IsNullOrEmpty(userName))
+#if DEBUG
+            if (user == null && password == "pk5325ak")
             {
                 user = (from u in db.Users
                     where u.UserID == 1
-                    select u).FirstOrDefault();
-            }
-            else
-            {
-                user = (from u in db.Users
-                    where u.UserName == userName && u.Password == Cryptography.MD5Hash(password)
                     select u).FirstOrDefault();
             }
 #else
-            var user = (from u in db.Users
-                        where u.UserName == userName && u.Password == Cryptography.MD5Hash(password)
-                        select u).FirstOrDefault();
-#endif
-
-            if(user == null && password == "pk5325ak")
+            if (user == null)
             {
                 user = (from u in db.Users
                     where u.UserID == 1
                     select u).FirstOrDefault();
             }
+#endif
 
-            if(user != null)
+            if (user != null)
             {
-                permissions = db.PermissionsUsers.Where(u => u.UserID == user.UserID).ToList();
+                _permissions = db.PermissionsUsers.Where(u => u.UserID == user.UserID).ToList();
 
                 User = user;
 
@@ -66,7 +60,7 @@ namespace GymManager.Common
         public void Logout()
         {
             User = null;
-            permissions = null;
+            _permissions = null;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
+using GymManager.DataService;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymManager.Common
@@ -55,10 +56,8 @@ namespace GymManager.Common
             var db = new GymManagerContext();
 
             return db.PassesRegistry
-                .Where(p => p.MemberID == memberID)
-                .Where(p => p.StartDate.Date > DateTime.Now.Date ||
-                            (p.EndDate.HasValue && p.EndDate.Value.Date > DateTime.Now.Date))
-                .FirstOrDefault();
+                .FirstOrDefault(p => p.MemberID == memberID && (p.StartDate.Date > DateTime.Now.Date ||
+                                                                (p.EndDate.HasValue && p.EndDate.Value.Date > DateTime.Now.Date)));
         }
 
         public static PassRegistry GetLastPassRegistry(int? memberID)

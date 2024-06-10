@@ -9,10 +9,10 @@ namespace GymManager.ViewModels
 {
     public class ChangePasswordViewModel
     {
+        private readonly UserEditModel _model = new();
         private ICommand _applyCommand;
         private ICommand _cancelCommand;
-        private readonly UserEditModel _model = new();
-
+        
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
                 x =>

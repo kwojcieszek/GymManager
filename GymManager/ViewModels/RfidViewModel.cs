@@ -10,10 +10,10 @@ namespace GymManager.ViewModels
     public class RfidViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly RfidModel _model = new();
         private ICommand _closeCommand;
         private ICommand _closedCommand;
-        private readonly RfidModel _model = new();
-
+        
         public ICommand CloseCommand =>
             _closeCommand ??= new RelayCommand(
                 x => { Window?.Close(); });

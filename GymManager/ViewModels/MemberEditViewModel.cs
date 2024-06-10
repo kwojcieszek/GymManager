@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 using GymManager.Views;
 using Microsoft.Win32;
@@ -17,13 +17,13 @@ namespace GymManager.ViewModels
     public class MemberEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly MemberEditModel _model = new();
         private ICommand _addCommand;
         private ICommand _applyCommand;
         private ICommand _cancelCommand;
         private ICommand _contentRenderedCommand;
         private ICommand _deleteCommand;
         private ICommand _editCommand;
-        private readonly MemberEditModel _model = new();
         private ICommand _peselCommand;
         private ICommand _photoCameraCommand;
         private ICommand _photoFileCommand;
@@ -320,7 +320,7 @@ namespace GymManager.ViewModels
             {
                 message = $"EMAIL '{member.Email}' MA NIEPRAWIDŁOWY FORMAT";
             }
-            else if(!string.IsNullOrEmpty(member.Pesel) && !new Pesel().IsValid(member.Pesel.ToCharArray()))
+            else if(!member.NoPeselNumber && (string.IsNullOrEmpty(member.Pesel) || !new Pesel().IsValid(member.Pesel.ToCharArray())))
             {
                 message = $"PESEL '{member.Pesel}' MA NIEPRAWIDŁOWY FORMAT";
             }

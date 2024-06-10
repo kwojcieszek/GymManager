@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using GymManager.Common;
+using GymManager.DataService;
 
 namespace GymManager.Models
 {
@@ -50,7 +51,7 @@ namespace GymManager.Models
                     job.Action();
                 }
 
-                JobFinished?.Invoke(this, new Result(Results.OK));
+                JobFinished?.Invoke(this, new Result(Results.Ok));
             }
             catch(DatabaseTestException ex)
             {
@@ -92,7 +93,10 @@ namespace GymManager.Models
         {
             try
             {
-                DbModels.Engines.Migrations.Migration(Settings.App.Databases.DatabaseType);
+                _ = new GymManagerContext(Settings.App.Databases.DatabaseType,
+                    DatabaseConnctionStrings.ConnectionString(Settings.App.Databases.DatabaseType));
+
+                DataService.Engines.Migrations.Migration(Settings.App.Databases.DatabaseType);
             }
             catch(Exception exp)
             {

@@ -5,25 +5,26 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 using GymManager.Views;
+using GymManager.DataService.Common;
 
 namespace GymManager.ViewModels
 {
     public class MembersViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly MembersModel _model = new();
+        private string _searchText = string.Empty;
         private ICommand _addCommand;
         private ICommand _closeCommand;
         private ICommand _deleteCommand;
         private ICommand _doubleClickCommand;
         private ICommand _editCommand;
-        private readonly MembersModel _model = new();
         private ICommand _printMembershipDocumentsCommand;
         private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
-
+        
         public ICommand AddCommand =>
             _addCommand ??= new RelayCommand(
                 x =>
@@ -104,10 +105,7 @@ namespace GymManager.ViewModels
         public List<Member> Members =>
             _model.Members
                 .Like(_searchText, "Id", "FirstName", "LastName", "Street1", "Street2", "City", "PostCode", "Phone",
-                    "Email",
-                    "Gender.Name",
-                    "Pass.Name", "AddedByUser.FirstName", "AddedByUser.LastName", "ModifiedBy.FirstName",
-                    "ModifiedBy.LastName");
+                    "Email","Gender.Name", "Pass.Name");
 
         public ICommand PrintMembershipDocumentsCommand =>
             _printMembershipDocumentsCommand ??= new RelayCommand(

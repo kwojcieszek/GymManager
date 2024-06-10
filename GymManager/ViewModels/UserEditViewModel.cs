@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 using GymManager.Views;
 
@@ -14,14 +14,14 @@ namespace GymManager.ViewModels
     public class UserEditViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public bool _passwordChanged;
+        private readonly UserEditModel _model = new();
+        private bool _passwordChanged;
+        private string _password1;
+        private string _password2;
         private ICommand _applyCommand;
         private ICommand _cancelCommand;
         private ICommand _contentRenderedCommand;
-        private readonly UserEditModel _model = new();
-        private string _password1;
-        private string _password2;
-
+        
         public ICommand ApplyCommand =>
             _applyCommand ??= new RelayCommand(
                 x =>

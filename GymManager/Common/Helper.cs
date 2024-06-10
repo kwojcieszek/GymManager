@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using GymManager.Views;
 using WpfScreenHelper;
 
 namespace GymManager.Common
@@ -32,7 +33,7 @@ namespace GymManager.Common
         {
             var result = false;
 
-            Invoke(() => result = App.ApplicationMainWindowIsActive);
+            Invoke(() => result = AppView.ApplicationMainWindowIsActive);
 
             return result;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Diagnostics;
+using GymManager.Views;
 
 namespace GymManager.Common
 {
@@ -18,7 +19,7 @@ namespace GymManager.Common
 
             var argsList = new Args(args);
 
-            var app = new App();
+            var app = new AppView();
 
             app.InitializeComponent();
 

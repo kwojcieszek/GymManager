@@ -6,24 +6,25 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
-using GymManager.DbModels;
+using GymManager.DataModel.Models;
 using GymManager.Models;
 using GymManager.Views;
+using GymManager.DataService.Common;
 
 namespace GymManager.ViewModels
 {
     public class PassesMembersViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _addCommand;
-        private ICommand _closeCommand;
+        private readonly PassesMembersModel _model = new();
         private DateTime _dateFrom = DateTime.Now.Date;
         private DateTime _dateTo = DateTime.Now.Date;
+        private string _searchText = string.Empty;
+        private ICommand _addCommand;
+        private ICommand _closeCommand;
         private ICommand _deleteCommand;
         private ICommand _editCommand;
-        private readonly PassesMembersModel _model = new();
         private ICommand _refreshCommand;
-        private string _searchText = string.Empty;
         private ICommand _searchTextCommand;
 
         public ICommand AddCommand =>
@@ -102,9 +103,7 @@ namespace GymManager.ViewModels
 
         public List<PassRegistry> PassesRegistry =>
             _model.PassRegistry
-                .Like(_searchText, "PassRegistryID", "Pass.Name", "Member.FirstName", "Member.LastName", "Member.Id",
-                    "AddedByUser.FirstName", "AddedByUser.LastName",
-                    "ModifiedByUser.FirstName", "ModifiedByUser.LastName")
+                .Like(_searchText, "PassRegistryID", "Pass.Name", "Member.FirstName", "Member.LastName", "Member.Id")
                 .ToList();
 
         public ICommand RefreshCommand =>

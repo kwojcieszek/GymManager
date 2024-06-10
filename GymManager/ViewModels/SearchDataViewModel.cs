@@ -10,8 +10,8 @@ namespace GymManager.ViewModels
     public class SearchDataViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        private ICommand _closeCommand;
         private string _description;
+        private ICommand _closeCommand;
         private ICommand _searchCommand;
 
         public ICommand CloseCommand =>

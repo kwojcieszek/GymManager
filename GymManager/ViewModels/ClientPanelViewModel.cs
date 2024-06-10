@@ -10,8 +10,6 @@ namespace GymManager.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private ICommand _contentRenderedCommand;
-        private ICommand test;
-
         public ICommand ContentRenderedCommand =>
             _contentRenderedCommand ??= new RelayCommand(
                 x => { OnPropertyChange(nameof(DataContext)); });
@@ -23,17 +21,6 @@ namespace GymManager.ViewModels
             set => Window.Owner = value;
             get => Window.Owner;
         }
-
-        public ICommand Test =>
-            test ??= new RelayCommand(
-                x =>
-                {
-                    var secondaryScreenLeft = SystemParameters.PrimaryScreenWidth - SystemParameters.VirtualScreenWidth;
-
-                    Window.WindowStartupLocation = WindowStartupLocation.Manual;
-                    Window.Left = secondaryScreenLeft;
-                    Window.Top = 0;
-                });
 
         public Window Window => Helper.GetWindow(this);
 

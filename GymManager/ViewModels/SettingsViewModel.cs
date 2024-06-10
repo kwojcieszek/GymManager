@@ -12,11 +12,11 @@ namespace GymManager.ViewModels
     public class SettingsViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly SettingsModel _model = new();
         private ICommand _adobeApplicationPathCommand;
         private ICommand _applyCommand;
         private ICommand _cancelCommand;
         private ICommand _logoImagePathCommand;
-        private readonly SettingsModel _model = new();
         private ICommand _samplesDataCommand;
 
         public ICommand AdobeApplicationPathCommand =>
