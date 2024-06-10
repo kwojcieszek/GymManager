@@ -55,7 +55,7 @@ namespace GymManager.ViewModels
 
             _model.JobFinished += (sender, e) =>
             {
-                if(e.ResultValue != Results.OK && e.ResultValue == Results.OtherError)
+                if(e.ResultValue != Results.Ok && e.ResultValue == Results.OtherError)
                 {
                     Task.Factory.StartNew(() =>
                     {
@@ -77,7 +77,7 @@ namespace GymManager.ViewModels
                         }));
                     });
                 }
-                else if(e.ResultValue != Results.OK && e.ResultValue == Results.DatabaseConnectionError)
+                else if(e.ResultValue != Results.Ok && e.ResultValue == Results.DatabaseConnectionError)
                 {
                     Task.Factory.StartNew(() =>
                     {
@@ -86,12 +86,12 @@ namespace GymManager.ViewModels
                         OnPropertyChange(nameof(JobDescription));
 
                         Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
-                            new ThreadStart(delegate { _timerStartDatabasesSettings.Start(); }));
+                            new ThreadStart(delegate { _timerStartDatabasesSettings?.Start(); }));
                     });
                 }
-                else if(e.ResultValue == Results.OK)
+                else if(e.ResultValue == Results.Ok)
                 {
-                    _timerStartMain.Start();
+                    _timerStartMain?.Start();
                 }
             };
         }
