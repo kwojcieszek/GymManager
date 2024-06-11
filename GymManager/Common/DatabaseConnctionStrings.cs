@@ -11,8 +11,8 @@ namespace GymManager.Common
             {
                 DatabaseTypes.Memory => "GymManager",
                 DatabaseTypes.SqlServer => Settings.App.Databases.SqlServer.Trusted
-                    ? $"Server={Settings.App.Databases.SqlServer.Server};Database={Settings.App.Databases.SqlServer.Name};Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=true;"
-                    : $"Server={Settings.App.Databases.SqlServer.Server};Database={Settings.App.Databases.SqlServer.Name};User Id={Settings.App.Databases.SqlServer.UserId};Password={Settings.App.Databases.SqlServer.Password};TrustServerCertificate=True",
+                    ? $"Server={Settings.App.Databases.SqlServer.Server};Database={Settings.App.Databases.SqlServer.Name};Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;MultipleActiveResultSets=True"
+                    : $"Server={Settings.App.Databases.SqlServer.Server};Database={Settings.App.Databases.SqlServer.Name};User Id={Settings.App.Databases.SqlServer.UserId};Password={Settings.App.Databases.SqlServer.Password};TrustServerCertificate=True;MultipleActiveResultSets=True;",
                 DatabaseTypes.Sqlite =>
                     $"Data Source={Settings.App.Databases.Sqlite.Directory}\\{Settings.App.Databases.Sqlite.FileName};",
                 DatabaseTypes.PostgreSql =>

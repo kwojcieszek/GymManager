@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymManager.DataModel", "Gym
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymManager.DataService", "GymManager.DataService\GymManager.DataService.csproj", "{2156D3A5-2A5D-4A1A-9DC6-0AEB32BEEDFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManager.Common", "GymManager.Common\GymManager.Common.csproj", "{07B1880A-24CC-4179-8609-119F52936A07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymManager.Common", "GymManager.Common\GymManager.Common.csproj", "{07B1880A-24CC-4179-8609-119F52936A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManager.CameraView", "GymManager.CameraView\GymManager.CameraView.csproj", "{4D2DFA83-A91E-4405-B4FA-51A89A864075}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +76,18 @@ Global
 		{07B1880A-24CC-4179-8609-119F52936A07}.Release|x64.Build.0 = Release|Any CPU
 		{07B1880A-24CC-4179-8609-119F52936A07}.Release|x86.ActiveCfg = Release|Any CPU
 		{07B1880A-24CC-4179-8609-119F52936A07}.Release|x86.Build.0 = Release|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Debug|x64.Build.0 = Debug|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Debug|x86.Build.0 = Debug|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Release|x64.ActiveCfg = Release|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Release|x64.Build.0 = Release|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Release|x86.ActiveCfg = Release|Any CPU
+		{4D2DFA83-A91E-4405-B4FA-51A89A864075}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

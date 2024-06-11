@@ -1,5 +1,4 @@
-﻿using GymManager.DataModel.Models;
-using GymManager.DataService;
+﻿using GymManager.DataService;
 
 namespace GymManager.Common
 {

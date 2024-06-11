@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
 using GymManager.Common;
+using GymManager.DataService;
 using GymManager.DataService.Common;
 using GymManager.Models;
 using GymManager.Views;
@@ -55,6 +56,8 @@ namespace GymManager.ViewModels
 
                     _model.Save();
 
+                    _ = new GymManagerContext(Settings.App.Databases.DatabaseType, DatabaseConnctionStrings.ConnectionString(Settings.App.Databases.DatabaseType));
+
                     Window.DialogResult = true;
                 });
 
@@ -97,8 +100,6 @@ namespace GymManager.ViewModels
 
                         OnPropertyChange(nameof(DatabasesSettings));
                     }
-
-                    ;
                 });
 
         public bool SqlServer { get; set; } = Settings.App.Databases.DatabaseType == DatabaseTypes.SqlServer;
