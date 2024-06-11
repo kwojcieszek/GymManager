@@ -16,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymManager.DataService", "G
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GymManager.Common", "GymManager.Common\GymManager.Common.csproj", "{07B1880A-24CC-4179-8609-119F52936A07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManager.CameraView", "GymManager.CameraView\GymManager.CameraView.csproj", "{4D2DFA83-A91E-4405-B4FA-51A89A864075}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManager.Camera", "GymManager.Camera\GymManager.Camera.csproj", "{4D2DFA83-A91E-4405-B4FA-51A89A864075}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
