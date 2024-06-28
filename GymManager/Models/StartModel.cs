@@ -110,7 +110,7 @@ namespace GymManager.Models
 
             if(Settings.App.IdentifierDevice == IdentifierDevices.RFIDSerialPort)
             {
-                var identifierService = IdentifierServiceBuilder.CreateFromRFIDSerialPort(Settings.App.RFIDSerialPort,
+                var identifierService = IdentifierServiceBuilder.CreateFromRfidSerialPort(Settings.App.RFIDSerialPort,
                     Settings.App.RfidReader.RfidReaderConverterType, Settings.App.RfidReader.SuffixCRLF,
                     Settings.App.RfidReader.MaxLenghtData, Settings.App.RfidReader.Endianness);
 

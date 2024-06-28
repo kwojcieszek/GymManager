@@ -43,6 +43,8 @@ namespace GymManager.ViewModels
 
                     try
                     {
+                        _ = new GymManagerContext(Settings.App.Databases.DatabaseType, DatabaseConnctionStrings.ConnectionString(Settings.App.Databases.DatabaseType));
+
                         DataService.Engines.Migrations.Migration(Settings.App.Databases.DatabaseType);
                     }
                     catch(Exception exp)
@@ -55,8 +57,6 @@ namespace GymManager.ViewModels
                     SettingsConfiguration.Set();
 
                     _model.Save();
-
-                    _ = new GymManagerContext(Settings.App.Databases.DatabaseType, DatabaseConnctionStrings.ConnectionString(Settings.App.Databases.DatabaseType));
 
                     Window.DialogResult = true;
                 });
