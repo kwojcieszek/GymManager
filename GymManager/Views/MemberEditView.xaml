@@ -35,6 +35,9 @@
         <i:EventTrigger EventName="ContentRendered">
             <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=ContentRenderedCommand}" />
         </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding Mode=OneWay, Path=ClosingCommand}" />
+        </i:EventTrigger>
     </i:Interaction.Triggers>
 
     <Window.DataContext>

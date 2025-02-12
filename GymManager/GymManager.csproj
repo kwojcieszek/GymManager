@@ -8,8 +8,8 @@
     <ApplicationIcon>Images\App.ico</ApplicationIcon>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <StartupObject>GymManager.Common.MainClass</StartupObject>
-    <AssemblyVersion>2024.06.10</AssemblyVersion>
+    <StartupObject>GymManager.Program</StartupObject>
+    <AssemblyVersion>2025.02.12</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

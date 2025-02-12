@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace GymManager.Common
 {
     public class CameraService
     {
+        public event EventHandler<byte[]> OnDataReceived;
+        public bool IsRunning { get; private set; }
+        private bool _isStop;
         private string _fullPath;
+        private Process _process;
 
         public string MyPicturesLibraryFileName
         {
@@ -16,19 +21,67 @@ namespace GymManager.Common
 
         public string PathExecute { get; set; }
 
-        public byte[] Start()
+        public void Start()
         {
+            _isStop = false;
+
             CleanData();
 
-            var process = Process.Start(PathExecute);
+            _process = Process.Start(PathExecute);
 
-            process?.WaitForExit(1000 * 60);
+            Task.Factory.StartNew(StartMonitoring);
 
-            var data = GetData();
+            IsRunning = true;
+        }
 
-            Task.Factory.StartNew(CleanData);
+        public void ReStart()
+        {
+            Stop();
 
-            return data;
+            Task.Delay(200).Wait();
+
+            Start();
+        }
+
+        public void Stop()
+        {
+            _isStop = true;
+        }
+
+        private void StartMonitoring()
+        {
+            while(!_isStop)
+            {
+                Task.Delay(100).Wait();
+
+                var data = GetData();
+
+                if (data.Length > 0)
+                {
+                    OnDataReceived?.Invoke(this, data);
+
+                    Task.Factory.StartNew(CleanData);
+
+                    _isStop = true;
+
+                    IsRunning = false;
+                }
+                else if(_process.HasExited)
+                {
+                    _isStop = true;
+
+                    IsRunning = false;
+                }
+            }
+
+            try
+            {
+                _process?.Kill();
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         private void CleanData()
@@ -48,7 +101,7 @@ namespace GymManager.Common
             }
             catch
             {
-                return null;
+                return [];
             }
         }
     }

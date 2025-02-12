@@ -1,11 +1,12 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Diagnostics;
+using GymManager.Common;
 using GymManager.Views;
 
-namespace GymManager.Common
+namespace GymManager
 {
-    public static class MainClass
+    public static class Program
     {
         /// <summary>
         ///     Application Entry Point.

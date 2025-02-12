@@ -18,10 +18,12 @@ namespace GymManager.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
         private readonly MemberEditModel _model = new();
+        private CameraService _cameraService;
         private ICommand _addCommand;
         private ICommand _applyCommand;
         private ICommand _cancelCommand;
         private ICommand _contentRenderedCommand;
+        private ICommand _closingCommand;
         private ICommand _deleteCommand;
         private ICommand _editCommand;
         private ICommand _peselCommand;
@@ -64,6 +66,13 @@ namespace GymManager.ViewModels
         public ICommand CancelCommand =>
             _cancelCommand ??= new RelayCommand(
                 x => { Window.DialogResult = false; });
+
+        public ICommand ClosingCommand =>
+            _closingCommand ??= new RelayCommand(
+                x =>
+                {
+                    _cameraService?.Stop();
+                });
 
         public ICommand ContentRenderedCommand =>
             _contentRenderedCommand ??= new RelayCommand(
@@ -172,18 +181,30 @@ namespace GymManager.ViewModels
             _photoCameraCommand ??= new RelayCommand(
                 x =>
                 {
-                    var data = new CameraService
+                    if(_cameraService == null)
+                    {
+                        _cameraService = new CameraService
                         {
                             PathExecute = $"{Path.ApplicationDirectory}\\Camera\\CameraView.exe",
                             MyPicturesLibraryFileName = "CameraCaptutre.jpg"
-                        }
-                        .Start();
+                        };
 
-                    if(data is { Length: > 0 })
+                        _cameraService.OnDataReceived += (sender, data) =>
+                        {
+                            _model.PhotoData = data;
+
+                            OnPropertyChange(nameof(Photo));
+                        };
+
+                    }
+
+                    if(!_cameraService.IsRunning)
                     {
-                        _model.PhotoData = data;
-
-                        OnPropertyChange(nameof(Photo));
+                        _cameraService.Start();
+                    }
+                    else
+                    {
+                        _cameraService.ReStart();
                     }
                 });
 
@@ -294,7 +315,7 @@ namespace GymManager.ViewModels
             }
             else if(string.IsNullOrEmpty(member.FirstName))
             {
-                filed = "IMIE";
+                filed = "IMIĘ";
             }
             else if(string.IsNullOrEmpty(member.LastName))
             {

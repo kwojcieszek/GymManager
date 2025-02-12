@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows;
 using Windows.Foundation;
 using Windows.Graphics.Imaging;
 using Windows.Media.MediaProperties;

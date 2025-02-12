@@ -1,5 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using Windows.Media.Capture;
 using MediaCaptureWPF;
@@ -42,6 +43,8 @@ namespace CameraView
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
+
+                this.Close();
             }
         }
 
@@ -57,6 +60,8 @@ namespace CameraView
             catch(Exception ex)
             {
                 MessageBox.Show(ex.Message);
+
+                this.Close();
             }
         }
     }
